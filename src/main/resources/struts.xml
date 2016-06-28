@@ -1,0 +1,20 @@
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<!-- 设置struts2的基本配置和拦截器 -->
+	<include file="com/jiuyv/hhc/configs/struts/struts-public.cfg.xml" />
+	<!-- security module -->
+	<include file="com/jiuyv/hhc/configs/struts/struts-mngr-security.xml" />
+	<!-- message module -->
+	<include file="com/jiuyv/hhc/configs/struts/struts-mngr-message.xml" />
+	<!-- system common module -->
+	<include file="com/jiuyv/hhc/configs/struts/struts-mngr-syscomm.xml" />
+	<!-- customer module -->
+	<include file="com/jiuyv/hhc/configs/struts/struts-mngr-customer.xml" />
+	<!-- loan module -->
+	<include file="com/jiuyv/hhc/configs/struts/struts-mngr-loan.xml" />
+	<!-- information module -->
+	<include file="com/jiuyv/hhc/configs/struts/struts-mngr-information.xml" />
+</struts>

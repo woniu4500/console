@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  MhtTransAfterLoanMapper.xml
+	Table: TBL_MHT_TRANS_ATER_LOAN (商户贷后日均交易数据表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.loan.dao.MhtTransAfterLoanDao">
+	<sql id="__select" >
+	select
+		   t0.MCHNT_CODE as mchntCode
+		  ,t0.TRANS_DT as transDt
+		  ,t0.DALIY_TRANS_AT as daliyTransAt
+		  ,t0.DALIY_TRANS_NUM as daliyTransNum
+		  ,t0.DALIY_CUS_NUM as daliyCusNum
+		  ,t0.DALIY_REPEAT_CUS_NUM as daliyRepeatCusNum
+		  ,t0.CREDIT_DEBIT_RATIO as creditDebitRatio
+		  ,t0.REMARK as remark
+		  ,t0.REC_TIME as recTime
+	  from FQ_MHT_TRANS_AFTER_LOAN t0
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.mchntCode != null" >and t0.MCHNT_CODE = #{params.mchntCode}</if>
+			<if test="params.transDt != null" >and t0.TRANS_DT = #{params.transDt}</if>
+			<if test="params.daliyTransAt != null" >and t0.DALIY_TRANS_AT = #{params.daliyTransAt}</if>
+			<if test="params.daliyTransNum != null" >and t0.DALIY_TRANS_NUM = #{params.daliyTransNum}</if>
+			<if test="params.daliyCusNum != null" >and t0.DALIY_CUS_NUM = #{params.daliyCusNum}</if>
+			<if test="params.daliyRepeatCusNum != null" >and t0.DALIY_REPEAT_CUS_NUM = #{params.daliyRepeatCusNum}</if>
+			<if test="params.creditDebitRatio != null" >and t0.CREDIT_DEBIT_RATIO = #{params.creditDebitRatio}</if>
+			<if test="params.remark != null" >and t0.REMARK = #{params.remark}</if>
+			<if test="params.recTime != null" >and t0.REC_TIME = #{params.recTime}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.loan.MhtTransAfterLoanVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.loan.MhtTransAfterLoanVo">
+ 	 	<include refid="__select"/>
+ 	 	where MCHNT_CODE = #{mchntCode}
+		  and TRANS_DT = #{transDt}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.loan.MhtTransAfterLoanVo">
+		insert into FQ_MHT_TRANS_AFTER_LOAN 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		REC_TIME,
+			<if test="mchntCode != null" >MCHNT_CODE,</if>
+			<if test="transDt != null" >TRANS_DT,</if>
+			<if test="daliyTransAt != null" >DALIY_TRANS_AT,</if>
+			<if test="daliyTransNum != null" >DALIY_TRANS_NUM,</if>
+			<if test="daliyCusNum != null" >DALIY_CUS_NUM,</if>
+			<if test="daliyRepeatCusNum != null" >DALIY_REPEAT_CUS_NUM,</if>
+			<if test="creditDebitRatio != null" >CREDIT_DEBIT_RATIO,</if>
+			<if test="remark != null" >REMARK,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+		<include refid="dialect.__time"/> ,
+			<if test="mchntCode != null" >#{mchntCode},</if>
+			<if test="transDt != null" >#{transDt},</if>
+			<if test="daliyTransAt != null" >#{daliyTransAt},</if>
+			<if test="daliyTransNum != null" >#{daliyTransNum},</if>
+			<if test="daliyCusNum != null" >#{daliyCusNum},</if>
+			<if test="daliyRepeatCusNum != null" >#{daliyRepeatCusNum},</if>
+			<if test="creditDebitRatio != null" >#{creditDebitRatio},</if>
+			<if test="remark != null" >#{remark},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.loan.MhtTransAfterLoanVo">
+		update FQ_MHT_TRANS_AFTER_LOAN 
+		<set>
+			<if test="mchntCode != null" >MCHNT_CODE = #{mchntCode},</if>
+			<if test="transDt != null" >TRANS_DT = #{transDt},</if>
+			<if test="daliyTransAt != null" >DALIY_TRANS_AT = #{daliyTransAt},</if>
+			<if test="daliyTransNum != null" >DALIY_TRANS_NUM = #{daliyTransNum},</if>
+			<if test="daliyCusNum != null" >DALIY_CUS_NUM = #{daliyCusNum},</if>
+			<if test="daliyRepeatCusNum != null" >DALIY_REPEAT_CUS_NUM = #{daliyRepeatCusNum},</if>
+			<if test="creditDebitRatio != null" >CREDIT_DEBIT_RATIO = #{creditDebitRatio},</if>
+			<if test="remark != null" >REMARK = #{remark},</if>
+			<if test="recTime != null" >REC_TIME = #{recTime},</if>
+		</set>
+		where MCHNT_CODE = #{mchntCode}
+		  and TRANS_DT = #{transDt}
+	</update>
+	<delete id="deleteByMhtCode" parameterType="com.jiuyv.hhc.model.loan.MhtTransAfterLoanVo">
+	delete FROM FQ_MHT_TRANS_AFTER_LOAN WHERE MCHNT_CODE=#{mchntCode}
+	</delete>
+</mapper>

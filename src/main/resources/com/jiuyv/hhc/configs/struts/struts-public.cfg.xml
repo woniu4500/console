@@ -1,0 +1,103 @@
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- ============== constant field 	设置struts与springde整合===================== -->
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.freemarker.templatesCache" value="true"/> 
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.allowed.action.names" value="[a-zA-Z0-9_!/]*" />
+	<constant name="struts.custom.i18n.resources" value="lang.globalMessages" />
+	<constant name="struts.action.extension" value="action"/>
+	<!-- 文件上传大小限制 -->
+	<constant name="struts.multipart.maxSize" value="50331648"/>
+	<!--设置上传文件临时路径   -->
+	<constant name="struts.multipart.saveDir" value="/tmp"/>
+	<!-- ============== public package field 	===================== -->
+	<!-- project interceptors and interceptor-stacks package-->
+	<package name="customer-interceptors" extends="struts-default">
+		<interceptors>
+			<interceptor name="clientInterceptor" class="clientInpt" /> 
+			<interceptor name="exceptionInterceptor" class="exceptInpt" /> 
+			<interceptor name="logInterceptor" class="logInpt" /> 
+			<interceptor-stack name="json-default-stack">
+				<interceptor-ref name="logInterceptor" />
+				<interceptor-ref name="exceptionInterceptor" />
+				<interceptor-ref name="clientInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+			<interceptor-stack name="json-query-default-stack">
+				<interceptor-ref name="logInterceptor" />
+				<interceptor-ref name="exceptionInterceptor" />
+				<interceptor-ref name="clientInterceptor" />
+				<interceptor-ref name="basicStack" />
+			</interceptor-stack>
+            <interceptor-stack name="json-upload-default-stack">
+                <interceptor-ref name="logInterceptor" />
+                <interceptor-ref name="exceptionInterceptor" />
+                <interceptor-ref name="clientInterceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+		</interceptors>
+		<global-results>
+			<result name="nodata">/page/common/nodata.jsp</result>
+			<result name="errRpt">/page/common/reportError.jsp</result>
+		</global-results>
+	</package>
+
+	<!-- exception handler package -->
+	<package name="error-handler" extends="struts-default">
+		<global-results>
+			<result name="error" type="chain">exceptionHandler</result>
+			<result name="input">/page/common/inputError.jsp</result>
+			<result name="success">/page/common/resData.jsp</result>
+			<result name="appsuccess">page/common/appResult.jsp</result>
+			<!-- error handler page -->
+			<result name="cmdError">/page/common/cmdError.jsp</result>
+			<result name="errAjax">/page/common/appError.jsp</result>
+			<result name="errPage">/page/common/exceptionPage.jsp</result>
+    		<result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>   			
+    		</result>
+    		<result name="word" type="stream">
+                <param name="contentType">application/vnd.ms-word</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>   			
+    		</result>
+    		<result name="resource" type="stream">
+                <param name="contentType">application/octet-stream</param>
+             	<param name="inputName">inputStream</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>        
+         		<param name="bufferSize">4096</param><!-- 输出时缓冲区的大小 -->        
+ 			
+    		</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error"
+				exception="java.lang.Throwable">
+			</exception-mapping>
+		</global-exception-mappings>
+		<action name="exceptionHandler" class="exceptionHandler" method="exceptionForward" />
+	</package>
+
+	<package name="mngr-default"
+		extends="struts-default,customer-interceptors,error-handler"
+		abstract="true" >
+		<default-interceptor-ref name="json-default-stack" />
+	</package>
+	<package name="mngr-query-default"
+		extends="struts-default,customer-interceptors,error-handler"
+		abstract="true" >
+		<default-interceptor-ref name="json-query-default-stack" />
+	</package>
+    <package name="mngr-upload-default"
+        extends="struts-default,customer-interceptors,error-handler"
+        abstract="true" >
+        <default-interceptor-ref name="json-upload-default-stack" />
+    </package>
+</struts>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  MsgTplMapper.xml
+	Table: FQ_MSG_TPL (信息模板表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.message.dao.MsgTplDao">
+	<sql id="__select" >
+	select
+		   t0.TPL_ID as tplId
+		  ,t0.VERSION as version
+		  ,t0.TPL_NAME as tplName
+		  ,t0.TPL_CONTENT as tplContent
+		  ,t0.TPL_REMARK as tplRemark
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+	  from FQ_MSG_TPL t0
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.tplId != null" >and t0.TPL_ID = #{params.tplId}</if>
+			<if test="params.version != null" >and t0.VERSION = #{params.version}</if>
+			<if test="params.tplName != null" >and t0.TPL_NAME = #{params.tplName}</if>
+			<if test="params.tplContent != null" >and t0.TPL_CONTENT = #{params.tplContent}</if>
+			<if test="params.tplRemark != null" >and t0.TPL_REMARK = #{params.tplRemark}</if>
+			<if test="params.recCrtTime != null" >and t0.REC_CRT_TIME = #{params.recCrtTime}</if>
+			<if test="params.recCrtAcc != null" >and t0.REC_CRT_ACC = #{params.recCrtAcc}</if>
+			<if test="params.lastUptTime != null" >and t0.LAST_UPT_TIME = #{params.lastUptTime}</if>
+			<if test="params.lastUptAcc!= null" >and t0.LAST_UPT_ACC = #{params.lastUptAcc}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.message.MsgTplVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+
+	<select id="filterNoContentQuery" resultType="com.jiuyv.hhc.model.message.MsgTplVo">
+ 	 	select
+		   t0.TPL_ID as tplId
+		  ,t0.VERSION as version
+		  ,t0.TPL_NAME as tplName
+		  ,t0.TPL_REMARK as tplRemark
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+	  from FQ_MSG_TPL t0
+ 	 where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.message.MsgTplVo">
+ 	 	<include refid="__select"/>
+ 	 	where TPL_ID = #{tplId}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.message.MsgTplVo" >
+	    <!-- 
+		<selectKey keyProperty="tplId" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_MSG_TPL.nextval from dual</selectKey>
+		 -->
+		insert into FQ_MSG_TPL 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,  REC_CRT_TIME,LAST_UPT_TIME, 
+			<if test="tplName != null" >TPL_NAME,</if>
+			<if test="tplContent != null" >TPL_CONTENT,</if>
+			<if test="tplRemark != null" >TPL_REMARK,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>, <include refid="dialect.__time"/>,
+			<if test="tplName != null" >#{tplName},</if>
+			<if test="tplContent != null" >#{tplContent},</if>
+			<if test="tplRemark != null" >#{tplRemark},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.message.MsgTplVo">
+		update FQ_MSG_TPL 
+		<set>
+			VERSION = VERSION + 1, 
+			LAST_UPT_TIME = <include refid="dialect.__time"/>,
+			<if test="tplName != null" >TPL_NAME = #{tplName},</if>
+			<if test="tplContent != null" >TPL_CONTENT = #{tplContent},</if>
+			<if test="tplRemark != null" >TPL_REMARK = #{tplRemark},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+		</set>
+		where TPL_ID = #{tplId} and VERSION = #{version}
+	</update>
+</mapper>

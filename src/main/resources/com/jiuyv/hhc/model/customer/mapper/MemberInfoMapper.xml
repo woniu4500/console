@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  MemberInfoMapper.xml
+	Table: FQ_WEB_MEMBER_INFO (会员基本信息表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.customer.dao.MemberInfoDao">
+	<sql id="__select" >
+	select
+		   t0.CUSTOMER_CODE as customerCode
+		  ,t0.VERSION as version
+		  ,t0.FATHER_CUSTOMER_CODE as fatherCustomerCode
+		  ,t0.MOBILE as mobile
+		  ,t0.PASSWORD as password
+		  ,t0.REAL_NAME as realName
+		  ,t0.PHONE as phone
+		  ,t0.ADDRESS as address
+		  ,t0.ZIP as zip
+		  ,t0.FACE as face
+		  ,t0.EMAIL as email
+		  ,t0.CUSTOMER_TYPE as customerType
+		  ,t0.REGISTER_IP as registerIp
+		  ,t0.LINK_CUSTOMER_SEQ as linkCustomerSeq
+		  ,t0.IS_ACTIVE as isActive
+		  ,t0.LAST_LOGIN_TIME as lastLoginTime
+		  ,t0.LAST_LOGIN_IP as lastLoginIp
+		  ,t0.ID_NUMBER as idNumber
+		  ,t0.ID_TYPE as idType
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,t0.REC_TIME as recTime
+		  ,t0.LOCK_TIME as lockTime
+		  ,t0.PASSWD_ERR as passwdErr
+          ,if(t0.AUDIT_STATE = '0','已审核','未审核') as auditState
+		  ,st.CODE_NAME as isActiveDesc
+	  from FQ_WEB_MEMBER_INFO t0
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_VAILD') st on t0.IS_ACTIVE=st.CODE_NO 
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.customerCode != null" >and t0.CUSTOMER_CODE = #{params.customerCode}</if>
+			<if test="params.mobile != null" >and t0.MOBILE = #{params.mobile}</if>
+			<if test="params.password != null" >and t0.PASSWORD = #{params.password}</if>
+			<if test="params.realName != null" >and t0.REAL_NAME = #{params.realName}</if>
+			<if test="params.phone != null" >and t0.PHONE = #{params.phone}</if>
+			<if test="params.address != null" >and t0.ADDRESS = #{params.address}</if>
+			<if test="params.zip != null" >and t0.ZIP = #{params.zip}</if>
+			<if test="params.face != null" >and t0.FACE = #{params.face}</if>
+			<if test="params.email != null" >and t0.EMAIL = #{params.email}</if>
+			<if test="params.customerType != null" >and t0.CUSTOMER_TYPE = #{params.customerType}</if>
+			<if test="params.registerIp != null" >and t0.REGISTER_IP = #{params.registerIp}</if>
+			<if test="params.linkCustomerSeq != null" >and t0.LINK_CUSTOMER_SEQ = #{params.linkCustomerSeq}</if>
+			<if test="params.createTime != null" >and t0.CREATE_TIME = #{params.createTime}</if>
+			<if test="params.updateTime != null" >and t0.UPDATE_TIME = #{params.updateTime}</if>
+			<if test="params.isActive != null" >and t0.IS_ACTIVE = #{params.isActive}</if>
+			<if test="params.lastLoginTime != null" >and t0.LAST_LOGIN_TIME = #{params.lastLoginTime}</if>
+			<if test="params.lastLoginIp != null" >and t0.LAST_LOGIN_IP = #{params.lastLoginIp}</if>
+			<if test="params.idNumber != null" >and t0.ID_NUMBER = #{params.idNumber}</if>
+			<if test="params.idType != null" >and t0.ID_TYPE = #{params.idType}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.customer.MemberInfoVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.customer.MemberInfoVo">
+ 	 	<include refid="__select"/>
+ 	 	where CUSTOMER_CODE = #{customerCode}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.customer.MemberInfoVo">
+	<!--  
+	<selectKey keyProperty="customerCode" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_WEB_MEMBER_INFO.nextval from dual</selectKey>
+	 -->   
+		insert into FQ_WEB_MEMBER_INFO 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,REC_TIME,LAST_UPT_TIME,
+			<if test="mobile != null" >MOBILE,</if>
+			<if test="fatherCustomerCode != null" >FATHER_CUSTOMER_CODE,</if>
+			<if test="password != null" >PASSWORD,</if>
+			<if test="realName != null" >REAL_NAME,</if>
+			<if test="phone != null" >PHONE,</if>
+			<if test="address != null" >ADDRESS,</if>
+			<if test="zip != null" >ZIP,</if>
+			<if test="face != null" >FACE,</if>
+			<if test="email != null" >EMAIL,</if>
+			<if test="customerType != null" >CUSTOMER_TYPE,</if>
+			<if test="registerIp != null" >REGISTER_IP,</if>
+			<if test="linkCustomerSeq != null" >LINK_CUSTOMER_SEQ,</if>
+			<if test="isActive != null" >IS_ACTIVE,</if>
+			<if test="lastLoginTime != null" >LAST_LOGIN_TIME,</if>
+			<if test="lastLoginIp != null" >LAST_LOGIN_IP,</if>
+			<if test="idNumber != null" >ID_NUMBER,</if>
+			<if test="idType != null" >ID_TYPE,</if>
+			<if test="lockTime != null" >LOCK_TIME,</if>
+			<if test="passwdErr != null" >PASSWD_ERR,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>	
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,<include refid="dialect.__time"/>,
+			<if test="mobile != null" >#{mobile},</if>
+			<if test="fatherCustomerCode != null" >#{fatherCustomerCode},</if>
+			<if test="password != null" >#{password},</if>
+			<if test="realName != null" >#{realName},</if>
+			<if test="phone != null" >#{phone},</if>
+			<if test="address != null" >#{address},</if>
+			<if test="zip != null" >#{zip},</if>
+			<if test="face != null" >#{face},</if>
+			<if test="email != null" >#{email},</if>
+			<if test="customerType != null" >#{customerType},</if>
+			<if test="registerIp != null" >#{registerIp},</if>
+			<if test="linkCustomerSeq != null" >#{linkCustomerSeq},</if>
+			<if test="isActive != null" >#{isActive},</if>
+			<if test="lastLoginTime != null" >#{lastLoginTime},</if>
+			<if test="lastLoginIp != null" >#{lastLoginIp},</if>
+			<if test="idNumber != null" >#{idNumber},</if>
+			<if test="idType != null" >#{idType},</if>
+			<if test="lockTime != null" >#{lockTime},</if>
+			<if test="passwdErr != null" >#{passwdErr},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>	
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.customer.MemberInfoVo">
+		update FQ_WEB_MEMBER_INFO 
+		<set>
+			LAST_UPT_TIME = <include refid="dialect.__time"/>,VERSION=VERSION+1,
+			<if test="customerCode != null" >CUSTOMER_CODE = #{customerCode},</if>
+			<if test="fatherCustomerCode != null" >FATHER_CUSTOMER_CODE = #{fatherCustomerCode},</if>
+			<if test="mobile != null" >MOBILE = #{mobile},</if>
+			<if test="password != null" >PASSWORD = #{password},</if>
+			<if test="realName != null" >REAL_NAME = #{realName},</if>
+			<if test="phone != null" >PHONE = #{phone},</if>
+			<if test="address != null" >ADDRESS = #{address},</if>
+			<if test="zip != null" >ZIP = #{zip},</if>
+			<if test="face != null" >FACE = #{face},</if>
+			<if test="email != null" >EMAIL = #{email},</if>
+			<if test="customerType != null" >CUSTOMER_TYPE = #{customerType},</if>
+			<if test="registerIp != null" >REGISTER_IP = #{registerIp},</if>
+			<if test="linkCustomerSeq != null" >LINK_CUSTOMER_SEQ = #{linkCustomerSeq},</if>
+			<if test="isActive != null" >IS_ACTIVE = #{isActive},</if>
+			<if test="lastLoginTime != null" >LAST_LOGIN_TIME = #{lastLoginTime},</if>
+			<if test="lastLoginIp != null" >LAST_LOGIN_IP = #{lastLoginIp},</if>
+			<if test="idNumber != null" >ID_NUMBER = #{idNumber},</if>
+			<if test="idType != null" >ID_TYPE = #{idType},</if>
+			<if test="lockTime != null" >LOCK_TIME = #{lockTime},</if>
+			<if test="passwdErr != null" >PASSWD_ERR = #{passwdErr},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+		</set>
+		where CUSTOMER_CODE = #{customerCode} and VERSION=#{version}
+	</update>
+</mapper>

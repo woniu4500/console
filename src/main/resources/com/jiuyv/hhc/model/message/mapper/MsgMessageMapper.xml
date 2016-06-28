@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  MsgMessageMapper.xml
+	Table: FQ_MSG_MESSAGE (系统消息表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.message.dao.MsgMessageDao">
+	<sql id="__select" >
+	select
+		   t0.MSG_ID as msgId
+		  ,t0.VERSION as version
+		  ,t0.MSG_TITLE as msgTitle
+		  ,t0.MSG_CONTENT as msgContent
+		  ,t0.SEND_TIME as sendTime
+		  ,t0.SEND_ACCT as sendAcct
+		  ,t0.SEND_ID as sendId
+		  ,t0.STATUS as status
+		  ,t0.EXPIRE_TIME as expireTime
+		  ,t0.SHOW_FLAG as showFlag
+<!-- 		  ,t0.LAST_UPT_TIME as lastUpdDt -->
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,ms.CODE_NAME as statusDesc
+		  ,msf.CODE_NAME as showFlagDesc
+	  from FQ_MSG_MESSAGE t0
+	  left join (select * from FQ_SYS_CODE where code_type='MSG_STATUS') ms on t0.STATUS = ms.CODE_NO
+	  left join (select * from FQ_SYS_CODE where code_type='MSG_SHOW_FLAG') msf on t0.SHOW_FLAG = msf.CODE_NO
+	</sql>
+	
+	<sql id="__select_no_content" >
+	select
+		   t0.MSG_ID as msgId
+		  ,t0.VERSION as version
+		  ,t0.MSG_TITLE as msgTitle
+		  ,t0.SEND_TIME as sendTime
+		  ,t0.SEND_ACCT as sendAcct
+		  ,t0.SEND_ID as sendId
+		  ,t0.STATUS as status
+		  ,t0.EXPIRE_TIME as expireTime
+		  ,t0.SHOW_FLAG as showFlag
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,ms.CODE_NAME as statusDesc
+		  ,msf.CODE_NAME as showFlagDesc
+		  ,mrf.CODE_NAME as readFlagDesc
+		  ,r.READ_FLAG as readFlag
+		  ,r.RECV_ID as recvId
+	  from FQ_MSG_MESSAGE t0
+	  join FQ_MSG_RECV r on t0.MSG_ID=r.MSG_ID
+	  left join (select * from FQ_SYS_CODE where code_type='MSG_STATUS') ms on t0.STATUS = ms.CODE_NO
+	  left join (select * from FQ_SYS_CODE where code_type='MSG_SHOW_FLAG') msf on t0.SHOW_FLAG = msf.CODE_NO
+	  left join (select * from FQ_SYS_CODE where code_type='MSG_READ_FLAG') mrf on r.READ_FLAG = mrf.CODE_NO
+	</sql>
+	
+	<sql id="__select_no_content_single" >
+	select
+		   t0.MSG_ID as msgId
+		  ,t0.VERSION as version
+		  ,t0.MSG_TITLE as msgTitle
+		  ,t0.SEND_TIME as sendTime
+		  ,t0.SEND_ACCT as sendAcct
+		  ,t0.SEND_ID as sendId
+		  ,t0.STATUS as status
+		  ,t0.EXPIRE_TIME as expireTime
+		  ,t0.SHOW_FLAG as showFlag
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,ms.CODE_NAME as statusDesc
+		  ,msf.CODE_NAME as showFlagDesc
+	  from FQ_MSG_MESSAGE t0
+	  left join (select * from FQ_SYS_CODE where code_type='MSG_STATUS') ms on t0.STATUS = ms.CODE_NO
+	  left join (select * from FQ_SYS_CODE where code_type='MSG_SHOW_FLAG') msf on t0.SHOW_FLAG = msf.CODE_NO
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.msgId != null" >and t0.MSG_ID = #{params.msgId}</if>
+			<if test="params.version != null" >and t0.VERSION = #{params.version}</if>
+			<if test="params.msgTitle != null" >and t0.MSG_TITLE = #{params.msgTitle}</if>
+			<if test="params.msgContent != null" >and t0.MSG_CONTENT = #{params.msgContent}</if>
+			<if test="params.sendTime != null" >and t0.SEND_TIME = #{params.sendTime}</if>
+			<if test="params.sendAcct != null" >and t0.SEND_ACCT = #{params.sendAcct}</if>
+			<if test="params.sendId != null" >and t0.SEND_ID = #{params.sendId}</if>
+			<if test="params.status != null" >and t0.STATUS = #{params.status}</if>
+			<if test="params.expireTime != null" >and t0.EXPIRE_TIME = #{params.expireTime}</if>
+			<if test="params.showFlag != null" >and t0.SHOW_FLAG = #{params.showFlag}</if>
+			<if test="params.lastUpdDt != null" >and t0.LAST_UPD_DT = #{params.lastUpdDt}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.message.MsgMessageVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+	<select id="filterNCSingleQuery" resultType="com.jiuyv.hhc.model.message.MsgMessageVo">
+ 	 	<include refid="__select_no_content_single"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+	<select id="filterNoContentQuery" resultType="com.jiuyv.hhc.model.message.MsgMessageVo">
+ 	 	<include refid="__select_no_content"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.message.MsgMessageVo">
+ 	 	<include refid="__select"/>
+ 	 	where MSG_ID = #{msgId}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.message.MsgMessageVo" >
+	    <!-- 
+		<selectKey keyProperty="msgId" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_MSG_MESSAGE.nextval from dual</selectKey>
+		 -->
+		insert into FQ_MSG_MESSAGE 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION, LAST_UPT_TIME,
+			<if test="msgTitle != null" >MSG_TITLE,</if>
+			<if test="msgContent != null" >MSG_CONTENT,</if>
+			<if test="sendTime != null" >SEND_TIME,</if>
+			<if test="sendAcct != null" >SEND_ACCT,</if>
+			<if test="sendId != null" >SEND_ID,</if>
+			<if test="status != null" >STATUS,</if>
+			<if test="expireTime != null" >EXPIRE_TIME,</if>
+			<if test="showFlag != null" >SHOW_FLAG,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,
+			<if test="msgTitle != null" >#{msgTitle},</if>
+			<if test="msgContent != null" >#{msgContent},</if>
+			<if test="sendTime != null" >#{sendTime},</if>
+			<if test="sendAcct != null" >#{sendAcct},</if>
+			<if test="sendId != null" >#{sendId},</if>
+			<if test="status != null" >#{status},</if>
+			<if test="expireTime != null" >#{expireTime},</if>
+			<if test="showFlag != null" >#{showFlag},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.message.MsgMessageVo">
+		update FQ_MSG_MESSAGE 
+		<set>
+			VERSION = VERSION + 1 , LAST_UPT_TIME = <include refid="dialect.__time"/>,
+			<if test="msgTitle != null" >MSG_TITLE = #{msgTitle},</if>
+			<if test="msgContent != null" >MSG_CONTENT = #{msgContent},</if>
+			<if test="sendTime != null" >SEND_TIME = #{sendTime},</if>
+			<if test="sendAcct != null" >SEND_ACCT = #{sendAcct},</if>
+			<if test="sendId != null" >SEND_ID = #{sendId},</if>
+			<if test="status != null" >STATUS = #{status},</if>
+			<if test="expireTime != null" >EXPIRE_TIME = #{expireTime},</if>
+			<if test="showFlag != null" >SHOW_FLAG = #{showFlag},</if>
+		</set>
+		where MSG_ID = #{msgId} 
+		  and VERSION = #{version}
+	</update>
+</mapper>

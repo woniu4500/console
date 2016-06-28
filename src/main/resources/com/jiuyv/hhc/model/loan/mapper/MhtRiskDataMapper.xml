@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  MhtRiskDataMapper.xml
+	Table: FQ_MHT_RISK_DATA (商户风险统计信息)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.loan.dao.MhtRiskDataDao">
+	<sql id="__select" >
+	select
+		   t0.RISK_ID as riskId
+		  ,t0.MCHNT_CODE as mchntCode
+		  ,t0.FRAUD_TRANS_NUM as fraudTransNum
+		  ,t0.FRAUD_TRANS_AT as fraudTransAt
+		  ,t0.SUS_MCHNT_IN as susMchntIn
+		  ,t0.NEG_CDHD_IN as negCdhdIn
+		  ,t0.REMARK as remark
+		  ,t0.REC_TIME as recTime
+		  ,hit1.CODE_NAME as susMchntInDesc
+		  ,hit2.CODE_NAME as negCdhdInDesc
+	  from FQ_MHT_RISK_DATA t0
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_HIT') hit1 on t0.SUS_MCHNT_IN=hit1.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_HIT') hit2 on t0.NEG_CDHD_IN=hit2.CODE_NO 
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.riskId != null" >and t0.RISK_ID = #{params.riskId}</if>
+			<if test="params.mchntCode != null" >and t0.MCHNT_CODE = #{params.mchntCode}</if>
+			<if test="params.fraudTransNum != null" >and t0.FRAUD_TRANS_NUM = #{params.fraudTransNum}</if>
+			<if test="params.fraudTransAt != null" >and t0.FRAUD_TRANS_AT = #{params.fraudTransAt}</if>
+			<if test="params.susMchntIn != null" >and t0.SUS_MCHNT_IN = #{params.susMchntIn}</if>
+			<if test="params.negCdhdIn != null" >and t0.NEG_CDHD_IN = #{params.negCdhdIn}</if>
+			<if test="params.remark != null" >and t0.REMARK = #{params.remark}</if>
+			<if test="params.recTime != null" >and t0.REC_TIME = #{params.recTime}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.loan.MhtRiskDataVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.loan.MhtRiskDataVo">
+ 	 	<include refid="__select"/>
+ 	 	where RISK_ID = #{riskId}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.loan.MhtRiskDataVo">
+	<!--     
+	<selectKey keyProperty="mchntCode" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_MHT_RISK_DATA.nextval from dual</selectKey>
+	 -->
+		insert into FQ_MHT_RISK_DATA 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		REC_TIME,
+			<if test="mchntCode != null" >MCHNT_CODE,</if>
+			<if test="fraudTransNum != null" >FRAUD_TRANS_NUM,</if>
+			<if test="fraudTransAt != null" >FRAUD_TRANS_AT,</if>
+			<if test="susMchntIn != null" >SUS_MCHNT_IN,</if>
+			<if test="negCdhdIn != null" >NEG_CDHD_IN,</if>
+			<if test="remark != null" >REMARK,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+		<include refid="dialect.__time"/> ,
+			<if test="mchntCode != null" >#{mchntCode},</if>
+			<if test="fraudTransNum != null" >#{fraudTransNum},</if>
+			<if test="fraudTransAt != null" >#{fraudTransAt},</if>
+			<if test="susMchntIn != null" >#{susMchntIn},</if>
+			<if test="negCdhdIn != null" >#{negCdhdIn},</if>
+			<if test="remark != null" >#{remark},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.loan.MhtRiskDataVo">
+		update FQ_MHT_RISK_DATA 
+		<set>
+			<if test="riskId != null" >RISK_ID = #{riskId},</if>
+			<if test="mchntCode != null" >MCHNT_CODE = #{mchntCode},</if>
+			<if test="fraudTransNum != null" >FRAUD_TRANS_NUM = #{fraudTransNum},</if>
+			<if test="fraudTransAt != null" >FRAUD_TRANS_AT = #{fraudTransAt},</if>
+			<if test="susMchntIn != null" >SUS_MCHNT_IN = #{susMchntIn},</if>
+			<if test="negCdhdIn != null" >NEG_CDHD_IN = #{negCdhdIn},</if>
+			<if test="remark != null" >REMARK = #{remark},</if>
+			<if test="recTime != null" >REC_TIME = #{recTime},</if>
+		</set>
+		where RISK_ID = #{riskId}
+	</update>
+	<delete id="deleteByMhtCode" parameterType="com.jiuyv.hhc.model.loan.MhtRiskDataVo">
+	delete FROM FQ_MHT_RISK_DATA WHERE MCHNT_CODE=#{mchntCode}
+	</delete>
+</mapper>

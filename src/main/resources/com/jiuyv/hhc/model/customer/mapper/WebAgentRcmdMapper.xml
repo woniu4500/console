@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+        
+<!-- 
+	Name:  WebAgentRcmdMapper.xml
+	Table: FQ_WEB_AGENT_RCMD (代理商推荐号信息表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.customer.dao.WebAgentRcmdDao">
+	<sql id="__select" >
+	select
+		   t0.RCMD_CODE as rcmdCode
+		  ,t0.CUSTOMER_CODE as customerCode
+		  ,t0.RCMD_DESC as rcmdDesc
+		  ,t0.RCMD_CNT as rcmdCnt
+	  from FQ_WEB_AGENT_RCMD t0
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.customer.WebAgentRcmdVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.customer.WebAgentRcmdVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.RCMD_CODE = #{rcmdCode}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.customer.WebAgentRcmdVo">
+		insert into FQ_WEB_AGENT_RCMD 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="rcmdCode != null" >RCMD_CODE,</if>
+			<if test="customerCode != null" >CUSTOMER_CODE,</if>
+			<if test="rcmdDesc != null" >RCMD_DESC,</if>
+			<if test="rcmdCnt != null" >RCMD_CNT,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="rcmdCode != null" >#{rcmdCode},</if>
+			<if test="customerCode != null" >#{customerCode},</if>
+			<if test="rcmdDesc != null" >#{rcmdDesc},</if>
+			<if test="rcmdCnt != null" >#{rcmdCnt},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.customer.WebAgentRcmdVo">
+		update FQ_WEB_AGENT_RCMD 
+		<set>
+			<if test="rcmdCode != null" >RCMD_CODE = #{rcmdCode},</if>
+			<if test="customerCode != null" >CUSTOMER_CODE = #{customerCode},</if>
+			<if test="rcmdDesc != null" >RCMD_DESC = #{rcmdDesc},</if>
+			<if test="rcmdCnt != null" >RCMD_CNT = #{rcmdCnt},</if>
+		</set>
+		where RCMD_CODE = #{rcmdCode} 
+	</update>
+	
+	<delete id="deleteByKey">
+		delete from FQ_WEB_AGENT_RCMD where RCMD_CODE = #{rcmdCode} 
+	</delete>
+	
+	<select id="countRefered" resultType="java.lang.Long">
+		select count(1) from FQ_WEB_MEMBER_INFO where RCMD_CODE = #{rcmdCode}
+		
+	</select>
+	
+</mapper>

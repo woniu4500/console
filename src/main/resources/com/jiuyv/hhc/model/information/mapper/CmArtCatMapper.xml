@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  CmArtCatMapper.xml
+	Table: FQ_CM_ART_CAT (网站栏目分类)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.information.dao.CmArtCatDao">
+	<sql id="__select" >
+	select
+		   t0.CAT_SEQ as catSeq
+		  ,t0.VERSION as version
+		  ,t0.CAT_PARENT as catParent
+		  ,t0.CAT_NAME as catName
+		  ,t0.CAT_TITLE as catTitle
+		  ,t0.CAT_CODE as catCode
+		  ,t0.CAT_LOGO as catLogo
+		  ,t0.CAT_BANNER as catBanner
+		  ,t0.CAT_SORT as catSort
+		  ,t0.CAT_STATUS as catStatus
+		  ,t0.IS_VISIBLE as isVisible
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t1.CAT_NAME as parentCatName
+		  ,st.CODE_NAME as catStatusDesc
+		  ,vt.CODE_NAME as isVisibleDesc
+	  from FQ_CM_ART_CAT t0
+	  left join (select * from FQ_SYS_CODE where code_type='INFO_ST') st on t0.CAT_STATUS=st.CODE_NO 
+	  left join FQ_CM_ART_CAT t1 ON t0.CAT_PARENT =t1.CAT_SEQ 
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_VISIBLE') vt on t0.IS_VISIBLE=vt.CODE_NO 
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.catSeq != null" >and t0.CAT_SEQ = #{params.catSeq}</if>
+			<if test="params.version != null" >and t0.VERSION = #{params.version}</if>
+			<if test="params.catParent != null" >and t0.CAT_PARENT = #{params.catParent}</if>
+			<if test="params.catName != null" >and t0.CAT_NAME = #{params.catName}</if>
+			<if test="params.catSort != null" >and t0.CAT_SORT = #{params.catSort}</if>
+			<if test="params.catStatus != null" >and t0.CAT_STATUS = #{params.catStatus}</if>
+			<if test="params.recCrtTime != null" >and t0.REC_CRT_TIME = #{params.recCrtTime}</if>
+			<if test="params.recCrtAcc != null" >and t0.REC_CRT_ACC = #{params.recCrtAcc}</if>
+			<if test="params.lastUptOrg != null" >and t0.LAST_UPT_ORG = #{params.lastUptOrg}</if>
+			<if test="params.lastUptTime != null" >and t0.LAST_UPT_TIME = #{params.lastUptTime}</if>
+			<if test="params.lastUptAcc != null" >and t0.LAST_UPT_ACC = #{params.lastUptAcc}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.information.CmArtCatVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.information.CmArtCatVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.CAT_SEQ = #{catSeq}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.information.CmArtCatVo">
+	    <!--  
+		<selectKey keyProperty="catSeq" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_CM_ART_CAT.nextval from dual</selectKey>
+		-->
+		insert into FQ_CM_ART_CAT 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,REC_CRT_TIME,LAST_UPT_TIME,CAT_STATUS,
+			<if test="catParent != null" >CAT_PARENT,</if>
+			<if test="catName != null" >CAT_NAME,</if>
+			<if test="catTitle != null" >CAT_TITLE,</if>
+		    <if test="catCode != null" >CAT_CODE,</if>
+		    <if test="catLogo != null" >CAT_LOGO,</if>
+		    <if test="catBanner != null" >CAT_BANNER,</if>
+			<if test="catSort != null" >CAT_SORT,</if>
+			<if test="isVisible != null" >IS_VISIBLE,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,<include refid="dialect.__time"/>,'00',
+			<if test="catParent != null" >#{catParent},</if>
+			<if test="catName != null" >#{catName},</if>
+			<if test="catTitle != null" >#{catTitle},</if>
+			<if test="catCode != null" >#{catCode},</if>
+			<if test="catLogo != null" >#{catLogo},</if>
+			<if test="catBanner != null" >#{catBanner},</if>
+			<if test="catSort != null" >#{catSort},</if>
+			<if test="isVisible != null" >#{isVisible},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.information.CmArtCatVo">
+		update FQ_CM_ART_CAT 
+		<set>
+			VERSION=VERSION+1,LAST_UPT_TIME=<include refid="dialect.__time"/>,
+			<if test="catSeq != null" >CAT_SEQ = #{catSeq},</if>
+			<if test="catParent != null" >CAT_PARENT = #{catParent},</if>
+			<if test="catName != null" >CAT_NAME = #{catName},</if>
+			<if test="catTitle != null" >CAT_TITLE = #{catTitle},</if>
+			<if test="catCode != null" >CAT_CODE = #{catCode},</if>
+			<if test="catLogo != null" >CAT_LOGO = #{catLogo},</if>
+			<if test="catBanner != null" >CAT_BANNER = #{catBanner},</if>
+			<if test="catSort != null" >CAT_SORT = #{catSort},</if>
+			<if test="catStatus != null" >CAT_STATUS = #{catStatus},</if>
+			<if test="isVisible != null" >IS_VISIBLE = #{isVisible},</if>
+			<if test="recCrtTime != null" >REC_CRT_TIME = #{recCrtTime},</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC = #{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+		</set>
+		where CAT_SEQ = #{catSeq} and VERSION=#{version}
+	</update>
+	
+	
+	<!-- insert -->
+	<insert id="insertVer" parameterType="com.jiuyv.hhc.model.information.CmArtCatVo">
+		insert into FQ_CM_ART_CAT_VER 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			REC_CRT_TIME,LAST_UPT_TIME,VERSION,
+			<if test="catSeq != null" >CAT_SEQ,</if>
+			<if test="catParent != null" >CAT_PARENT,</if>
+			<if test="catName != null" >CAT_NAME,</if>
+			<if test="catTitle != null" >CAT_TITLE,</if>
+		    <if test="catCode != null" >CAT_CODE,</if>
+		    <if test="catLogo != null" >CAT_LOGO,</if>
+		    <if test="catBanner != null" >CAT_BANNER,</if>
+			<if test="catSort != null" >CAT_SORT,</if>
+			<if test="catStatus != null" >CAT_STATUS,</if>
+			<if test="isVisible != null" >IS_VISIBLE,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<include refid="dialect.__time"/>,<include refid="dialect.__time"/>,0,
+			<if test="catSeq != null" >#{catSeq},</if>
+			<if test="catParent != null" >#{catParent},</if>
+			<if test="catName != null" >#{catName},</if>
+			<if test="catTitle != null" >#{catTitle},</if>
+			<if test="catCode != null" >#{catCode},</if>
+			<if test="catLogo != null" >#{catLogo},</if>
+			<if test="catBanner != null" >#{catBanner},</if>
+			<if test="catSort != null" >#{catSort},</if>
+			<if test="catStatus != null" >#{catStatus},</if>
+			<if test="isVisible != null" >#{isVisible},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+		</trim>
+	</insert>
+	
+	<delete id="deleteVer" parameterType="com.jiuyv.hhc.model.information.CmArtCatVo">
+		delete from FQ_CM_ART_CAT_VER where CAT_SEQ = #{catSeq}
+	</delete>
+	<!-- update -->
+	<update id="updateVerByKey" parameterType="com.jiuyv.hhc.model.information.CmArtCatVo">
+		update FQ_CM_ART_CAT_VER 
+		<set>
+			<if test="version != null" >VERSION = #{version},</if>
+			<if test="catSeq != null" >CAT_SEQ = #{catSeq},</if>
+			<if test="catParent != null" >CAT_PARENT = #{catParent},</if>
+			<if test="catName != null" >CAT_NAME = #{catName},</if>
+			<if test="catTitle != null" >CAT_TITLE = #{catTitle},</if>
+			<if test="catCode != null" >CAT_CODE = #{catCode},</if>
+			<if test="catLogo != null" >CAT_LOGO = #{catLogo},</if>
+			<if test="catBanner != null" >CAT_BANNER = #{catBanner},</if>
+			<if test="catSort != null" >CAT_SORT = #{catSort},</if>
+			<if test="catStatus != null" >CAT_STATUS = #{catStatus},</if>
+			<if test="isVisible != null" >IS_VISIBLE = #{isVisible},</if>
+			<if test="recCrtTime != null" >REC_CRT_TIME = #{recCrtTime},</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC = #{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+			<if test="lastUptTime != null" >LAST_UPT_TIME = #{lastUptTime},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+		</set>
+		where CAT_SEQ = #{catSeq}
+	</update>
+	<!-- count version table by catSeq -->
+	<select id="countVerByKey" resultType="java.lang.Integer">
+		select count(1) from FQ_CM_ART_CAT_VER where CAT_SEQ = #{catSeq}
+	</select>
+	
+	<select id="filterQueryTreeCat" resultType="com.jiuyv.hhc.model.information.TreeCat">
+		<include refid="__select"/>
+ 	 	where 1=1
+	</select>
+</mapper>

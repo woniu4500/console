@@ -1,0 +1,101 @@
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 会员管理 -->	
+	<package name="member.qry" extends="mngr-query-default">
+		<action name="memberSetup" class="webUserAction">
+			<result name="success">page/customer/member_mngr.jsp</result>
+		</action>
+		<action name="webUserPage" class="webUserAction" method="webUserPage" />
+		<action name="webUserExcel" class="webUserAction" method="webUserExcel" />
+		
+		<action name="agentMemberSetup" class="webAgentAction">
+			<result name="success">page/customer/agent_member_mngr.jsp</result>
+		</action>
+		<action name="webAgentPage" class="webAgentAction" method="webAgentPage"/>
+		<action name="webAgentExcel" class="webAgentAction" method="webAgentExcel"/>
+		<action name="webAgentRcmdList" class="webAgentAction" method="webAgentRcmdList"/>
+		<action name="randomCode" class="webAgentAction" method="randomCode"/>
+	</package>
+	<package name="member" extends="mngr-default">
+		<action name="lockWebUser" class="webUserAction" method="lockWebUser" />
+		<action name="unlockWebUser" class="webUserAction" method="unlockWebUser" />
+		<action name="resetWebUserPasswd" class="webUserAction" method="resetWebUserPasswd" />
+	
+		<action name="addWebAgentRcmd" class="webAgentAction" method="addWebAgentRcmd"/>
+		<action name="updWebAgentRcmd" class="webAgentAction" method="updWebAgentRcmd"/>
+		<action name="delWebAgentRcmd" class="webAgentAction" method="delWebAgentRcmd"/>
+		<action name="addWebAgent" class="webAgentAction" method="addWebAgent"/>
+		<action name="updWebAgent" class="webAgentAction" method="updWebAgent"/>
+		<action name="lockWebAgent" class="webAgentAction" method="lockWebAgent"/>
+		<action name="unlockWebAgent" class="webAgentAction" method="unlockWebAgent"/>
+		<action name="resetWebAgentPasswd" class="webAgentAction" method="resetWebAgentPasswd"/>
+	</package>
+	<!-- 商户管理 -->	
+	<package name="mchnt.qry" extends="mngr-query-default">
+		<action name="mhtQrySetup" class="mchntQryAction">
+			<result name="success">page/mchnt/mchnt_qry.jsp</result>
+		</action>
+		<action name="findMchnt" class="mchntQryAction" method="findMchnt" />
+		<action name="findMchntExcel" class="mchntQryAction" method="findMchntExcel" />
+		<action name="findMchntbyMchntCode"  class="mchntQryAction" method="findMchntbyMchntCode"  />
+		<action name="findMchntbyCustomerCode" class="mchntQryAction" method="findMchntbyCustomerCode" />
+		<action name="findMchntbyAgentCustomerCode" class="mchntQryAction" method="findMchntbyAgentCustomerCode" />
+				
+		<!-- <action name="findMchnt"  class="mchntAction" method="findMchnt"  />
+		<action name="findMchntbyMchntCode"  class="mchntAction" method="findMchntbyMchntCode"  />
+		<action name="findMchntExcel" class="mchntAction" method="findMchntExcel" />
+		<action name="findMchntbyCustomerCode" class="mchntAction" method="findMchntbyCustomerCode" />
+		<action name="findMchntbyAgentCustomerCode" class="mchntAction" method="findMchntbyAgentCustomerCode" />
+ -->
+		<action name="mhtAudSetup" class="mchntAudAction">
+			<result name="success">page/mchnt/mchnt_aud.jsp</result>
+		</action>
+		<action name="findRegistMchnt" class="mchntAudAction" method="findRegistMchnt" />
+		<action name="findRegistMchntExcel" class="mchntAudAction" method="findRegistMchntExcel" />
+		<action name="findAttachDef" class="mchntAudAction" method="findAttachDef" />
+		<action name="findMchntAttach" class="mchntAudAction" method="findMchntAttach" />
+
+		<action name="mhtMngrSetup" class="mchntMngrAction">
+			<result name="success">page/mchnt/mchnt_mngr.jsp</result>
+		</action>
+		<action name="findMngrMchnt" class="mchntMngrAction" method="findMngrMchnt" />
+		<action name="findMngrMchntExcel" class="mchntMngrAction" method="findMngrMchntExcel" />
+
+	</package>
+	
+	<package name="mchnt" extends="mngr-default">
+		<action name="updateMchntInfo" class="mchntQryAction" method="updateMchntInfo" />
+		<action name="cupsMchntInfo" class="mchntQryAction" method="cupsMchntInfo" />
+		<action name="cupsRiskData" class="mchntQryAction" method="cupsRiskData" />
+		<action name="sendInfoCompleteSMS" class="mchntQryAction" method="sendInfoCompleteSMS" />
+		<action name="sendRegistSMS" class="mchntQryAction" method="sendRegistSMS" />
+		<action name="uploadAttachFile" class="mchntQryAction" method="uploadAttachFile" />
+		<action name="deleteAttachFile" class="mchntQryAction" method="deleteAttachFile" />
+	
+		<action name="uploadAuditZipFile" class="mchntAudAction" method="uploadAuditZipFile" />
+		<action name="auditMchnt" class="mchntAudAction" method="auditMchnt" />
+		<action name="denyMchnt" class="mchntAudAction" method="denyMchnt" />
+		<action name="cupsSendAudit" class="mchntAudAction" method="cupsSendAudit" />
+		<action name="cupsFetchTransdata" class="mchntAudAction" method="cupsFetchTransdata" />
+		<action name="cupsFetchTransdataAfter" class="mchntAudAction" method="cupsFetchTransdataAfter" />
+		
+		<!-- 管理相关权限 -->
+		<action name="updateMchntInfo4Mngr" class="mchntQryAction" method="updateMchntInfo" />
+		<action name="cupsMchntInfo4Mngr" class="mchntQryAction" method="cupsMchntInfo" />
+		<action name="cupsRiskData4Mngr" class="mchntQryAction" method="cupsRiskData" />
+		<action name="sendInfoCompleteSMS4Mngr" class="mchntQryAction" method="sendInfoCompleteSMS" />
+		<action name="sendRegistSMS4Mngr" class="mchntQryAction" method="sendRegistSMS" />
+		<action name="uploadAttachFile4Mngr" class="mchntQryAction" method="uploadAttachFile" />
+		<action name="deleteAttachFile4Mngr" class="mchntQryAction" method="deleteAttachFile" />
+	
+		<action name="uploadAuditZipFile4Mngr" class="mchntAudAction" method="uploadAuditZipFile" />
+		<action name="auditMchnt4Mngr" class="mchntAudAction" method="auditMchnt" />
+		<action name="denyMchnt4Mngr" class="mchntAudAction" method="denyMchnt" />
+		<action name="cupsSendAudit4Mngr" class="mchntAudAction" method="cupsSendAudit" />
+		<action name="cupsFetchTransdata4Mngr" class="mchntAudAction" method="cupsFetchTransdata" />
+		<action name="cupsFetchTransdataAfter4Mngr" class="mchntAudAction" method="cupsFetchTransdataAfter" />
+		
+	</package>
+</struts>

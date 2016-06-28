@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  SysOrgMapper.xml
+	Table: FQ_SYS_ORG (控制台机构表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.security.dao.SysOrgDao">
+	<sql id="__select" >
+	select
+		   t0.ORG_CODE as orgCode
+		  ,t0.VERSION as version
+		  ,t0.FATHER_ORG_CODE as fatherOrgCode
+		  ,t0.ORG_NAME as orgName
+		  ,t0.ORG_TYPE as orgType
+		  ,t0.PERS_NAME as persName
+		  ,t0.PERS_PHONE as persPhone
+		  ,t0.EMAIL as email
+		  ,t0.ORG_ADDR as orgAddr
+		  ,t0.STATUS as status
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,f.ORG_NAME as fatherOrgName
+		  ,st.CODE_NAME as statusDesc
+	  from FQ_SYS_ORG t0
+	  left join FQ_SYS_ORG f on t0.FATHER_ORG_CODE=f.ORG_CODE
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_STATUE') st on t0.status=st.CODE_NO
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.security.SysOrgVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.security.SysOrgVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.ORG_CODE = #{orgCode}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.security.SysOrgVo">
+		insert into FQ_SYS_ORG 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,LAST_UPT_TIME,
+			<if test="orgCode != null" >ORG_CODE,</if>
+			<if test="fatherOrgCode != null" >FATHER_ORG_CODE,</if>
+			<if test="orgName != null" >ORG_NAME,</if>
+			<if test="orgType != null" >ORG_TYPE,</if>
+			<if test="persName != null" >PERS_NAME,</if>
+			<if test="persPhone != null" >PERS_PHONE,</if>
+			<if test="email != null" >EMAIL,</if>
+			<if test="orgAddr != null" >ORG_ADDR,</if>
+			<if test="status != null" >STATUS,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,
+			<if test="orgCode != null" >#{orgCode},</if>
+			<if test="fatherOrgCode != null" >#{fatherOrgCode},</if>
+			<if test="orgName != null" >#{orgName},</if>
+			<if test="orgType != null" >#{orgType},</if>
+			<if test="persName != null" >#{persName},</if>
+			<if test="persPhone != null" >#{persPhone},</if>
+			<if test="email != null" >#{email},</if>
+			<if test="orgAddr != null" >#{orgAddr},</if>
+			<if test="status != null" >#{status},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.security.SysOrgVo">
+		update FQ_SYS_ORG 
+		<set>
+			VERSION = VERSION + 1, LAST_UPT_TIME = <include refid="dialect.__time"/>,
+			<if test="orgCode != null" >ORG_CODE = #{orgCode},</if>
+			<if test="fatherOrgCode != null" >FATHER_ORG_CODE = #{fatherOrgCode},</if>
+			<if test="orgName != null" >ORG_NAME = #{orgName},</if>
+			<if test="orgType != null" >ORG_TYPE = #{orgType},</if>
+			<if test="persName != null" >PERS_NAME = #{persName},</if>
+			<if test="persPhone != null" >PERS_PHONE = #{persPhone},</if>
+			<if test="email != null" >EMAIL = #{email},</if>
+			<if test="orgAddr != null" >ORG_ADDR = #{orgAddr},</if>
+			<if test="status != null" >STATUS = #{status},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+		</set>
+		where ORG_CODE = #{orgCode} and VERSION = #{version}
+	</update>
+	
+	<select id="filterQueryTreeOrg" resultType="com.jiuyv.hhc.model.security.TreeOrg">
+		<include refid="__select"/>
+ 	 	where 1=1
+	</select>
+	
+	
+	<select id="filterQueryChild" resultType="com.jiuyv.hhc.model.security.SysOrgVo">
+	select
+		   t0.ORG_CODE as orgCode
+		  ,t0.VERSION as version
+		  ,t0.FATHER_ORG_CODE as fatherOrgCode
+		  ,t0.ORG_NAME as orgName
+		  ,t0.ORG_TYPE as orgType
+		  ,t0.PERS_NAME as persName
+		  ,t0.PERS_PHONE as persPhone
+		  ,t0.EMAIL as email
+		  ,t0.ORG_ADDR as orgAddr
+		  ,t0.STATUS as status
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+	  from FQ_SYS_ORG t0
+	  where t0.STATUS='0'
+	  and t0.ORG_CODE in (select t1.FATHER_ORG_CODE from FQ_SYS_ORG t1 where t1.STATUS='0' and t1.ORG_CODE=#{orgCode})
+	</select>
+</mapper>

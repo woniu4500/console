@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  WebSecCodeMapper.xml
+	Table: FQ_WEB_SEC_CODE (验证码表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.security.dao.WebSecCodeDao">
+	<sql id="__select" >
+	select
+		   t0.SEQ_NO as seqNo
+		  ,t0.MOBILE_NO as mobileNo
+		  ,t0.OPR_TYPE as oprType
+		  ,t0.SEND_STATE as sendState
+		  ,t0.SEC_CODE as secCode
+		  ,t0.EFF_TIME as effTime
+	  from FQ_WEB_SEC_CODE t0
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.seqNo != null" >and t0.SEQ_NO = #{params.seqNo}</if>
+			<if test="params.mobileNo != null" >and t0.MOBILE_NO = #{params.mobileNo}</if>
+			<if test="params.oprType != null" >and t0.OPR_TYPE = #{params.oprType}</if>
+			<if test="params.sendState != null" >and t0.SEND_STATE = #{params.sendState}</if>
+			<if test="params.secCode != null" >and t0.SEC_CODE = #{params.secCode}</if>
+			<if test="params.effTime != null" >and t0.EFF_TIME = #{params.effTime}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.sms.model.WebSecCodeVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.sms.model.WebSecCodeVo">
+ 	 	<include refid="__select"/>
+ 	 	where SEQ_NO = #{seqNo}
+ 	</select>
+ 	
+ 	<select id="findAvailbleCode" resultType="com.jiuyv.hhc.sms.model.WebSecCodeVo">
+ 	 	<include refid="__select"/>
+ 	 	<![CDATA[where SEND_STATE='1' and SEC_CODE=#{secCode} and MOBILE_NO = #{mobileNo} and OPR_TYPE =#{oprType} and EFF_TIME>=]]><include refid="dialect.__time"/>
+ 	</select>
+ 	
+ 	<select id="findUnUsedCode" resultType="com.jiuyv.hhc.sms.model.WebSecCodeVo">
+ 	 	<include refid="__select"/>
+ 	 	<![CDATA[where MOBILE_NO = #{mobileNo} and OPR_TYPE =#{oprType} and EFF_TIME>=]]><include refid="dialect.__time"/>
+ 	</select>
+ 	
+ 	<select id="findDatabaseTime" resultType="java.lang.String">
+ 	 	select <include refid="dialect.__time"/>  from dual 
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.sms.model.WebSecCodeVo">
+	    <!-- 
+		<selectKey keyProperty="seqNo" order="BEFORE" resultType="java.lang.Long">
+			select SEQ_FQ_WEB_SEC_CODE.nextval from dual
+		</selectKey>
+		 -->
+		insert into FQ_WEB_SEC_CODE 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			
+			<if test="mobileNo != null" >MOBILE_NO,</if>
+			<if test="oprType != null" >OPR_TYPE,</if>
+			<if test="sendState != null" >SEND_STATE,</if>
+			<if test="secCode != null" >SEC_CODE,</if>
+			<if test="effTime != null" >EFF_TIME,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			
+			<if test="mobileNo != null" >#{mobileNo},</if>
+			<if test="oprType != null" >#{oprType},</if>
+			<if test="sendState != null" >#{sendState},</if>
+			<if test="secCode != null" >#{secCode},</if>
+			<if test="effTime != null" >#{effTime},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.sms.model.WebSecCodeVo">
+		update FQ_WEB_SEC_CODE 
+		<set>
+			<if test="seqNo != null" >SEQ_NO = #{seqNo},</if>
+			<if test="mobileNo != null" >MOBILE_NO = #{mobileNo},</if>
+			<if test="oprType != null" >OPR_TYPE = #{oprType},</if>
+			<if test="sendState != null" >SEND_STATE = #{sendState},</if>
+			<if test="secCode != null" >SEC_CODE = #{secCode},</if>
+			<if test="effTime != null" >EFF_TIME = #{effTime},</if>
+		</set>
+		where SEQ_NO = #{seqNo}
+	</update>
+	
+	<!-- delete -->
+	<delete id="deleteByKey" parameterType="com.jiuyv.hhc.sms.model.WebSecCodeVo">
+		delete FROM FQ_WEB_SEC_CODE where SEQ_NO = #{seqNo}
+	</delete>
+</mapper>

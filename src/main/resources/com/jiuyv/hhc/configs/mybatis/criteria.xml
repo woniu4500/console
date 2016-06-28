@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="criteria" >
+	<sql id="__conditions">
+		<if test="criteria != null" >
+			<foreach collection="criteria.criteriaWithoutValue" item="cond">
+				and ${cond}
+			</foreach>
+			<foreach collection="criteria.criteriaWithSingleValue" item="cond">
+				and ${cond.condition} #{cond.value}
+			</foreach>
+			<foreach collection="criteria.criteriaWithListValue" item="cond">
+				and ${cond.condition}
+				<foreach collection="cond.values" open="(" close=")" separator="," item="conditionValue">
+					#{conditionValue}
+				</foreach>
+			</foreach>
+			<foreach collection="criteria.criteriaWithBetweenValue" item="cond">
+				and (${cond.condition} #{cond.values[0]} and #{cond.values[1]})
+			</foreach>
+		</if>
+     </sql>
+     
+     <select id="__list">
+     	<include refid="criteria.__conditions"/>
+     	<include refid="dialect.__order"/>
+     </select>
+     <select id="__count" resultType="java.lang.Long">
+     	<include refid="dialect.__count_start"/>
+     	<include refid="criteria.__conditions"/>
+     	<include refid="dialect.__count_end"/>
+     </select>
+     <select id="__page">
+     	<include refid="dialect.__page_start"/>
+     	<include refid="criteria.__conditions"/>
+     	<include refid="dialect.__order"/>
+     	<include refid="dialect.__page_end"/>
+     </select>
+     
+</mapper>

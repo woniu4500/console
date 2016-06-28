@@ -1,0 +1,82 @@
+body,div,span,input,li,a,p,td,h1,h2,h3,h4,h5,h6{font-family: "Microsoft YaHei", "NSimSun";  }
+body{background-color: #ffffff; margin:0; padding:0;}
+a{text-decoration: none;}
+.qry-ul{width: 100%; overflow: hidden; border-bottom: 1px solid #CCCCCC;padding:0;margin:0; position: relative; top:0;left:0;}
+.qry-ul li {display: inline-block;/* float: left; */min-width: 60px; height:36px; line-height:36px;vertical-align:bottom; margin: 0 4px 6px 4px ; /* border: 1px solid #fff; */ padding: 1px 3px ; position: relative;}
+/* .qry-ul li:hover{border: 1px solid #8DB2E3; border-radius:3px; position: relative; } */
+.qry-ul li label{display:inline-block; min-width: 40px; white-space:nowrap; padding-right:5px; position: relative; font-size:14px;}
+.qry-ul li input{display:inline-block; width: 120px; white-space: nowrap; position: relative; font-size:12px; padding: 1px 2px;}
+.qry-ul li input.cbg{width: 20px;}
+.qry-ul li select{display:inline-block; width: 126px; position: relative; font-size:12px; padding: 1px 2px; border-radius: 3px; border: 1px solid #CCCCCC;}
+.qry-ul li input.bt{width: 60px; max-width:60px; display:block; position: relative; font-size:14px; padding: 2px; margin-top:5px;}
+.qry-ul li img.ui-datepicker-trigger{ display: inline-block; position: relative; top: 0px; width: 16px; }
+
+.qdiv-el li img.ui-datepicker-trigger{ display: inline-block; position: relative; top: 0px; width: 16px; }
+
+.frm-ul{width: 100%; overflow: hidden;padding:0;margin:0;}
+.frm-ul li {margin-bottom: 16px;display: block; min-width: 500px; overflow:hidden ;vertical-align:middle; margin: 4px 4px 0 0 ; border: none; padding: 0; position: relative;}
+.frm-ul li label{font-size:14px;display: inline-block;min-width: 100px; white-space:nowrap; padding-right:5px; position: relative;}
+.frm-ul li label .not-empty{color: red;}
+/*
+.frm-ul li > label,.frm-ul li > input,.frm-ul li > select,.frm-ul li > div,.frm-ul li > textarea{display: block; float: left ; margin-right: 15px;}
+*/
+.frm-ul li input{font-size:14px;height:30px;display:inline-block; width: 180px; white-space: nowrap; position: relative;padding:1px 2px;}
+.frm-ul .long{width:300px;}
+.frm-ul .ulong{width:940px;}
+.frm-ul .mini{width:120px;}
+.frm-ul li select{font-size:14px;height:30px;display:inline-block; width: 180px; position: relative; padding: 1px 2px; border-radius: 3px; border: 1px solid #CCCCCC;}
+.frm-ul li input.bt{width: 60px; max-width:60px; display:inline-block; position: relative; }
+.frm-ul li textarea{font-size:14px;width:350px;height:100px;display:inline-block; position: relative; }
+.frm-ul li img.ui-datepicker-trigger{ display: inline-block; position: relative; top: 3px; width: 16px; }
+.frm-ul li div[id*=Tip]{display:inline-block;min-width:90px;}
+.frm-ul li input[type=button]{color: white;background-color: #DC2A0C;}
+.fcontent select{width: 126px;}
+.fcontent input{width: 120px;}
+.fcontent textarea{resize: none; width: 120px; max-width: 120px; height: 60px; max-height: 60px;}
+.qtable{background-color: #8392a5; border-top: 1px solid #8DB2E3; border-left: 1px solid #8DB2E3; border-collapse: collapse; }
+.qtable tr{background-color: #b5d2ed;}
+.qtable td{background-color: #FFFFFF; border-right: 1px solid #8DB2E3; border-bottom: 1px solid #8DB2E3;}
+.qtable .qlabel {width:100px; text-align:right;white-space:nowrap;padding-right:5px;background-color: #FFFFFF;}
+.qtable .qinput{/* padding-left:5px; */background-color: #FFFFFF;white-space: nowrap; min-width: 150px;}
+/* .bt{ background: transparent url(../img/bg/button_bg.gif) repeat scroll 0 0; border: 1px solid #7DE7FD; margin-left:10px; width:80px; font-size:14px; height: 22px;cursor: pointer;} */
+/* .bt:HOVER{ background: transparent url(../img/bg/button_bg2.gif) repeat scroll 0 0; border: 1px solid #C3A336; } */
+.fform{display:none;}
+.ftable{background-color:#8392a5;}
+.ftable tr{	background-color: #f2f2f2;}
+.ftable .flabel{width:120px; height:20px; text-align: right; padding-right: .8em;}
+.ftable .flabels{width:150;	height:20; text-align: center;}
+.ftable .flabelss{width:100px; height:20; text-align: center;}
+.ftable .finput{padding-left:5px;height:27; text-align: left;}
+.ftable .finput textarea{width: 300px;}
+.btcheckbox{margin-right: 15px;}
+
+.detailDialog{ /* background:#dfe8f6 !important; */}
+/* .detailDialog table{ margin:auto; }
+.detailDialog .detailtd{ vertical-align:top; }
+.detailDialog .mngr-tbl{ padding: 7px 1px 0 1px; }
+.detailDialog .restree{ overflow:auto; background:#ffffff; border: 1px solid #8392A5; }
+.detailDialog .titleDiv div.dtitle {color: #222222; padding: 5.5px 11px 3.3px 11px; white-space: nowrap;} */
+
+.warning{text-align:center;height:40px;font-size:14px;padding-top:20px;display:none;}
+.tree-checkbox li{width:auto !important;}
+.qdiv-el li {position: relative;}
+.qdiv-el .tip{display:none;background-color:white ; width:180px;padding: 4px 8px; z-Index: 99;border: 1px solid #cccccc; border-radius:2px;position: absolute;top: 0px; left: 105px;}
+
+.overlay-div{z-index: 2000;position: absolute; opacity: .30;background-color: #000000;top:0px;left:0px}
+.overlay-span{z-index: 2000;position: absolute;}
+
+.jy-widget .ui-dialog-titlebar{ font-size: 16px !important; letter-spacing: 2px; border-radius: 0 !important; background-color: #fff; color: #222222 !important; font-weight: normal !important;}
+.jy-widget .ui-dialog-content{padding: 12px 15px 15px 24px !important; }
+.jy-widget .ui-dialog-buttonpane .ui-dialog-buttonset{float: left !important; }
+.jy-no-border{border:0 !important; border-radius:0 !important; border-collapse:collapse;
+padding:0 !important;box-shadow:none !important;}
+
+.ui-timepicker-div dl { text-align: left; margin: 0 !important;}
+.ui-timepicker-div dl dt { float: left; clear:left; padding: 0 0 0 5px; font-weight: normal; }
+.ui-timepicker-div dl dd { margin: 5px 10px 10px 60px; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+.ui-timepicker-rtl{ direction: rtl; }
+.ui-timepicker-rtl dl { text-align: right; padding: 0 5px 0 0; }
+.ui-timepicker-rtl dl dt{ float: right; clear: right; font-weight: normal; }
+.ui-timepicker-rtl dl dd { margin: 0 45% 10px 10px; }

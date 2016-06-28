@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dialect" >
+	<!-- order script -->
+	<sql id="__order">
+		<if test="sorts != null" >
+			order by 
+			<foreach collection="sorts" item="sort" separator=", ">
+				${sort.sort} ${sort.dir} 
+			</foreach>
+		</if>
+	</sql>
+	<!-- page script -->
+	<sql id="__page_start">
+		SELECT  *  FROM (
+	</sql>
+	
+	<sql id="__page_end">
+		) as autosql_page
+		<if test="page != null" > 
+			limit ${page.limit} offset ${page.offset}
+		</if>
+	</sql>
+	<!-- count script -->
+	<sql id="__count_start">
+		SELECT  count(1)  FROM (
+	</sql>
+	<sql id="__count_end">
+		) autosql_count
+	</sql>
+	
+	<sql id="__date">
+		DATE_FORMAT(NOW(), '%Y%m%d') 
+	</sql>
+	
+	<sql id="__time">
+		DATE_FORMAT(NOW(), '%Y%m%d%H%i%S') 
+	</sql>
+	
+	<select id="__nextval" resultType="java.lang.String">
+		select ${value}.nextVal 
+	</select>
+</mapper>

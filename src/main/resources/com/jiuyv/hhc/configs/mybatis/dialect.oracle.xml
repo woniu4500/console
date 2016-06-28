@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dialect" >
+	<!-- order script -->
+	<sql id="__order">
+		<if test="sorts != null" >
+			order by 
+			<foreach collection="sorts" item="sort" separator=", ">
+				${sort.sort} ${sort.dir} 
+			</foreach>
+		</if>
+	</sql>
+	<!-- page script -->
+	<sql id="__page_start">
+	SELECT * FROM ( SELECT autosql_page.*, ROWNUM RN  FROM ( SELECT  *  FROM (
+	</sql>
+	
+	<sql id="__page_end">
+		)) autosql_page
+		<if test="page != null" > 
+		WHERE ${page.endline} >= ROWNUM ) WHERE RN >= ${page.offset} 
+		</if>
+	</sql>
+	<!-- count script -->
+	<sql id="__count_start">
+		SELECT  count(1)  FROM (
+	</sql>
+	<sql id="__count_end">
+		) autosql_count
+	</sql>
+	
+	<sql id="__date">
+		to_char(current_timestamp, 'YYYYMMDD')
+	</sql>
+	
+	<sql id="__time">
+		to_char(current_timestamp, 'YYYYMMDDHH24MISS')
+	</sql>
+	
+	<select id="__nextval" resultType="java.lang.String">
+		select ${value}.nextVal from dual
+	</select>
+</mapper>

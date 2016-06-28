@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+                                          
+<!-- 
+	Name:  CmArticleMapper.xml
+	Table: FQ_CM_ARTICLE (网站内容基本信息)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.information.dao.CmArticleDao">
+	<sql id="__select" >
+	select
+		   t0.ART_SEQ as artSeq
+		  ,t0.VERSION as version
+		  ,t0.CAT_SEQ as catSeq
+		  ,t0.ART_REMARK as artRemark
+		  ,t0.ART_TITLE as artTitle
+		  ,t0.ART_AUTHOR as artAuthor
+		  ,t0.ART_PUB_TIME as artPubTime
+		  ,t0.ART_STATUS as artStatus
+		  ,t0.IS_RECMD as isRecmd
+		  ,t0.IS_TOPS as isTops
+		  ,t0.META_WORDS as metaWords
+		  ,t0.META_DES as metaDes
+		  ,t0.ART_HITS as artHits
+		  ,t0.ART_URL as artUrl
+		  ,t0.ART_IMG as artImg
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,st.CODE_NAME as isRecmdDesc
+		  ,vt.CODE_NAME as isTopsDesc
+		  ,t1.CAT_NAME as catName
+		  ,dt.CODE_NAME as artStatusDesc
+	  from FQ_CM_ARTICLE t0
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_YON') st on t0.IS_RECMD=st.CODE_NO 
+	  left join FQ_CM_ART_CAT t1 ON t0.CAT_SEQ =t1.CAT_SEQ 
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_YON') vt on t0.IS_TOPS=vt.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='INFO_ST') dt on t0.ART_STATUS=dt.CODE_NO
+	</sql>
+
+	<sql id="__select_content" >
+	select
+		   t0.ART_SEQ as artSeq
+		  ,t0.VERSION as version
+		  ,t0.CAT_SEQ as catSeq
+		  ,t0.ART_REMARK as artRemark
+		  ,t0.ART_CONTENT as artContent
+		  ,t0.ART_TITLE as artTitle
+		  ,t0.ART_AUTHOR as artAuthor
+		  ,t0.ART_PUB_TIME as artPubTime
+		  ,t0.ART_STATUS as artStatus
+		  ,t0.IS_RECMD as isRecmd
+		  ,t0.IS_TOPS as isTops
+		  ,t0.META_WORDS as metaWords
+		  ,t0.META_DES as metaDes
+		  ,t0.ART_HITS as artHits
+		  ,t0.ART_URL as artUrl
+		  ,t0.ART_IMG as artImg
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+	  	  ,st.CODE_NAME as isRecmdDesc
+		  ,vt.CODE_NAME as isTopsDesc
+		  ,t1.CAT_NAME as catName
+		  ,dt.CODE_NAME as artStatusDesc
+	  from FQ_CM_ARTICLE t0
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_YON') st on t0.IS_RECMD=st.CODE_NO 
+	  left join FQ_CM_ART_CAT t1 ON t0.CAT_SEQ =t1.CAT_SEQ 
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_YON') vt on t0.IS_TOPS=vt.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='INFO_ST') dt on t0.ART_STATUS=dt.CODE_NO
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.information.CmArticleVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.information.CmArticleVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.ART_SEQ = #{artSeq}
+ 	</select>
+
+ 	<select id="findContentByKey" resultType="com.jiuyv.hhc.model.information.CmArticleVo">
+ 	 	<include refid="__select_content"/>
+ 	 	where t0.ART_SEQ = #{artSeq}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.information.CmArticleVo">
+	    <!-- 
+		<selectKey keyProperty="artSeq" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_CM_ARTICLE.nextval from dual</selectKey>
+		 -->
+		insert into FQ_CM_ARTICLE 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,REC_CRT_TIME,LAST_UPT_TIME,ART_STATUS,
+			<if test="catSeq != null" >CAT_SEQ,</if>
+			<if test="artRemark != null" >ART_REMARK,</if>
+			<if test="artContent != null" >ART_CONTENT,</if>
+			<if test="artTitle != null" >ART_TITLE,</if>
+			<if test="artAuthor != null" >ART_AUTHOR,</if>
+			<if test="artPubTime != null" >ART_PUB_TIME,</if>
+			<if test="isRecmd != null" >IS_RECMD,</if>
+			<if test="isTops != null" >IS_TOPS,</if>
+			<if test="metaWords != null" >META_WORDS,</if>
+			<if test="metaDes != null" >META_DES,</if>
+			<if test="artHits != null" >ART_HITS,</if>
+			<if test="artUrl != null" >ART_URL,</if>
+			<if test="artImg != null" >ART_IMG,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,<include refid="dialect.__time"/>,'00',
+			<if test="catSeq != null" >#{catSeq},</if>
+			<if test="artRemark != null" >#{artRemark},</if>
+			<if test="artContent != null" >#{artContent},</if>
+			<if test="artTitle != null" >#{artTitle},</if>
+			<if test="artAuthor != null" >#{artAuthor},</if>
+			<if test="artPubTime != null" >#{artPubTime},</if>
+			<if test="isRecmd != null" >#{isRecmd},</if>
+			<if test="isTops != null" >#{isTops},</if>
+			<if test="metaWords != null" >#{metaWords},</if>
+			<if test="metaDes != null" >#{metaDes},</if>
+			<if test="artHits != null" >#{artHits},</if>
+			<if test="artUrl != null" >#{artUrl},</if>
+			<if test="artImg != null" >#{artImg},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.information.CmArticleVo">
+		update FQ_CM_ARTICLE 
+		<set>
+			VERSION = VERSION + 1, LAST_UPT_TIME=<include refid="dialect.__time"/>,
+			<if test="catSeq != null" >CAT_SEQ = #{catSeq},</if>
+			<if test="artRemark != null" >ART_REMARK = #{artRemark},</if>
+			<if test="artContent != null" >ART_CONTENT = #{artContent},</if>
+			<if test="artTitle != null" >ART_TITLE = #{artTitle},</if>
+			<if test="artAuthor != null" >ART_AUTHOR = #{artAuthor},</if>
+			<if test="artPubTime != null" >ART_PUB_TIME = #{artPubTime},</if>
+			<if test="artStatus != null" >ART_STATUS = #{artStatus},</if>
+			<if test="isRecmd != null" >IS_RECMD = #{isRecmd},</if>
+			<if test="isTops != null" >IS_TOPS = #{isTops},</if>
+			<if test="metaWords != null" >META_WORDS = #{metaWords},</if>
+			<if test="metaDes != null" >META_DES = #{metaDes},</if>
+			<if test="artHits != null" >ART_HITS = #{artHits},</if>
+			<if test="artUrl != null" >ART_URL = #{artUrl},</if>
+			<if test="artImg != null" >ART_IMG = #{artImg},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+		</set>
+		where ART_SEQ = #{artSeq} and VERSION = #{version}  
+	</update>
+	
+	<!-- insert -->
+	<insert id="insertVer" parameterType="com.jiuyv.hhc.model.information.CmArticleVo">
+		insert into FQ_CM_ARTICLE_VER 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="artSeq != null" >ART_SEQ,</if>
+			<if test="version != null" >VERSION,</if>
+			<if test="catSeq != null" >CAT_SEQ,</if>
+			<if test="artRemark != null" >ART_REMARK,</if>
+			<if test="artContent != null" >ART_CONTENT,</if>
+			<if test="artTitle != null" >ART_TITLE,</if>
+			<if test="artAuthor != null" >ART_AUTHOR,</if>
+			<if test="artPubTime != null" >ART_PUB_TIME,</if>
+			<if test="artStatus != null" >ART_STATUS,</if>
+			<if test="isRecmd != null" >IS_RECMD,</if>
+			<if test="isTops != null" >IS_TOPS,</if>
+			<if test="metaWords != null" >META_WORDS,</if>
+			<if test="metaDes != null" >META_DES,</if>
+			<if test="artHits != null" >ART_HITS,</if>
+			<if test="artUrl != null" >ART_URL,</if>
+			<if test="artImg != null" >ART_IMG,</if>
+			<if test="recCrtTime != null" >REC_CRT_TIME,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+			<if test="lastUptTime != null" >LAST_UPT_TIME,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="artSeq != null" >#{artSeq},</if>
+			<if test="version != null" >#{version},</if>
+			<if test="catSeq != null" >#{catSeq},</if>
+			<if test="artRemark != null" >#{artRemark},</if>
+			<if test="artContent != null" >#{artContent},</if>
+			<if test="artTitle != null" >#{artTitle},</if>
+			<if test="artAuthor != null" >#{artAuthor},</if>
+			<if test="artPubTime != null" >#{artPubTime},</if>
+			<if test="artStatus != null" >#{artStatus},</if>
+			<if test="isRecmd != null" >#{isRecmd},</if>
+			<if test="isTops != null" >#{isTops},</if>
+			<if test="metaWords != null" >#{metaWords},</if>
+			<if test="metaDes != null" >#{metaDes},</if>
+			<if test="artHits != null" >#{artHits},</if>
+			<if test="artUrl != null" >#{artUrl},</if>
+			<if test="artImg != null" >#{artImg},</if>
+			<if test="recCrtTime != null" >#{recCrtTime},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+			<if test="lastUptTime != null" >#{lastUptTime},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+		</trim>
+	</insert>
+	
+	<delete id="deleteVer" parameterType="com.jiuyv.hhc.model.information.CmArticleVo">
+		delete from FQ_CM_ARTICLE_VER where ART_SEQ = #{artSeq}
+	</delete>
+	
+	<!-- update -->
+	<update id="updateVerByKey" parameterType="com.jiuyv.hhc.model.information.CmArticleVo">
+		update FQ_CM_ARTICLE_VER
+		<set>
+			<if test="artSeq != null" >ART_SEQ = #{artSeq},</if>
+			<if test="version != null" >VERSION = #{version},</if>
+			<if test="catSeq != null" >CAT_SEQ = #{catSeq},</if>
+			<if test="artRemark != null" >ART_REMARK = #{artRemark},</if>
+			<if test="artContent != null" >ART_CONTENT = #{artContent},</if>
+			<if test="artTitle != null" >ART_TITLE = #{artTitle},</if>
+			<if test="artAuthor != null" >ART_AUTHOR = #{artAuthor},</if>
+			<if test="artPubTime != null" >ART_PUB_TIME = #{artPubTime},</if>
+			<if test="artStatus != null" >ART_STATUS = #{artStatus},</if>
+			<if test="isRecmd != null" >IS_RECMD = #{isRecmd},</if>
+			<if test="isTops != null" >IS_TOPS = #{isTops},</if>
+			<if test="metaWords != null" >META_WORDS = #{metaWords},</if>
+			<if test="metaDes != null" >META_DES = #{metaDes},</if>
+			<if test="artHits != null" >ART_HITS = #{artHits},</if>
+			<if test="artUrl != null" >ART_URL = #{artUrl},</if>
+			<if test="artImg != null" >ART_IMG = #{artImg},</if>
+			<if test="recCrtTime != null" >REC_CRT_TIME = #{recCrtTime},</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC = #{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+			<if test="lastUptTime != null" >LAST_UPT_TIME = #{lastUptTime},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+		</set>
+		where ART_SEQ = #{artSeq}
+	</update>
+	
+	<select id="countVerByKey" resultType="java.lang.Integer">
+		select count(1) from FQ_CM_ARTICLE_VER where ART_SEQ = #{artSeq}
+	</select>
+	
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  SysOprlogMapper.xml
+	Table: FQ_SYS_OPRLOG (控制台操作流水表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.security.dao.SysOprlogDao">
+	<sql id="__selectBrief" >
+	select
+		   t0.OPR_NO as oprNo
+		  ,t0.STLM_DATE as stlmDate
+		  ,t0.RES_ID as resId
+		  ,t0.RES_ZH as resZh
+		  ,t0.OPR_ORG_CODE as oprOrgCode
+		  ,t0.OPR_USER_ID as oprUserId
+		  ,t0.OPR_LOGIN_ID as oprLoginId
+		  ,t0.OPR_URL as oprUrl
+		  ,t0.OPR_SYS_CODE as oprSysCode
+		  ,t0.OPR_TIME as oprTime
+		  ,t0.OPR_IP as oprIp
+		  ,t0.OPR_SUCCESS as oprSuccess
+		  ,u.USER_NAME as oprUserName
+	  from FQ_SYS_OPRLOG t0
+	  left join FQ_SYS_USER u on t0.OPR_USER_ID=u.USER_ID
+	</sql>
+	<sql id="__select" >
+	select
+		   t0.OPR_NO as oprNo
+		  ,t0.STLM_DATE as stlmDate
+		  ,t0.RES_ID as resId
+		  ,t0.RES_ZH as resZh
+		  ,t0.OPR_ORG_CODE as oprOrgCode
+		  ,t0.OPR_USER_ID as oprUserId
+		  ,t0.OPR_LOGIN_ID as oprLoginId
+		  ,t0.OPR_URL as oprUrl
+		  ,t0.OPR_SYS_CODE as oprSysCode
+		  ,t0.OPR_TIME as oprTime
+		  ,t0.OPR_IP as oprIp
+		  ,t0.OPR_SUCCESS as oprSuccess
+		  ,t0.OPR_RESULT_INFO as oprResultInfo
+		  ,t0.OPR_REMARK as oprRemark
+		  ,u.USER_NAME as oprUserName
+	  from FQ_SYS_OPRLOG t0
+	  left join FQ_SYS_USER u on t0.OPR_USER_ID=u.USER_ID
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.oprNo != null" >and t0.OPR_NO = #{params.oprNo}</if>
+			<if test="params.stlmDate != null" >and t0.STLM_DATE = #{params.stlmDate}</if>
+			<if test="params.resId != null" >and t0.RES_ID = #{params.resId}</if>
+			<if test="params.resZh != null" >and t0.RES_ZH = #{params.resZh}</if>
+			<if test="params.oprOrgCode != null" >and t0.OPR_ORG_CODE = #{params.oprOrgCode}</if>
+			<if test="params.oprUserId != null" >and t0.OPR_USER_ID = #{params.oprUserId}</if>
+			<if test="params.oprLoginId != null" >and t0.OPR_LOGIN_ID = #{params.oprLoginId}</if>
+			<if test="params.oprUrl != null" >and t0.OPR_URL = #{params.oprUrl}</if>
+			<if test="params.oprSysCode != null" >and t0.OPR_SYS_CODE = #{params.oprSysCode}</if>
+			<if test="params.oprTime != null" >and t0.OPR_TIME = #{params.oprTime}</if>
+			<if test="params.oprIp != null" >and t0.OPR_IP = #{params.oprIp}</if>
+			<if test="params.oprSuccess != null" >and t0.OPR_SUCCESS = #{params.oprSuccess}</if>
+			<if test="params.oprResultInfo != null" >and t0.OPR_RESULT_INFO = #{params.oprResultInfo}</if>
+			<if test="params.oprRemark != null" >and t0.OPR_REMARK = #{params.oprRemark}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.security.SysOprlogVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	<!-- select -->
+	<select id="filterQueryBrief" resultType="com.jiuyv.hhc.model.security.SysOprlogVo">
+ 	 	<include refid="__selectBrief"/>
+ 	 	where 1=1
+ 	</select>
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.security.SysOprlogVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.OPR_NO = #{oprNo}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.security.SysOprlogVo" >
+	    <!-- 
+		<selectKey keyProperty="oprNo" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_SYS_OPRLOG.nextval from dual</selectKey>
+		 -->
+		insert into FQ_SYS_OPRLOG 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			OPR_TIME,
+			<if test="stlmDate != null" >STLM_DATE,</if>
+			<if test="resId != null" >RES_ID,</if>
+			<if test="resZh != null" >RES_ZH,</if>
+			<if test="oprOrgCode != null" >OPR_ORG_CODE,</if>
+			<if test="oprUserId != null" >OPR_USER_ID,</if>
+			<if test="oprLoginId != null" >OPR_LOGIN_ID,</if>
+			<if test="oprUrl != null" >OPR_URL,</if>
+			<if test="oprSysCode != null" >OPR_SYS_CODE,</if>
+			<if test="oprIp != null" >OPR_IP,</if>
+			<if test="oprSuccess != null" >OPR_SUCCESS,</if>
+			<if test="oprResultInfo != null" >OPR_RESULT_INFO,</if>
+			<if test="oprRemark != null" >OPR_REMARK,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<include refid="dialect.__time"/>,
+			<if test="stlmDate != null" >#{stlmDate},</if>
+			<if test="resId != null" >#{resId},</if>
+			<if test="resZh != null" >#{resZh},</if>
+			<if test="oprOrgCode != null" >#{oprOrgCode},</if>
+			<if test="oprUserId != null" >#{oprUserId},</if>
+			<if test="oprLoginId != null" >#{oprLoginId},</if>
+			<if test="oprUrl != null" >#{oprUrl},</if>
+			<if test="oprSysCode != null" >#{oprSysCode},</if>
+			<if test="oprIp != null" >#{oprIp},</if>
+			<if test="oprSuccess != null" >#{oprSuccess},</if>
+			<if test="oprResultInfo != null" >#{oprResultInfo},</if>
+			<if test="oprRemark != null" >#{oprRemark},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.security.SysOprlogVo">
+		update FQ_SYS_OPRLOG 
+		<set>
+			<if test="stlmDate != null" >STLM_DATE = #{stlmDate},</if>
+			<if test="resId != null" >RES_ID = #{resId},</if>
+			<if test="resZh != null" >RES_ZH = #{resZh},</if>
+			<if test="oprOrgCode != null" >OPR_ORG_CODE = #{oprOrgCode},</if>
+			<if test="oprUserId != null" >OPR_USER_ID = #{oprUserId},</if>
+			<if test="oprLoginId != null" >OPR_LOGIN_ID = #{oprLoginId},</if>
+			<if test="oprUrl != null" >OPR_URL = #{oprUrl},</if>
+			<if test="oprSysCode != null" >OPR_SYS_CODE = #{oprSysCode},</if>
+			<if test="oprTime != null" >OPR_TIME = #{oprTime},</if>
+			<if test="oprIp != null" >OPR_IP = #{oprIp},</if>
+			<if test="oprSuccess != null" >OPR_SUCCESS = #{oprSuccess},</if>
+			<if test="oprResultInfo != null" >OPR_RESULT_INFO = #{oprResultInfo},</if>
+			<if test="oprRemark != null" >OPR_REMARK = #{oprRemark},</if>
+		</set>
+		where OPR_NO = #{oprNo}
+	</update>
+	
+</mapper>

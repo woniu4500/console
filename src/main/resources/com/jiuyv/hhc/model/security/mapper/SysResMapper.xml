@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  SysResourceMapper.xml
+	Table: FQ_SYS_RESOURCE (控制台资源表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.security.dao.SysResDao">
+	<sql id="__select" >
+	select
+		   t0.RES_ID as resId
+		  ,t0.FATHER_ID as fatherId
+		  ,t0.RES_ZH as resZh
+		  ,t0.RES_EN as resEn
+		  ,t0.SYS_CODE as sysCode
+		  ,t0.RES_URL as resUrl
+		  ,t0.SHOW_TYPE as showType
+		  ,t0.ORDER_NUM as orderNum
+		  ,t0.LOG_FLAG as logFlag
+		  ,t0.REMARKS as remarks
+	  from FQ_SYS_RESOURCE t0
+	</sql>
+
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.security.SysResourceVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.security.SysResourceVo">
+ 	 	<include refid="__select"/>
+ 	 	where RES_ID = #{resId}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.security.SysResourceVo">
+		insert into FQ_SYS_RESOURCE  
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="resId != null" >RES_ID,</if>
+			<if test="fatherId != null" >FATHER_ID,</if>
+			<if test="resZh != null" >RES_ZH,</if>
+			<if test="resEn != null" >RES_EN,</if>
+			<if test="sysCode != null" >SYS_CODE,</if>
+			<if test="resUrl != null" >RES_URL,</if>
+			<if test="showType != null" >SHOW_TYPE,</if>
+			<if test="orderNum != null" >ORDER_NUM,</if>
+			<if test="logFlag != null" >LOG_FLAG,</if>
+			<if test="remarks != null" >REMARKS,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="resId != null" >#{resId},</if>
+			<if test="fatherId != null" >#{fatherId},</if>
+			<if test="resZh != null" >#{resZh},</if>
+			<if test="resEn != null" >#{resEn},</if>
+			<if test="sysCode != null" >#{sysCode},</if>
+			<if test="resUrl != null" >#{resUrl},</if>
+			<if test="showType != null" >#{showType},</if>
+			<if test="orderNum != null" >#{orderNum},</if>
+			<if test="logFlag != null" >#{logFlag},</if>
+			<if test="remarks != null" >#{remarks},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.security.SysResourceVo">
+		update FQ_SYS_RESOURCE 
+		<set>
+			<if test="resId != null" >RES_ID = #{resId},</if>
+			<if test="fatherId != null" >FATHER_ID = #{fatherId},</if>
+			<if test="resZh != null" >RES_ZH = #{resZh},</if>
+			<if test="resEn != null" >RES_EN = #{resEn},</if>
+			<if test="sysCode != null" >SYS_CODE = #{sysCode},</if>
+			<if test="resUrl != null" >RES_URL = #{resUrl},</if>
+			<if test="showType != null" >SHOW_TYPE = #{showType},</if>
+			<if test="orderNum != null" >ORDER_NUM = #{orderNum},</if>
+			<if test="logFlag != null" >LOG_FLAG = #{logFlag},</if>
+			<if test="remarks != null" >REMARKS = #{remarks},</if>
+		</set>
+		where RES_ID = #{resId}
+	</update>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  SysRoleResMapper.xml
+	Table: FQ_SYS_ROLE_RES (控制台角色权限关系表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.security.dao.SysRoleResDao">
+	<sql id="__select" >
+	select
+		   t0.ROLE_ID as roleId
+		  ,t0.RES_ID as resId
+	  from FQ_SYS_ROLE_RES t0
+	</sql>
+
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.security.SysRoleResVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.security.SysRoleResVo">
+ 	 	<include refid="__select"/>
+ 	 	where ROLE_ID = #{roleId}
+		  and RES_ID = #{resId}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.security.SysRoleResVo">
+		insert into FQ_SYS_ROLE_RES 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="roleId != null" >ROLE_ID,</if>
+			<if test="resId != null" >RES_ID,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="roleId != null" >#{roleId},</if>
+			<if test="resId != null" >#{resId},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.security.SysRoleResVo">
+		update FQ_SYS_ROLE_RES 
+		<set>
+			<if test="roleId != null" >ROLE_ID = #{roleId},</if>
+			<if test="resId != null" >RES_ID = #{resId},</if>
+		</set>
+		where ROLE_ID = #{roleId}
+		  and RES_ID = #{resId}
+	</update>
+	
+	<delete id="deleteByRole">
+		delete from FQ_SYS_ROLE_RES where ROLE_ID = #{roleId}
+	</delete>
+</mapper>

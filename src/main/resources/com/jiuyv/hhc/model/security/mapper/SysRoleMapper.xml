@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  SysRoleMapper.xml
+	Table: FQ_SYS_ROLE (控制台角色表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.security.dao.SysRoleDao">
+	<sql id="__select" >
+	select
+		   t0.ROLE_ID as roleId
+		  ,t0.VERSION as version
+		  ,t0.ROLE_NAME as roleName
+		  ,t0.ORG_CODE as orgCode
+		  ,t0.STATUS as status
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,o.ORG_NAME as orgName 
+		  ,st.CODE_NAME as statusDesc
+	  from FQ_SYS_ROLE t0
+	  left join FQ_SYS_ORG o on t0.ORG_CODE = o.ORG_CODE
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_STATUE') st on t0.status=st.CODE_NO
+	</sql>
+
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.security.SysRoleVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.security.SysRoleVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.ROLE_ID = #{roleId}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.security.SysRoleVo" >
+	    <!-- 
+		<selectKey keyProperty="roleId" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_SYS_ROLE.nextval from dual</selectKey>
+		 -->
+		insert into FQ_SYS_ROLE 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,LAST_UPT_TIME,
+			<if test="roleName != null" >ROLE_NAME,</if>
+			<if test="orgCode != null" >ORG_CODE,</if>
+			<if test="status != null" >STATUS,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,
+			<if test="roleName != null" >#{roleName},</if>
+			<if test="orgCode != null" >#{orgCode},</if>
+			<if test="status != null" >#{status},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.security.SysRoleVo">
+		update FQ_SYS_ROLE 
+		<set>
+			VERSION = VERSION + 1 , LAST_UPT_TIME = <include refid="dialect.__time"/>,
+			<if test="roleId != null" >ROLE_ID = #{roleId},</if>
+			<if test="roleName != null" >ROLE_NAME = #{roleName},</if>
+			<if test="orgCode != null" >ORG_CODE = #{orgCode},</if>
+			<if test="status != null" >STATUS = #{status},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+		</set>
+		where ROLE_ID = #{roleId} and VERSION = #{version}
+	</update>
+	
+</mapper>

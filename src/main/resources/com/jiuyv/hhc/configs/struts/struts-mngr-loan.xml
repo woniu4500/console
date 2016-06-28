@@ -1,0 +1,75 @@
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 贷款管理 -->	
+	<package name="loan.qry" extends="mngr-query-default">
+		<action name="loanSetup" class="bizLoanDataAction">
+			<result name="success">page/loan/loan_mngr.jsp</result>
+		</action>
+		
+		<action name="findLoan" class="bizLoanDataAction" method="findLoan" />
+		<action name="findLoanExcel" class="bizLoanDataAction" method="findLoanExcel" />
+		<action name="findLoanbyCustomerCode" class="bizLoanDataAction" method="findLoanbyCustomerCode" />
+		<action name="findLoanbyAgentCustomerCode" class="bizLoanDataAction" method="findLoanbyAgentCustomerCode" />
+		
+		<action name="transLogSetup" class="transTxnLogAction">
+			<result name="success">page/loan/translog_qry.jsp</result>
+		</action>
+		<action name="findTransLog" class="transTxnLogAction" method="findTransLog" />	
+		<action name="findTransLogExcel" class="transTxnLogAction" method="findTransLogExcel" />	
+		
+		<action name="transLogAmtSetup" class="transTxnLogAction">
+			<result name="success">page/loan/transamt_qry.jsp</result>
+		</action>
+		<action name="findTransLogAmt" class="transTxnLogAction" method="findTransLogAmt" />	
+		<action name="findTransLogAmtExcel" class="transTxnLogAction" method="findTransLogAmtExcel" />	
+	</package>
+	<package name="loan" extends="mngr-default">
+	    <action name="applyLoan" class="bizLoanDataAction" method="applyLoan" />
+	    <action name="zipLoanFileAndSendMaill" class="bizLoanDataAction" method="zipLoanFileAndSendMaill" />
+	    <action name="doPayLoanBenefit" class="bizLoanDataAction" method="doPayLoanBenefit" />
+	    <action name="doCancleLoan" class="bizLoanDataAction" method="doCancleLoan" />
+		<action name="doInsertLoan" class="bizLoanDataAction" method="doInsertLoan" />
+		<action name="doUpdateLoan" class="bizLoanDataAction" method="doUpdateLoan" />
+		<action name="doMaintainLoan" class="bizLoanDataAction" method="doMaintainLoan" />
+		<action name="doSubmitLoan" class="bizLoanDataAction" method="doSubmitLoan" />
+		<action name="doCertifyLoan" class="bizLoanDataAction" method="doCertifyLoan" />
+		<action name="doDenyLoan" class="bizLoanDataAction" method="doDenyLoan" />
+		<action name="doAuditLoan" class="bizLoanDataAction" method="doAuditLoan" />
+		<action name="doSend2Bank" class="bizLoanDataAction" method="doSend2Bank" />
+		<action name="doLoanSuccess" class="bizLoanDataAction" method="doLoanSuccess" />
+		<action name="doLoanFailed" class="bizLoanDataAction" method="doLoanFailed" />
+		<action name="doSendLoanInfo" class="bizLoanDataAction" method="doSendLoanInfo" />
+	</package>
+	<!-- 贷前数据管理 -->	
+	<package name="mhtHisTran.qry" extends="mngr-query-default">
+		<action name="findMhtHisTran"  class="mhtHisTranAction" method="findMhtHisTran"  />
+		<action name="findMhtHisTranExcel" class="mhtHisTranAction" method="findMhtHisTranExcel" />
+		<action name="findMhtHisTranbyMchntCode" class="mhtHisTranAction" method="findMhtHisTranbyMchntCode" />
+		<action name="findMhtHisTranbyMchntCodeExcel" class="mhtHisTranAction" method="findMhtHisTranbyMchntCodeExcel" />
+	</package>
+	<package name="mhtHisTran" extends="mngr-default">
+		<action name="doInsertMhtHisTran" class="mhtHisTranAction" method="doInsertMhtHisTran" />
+	</package>
+	<!-- 贷款风险管理 -->	
+	<package name="mhtRiskData.qry" extends="mngr-query-default">
+		<action name="findMhtRiskData"  class="mhtRiskDataAction" method="findMhtRiskData"  />
+		<action name="findMhtRiskDataExcel" class="mhtRiskDataAction" method="findMhtRiskDataExcel" />
+		<action name="findMhtRiskDatabyMchntCode" class="mhtRiskDataAction" method="findMhtRiskDatabyMchntCode" />
+		<action name="findMhtRiskDatabyMchntCodeExcel" class="mhtRiskDataAction" method="findMhtRiskDatabyMchntCodeExcel" />
+	</package>
+	<package name="mhtRiskData" extends="mngr-default">
+		<action name="doInsertMhtRiskData" class="mhtRiskDataAction" method="doInsertMhtRiskData" />
+	</package>
+	<!-- 贷后数据管理 -->	
+	<package name="mhtTransAfterLoan.qry" extends="mngr-query-default">
+		<action name="findMhtTransAfterLoan"  class="mhtTransAfterLoanAction" method="findMhtTransAfterLoan"  />
+		<action name="findMhtTransAfterLoanExcel" class="loanmhtTransAfterLoanActionAction" method="findMhtTransAfterLoanExcel" />
+		<action name="findMhtTransAfterLoanbyMchntCode" class="mhtTransAfterLoanAction" method="findMhtTransAfterLoanbyMchntCode" />
+		<action name="findMhtTransAfterLoanbyMchntCodeExcel" class="mhtTransAfterLoanAction" method="findMhtTransAfterLoanbyMchntCodeExcel" />
+	</package>
+	<package name="mhtTransAfterLoan" extends="mngr-default">
+		<action name="doInsertMhtTransAfterLoan" class="mhtTransAfterLoanAction" method="doInsertMhtTransAfterLoan" />
+	</package>
+</struts>

@@ -1,0 +1,78 @@
+.attachView .panel .panel-body ul {
+	width: 100%;
+	overflow: auto;
+	padding: 0;
+}
+
+.attachView .panel .panel-body ul li {
+	list-style: none;
+	display: table-cell;
+	vertical-align: middle;
+	float: left;
+	text-align: center;
+	width: 180px;
+	height: 160px;
+	margin: 4px 5px;
+	border: 1px solid #999999;
+	border-radius: 4px;
+	padding: 3px;
+	background-color: #EEE;
+}
+
+.attachView .panel .panel-body ul li:hover {
+	background-color: #CCC;
+	border-color: #285e8e;
+}
+
+.attachView .panel .panel-body ul li span {
+	vertical-align: middle;
+	height: 100%;
+	display: inline-block;
+}
+
+.attachView .panel .panel-body ul li a {
+	vertical-align: middle;
+	text-align: center;
+	display: inline-block;
+	*display: block;
+	*font-size: 134px;
+	*font-family: Arial;
+}
+
+.attachView .panel .panel-body ul li img {
+	max-width: 174px;
+	max-height: 154px;
+	line-height: 154px;
+	margin-left: auto;
+	margin-right: auto;
+	vertical-align: middle;
+	display: inline;
+}
+
+.attachView .panel .panel-body ul .addImgBtn {
+	background-image: url(../img/icon/plus_96.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.attachBtnGrp {
+	position: fixed;
+	top: 120px;
+	right: 30px;
+	width: 120px;
+	border: 1px solid #999999;
+	border-radius: 4px;
+	padding: 6px 3px 3px 3px;
+	background-color: #fff;
+	text-align: center;
+}
+
+.attachBtnGrp button {
+	width: 90%;
+	margin-bottom: 5px;
+}
+
+.checkableAttachPanel .panel .panel-body ul li.checked {
+	background-color: #DC2A0C;
+	border-color: #DC2A0C;
+}

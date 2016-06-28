@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- 会员管理 -->	
+	<bean id="webMemberService" class="com.jiuyv.hhc.console.customer.service.impl.WebMemberServiceImpl" parent="assistService">
+		<property name="webMemberInfoDao" ref="webMemberInfoDao" />
+		<property name="webAgentRcmdDao" ref="webAgentRcmdDao" />
+	</bean>
+	<bean id="webUserAction" class="com.jiuyv.hhc.console.customer.action.WebUserAction" scope="prototype">
+		<property name="webMemberService" ref="webMemberService" />
+	</bean>
+	<bean id="webAgentAction" class="com.jiuyv.hhc.console.customer.action.WebAgentAction" scope="prototype">
+		<property name="webMemberService" ref="webMemberService" />
+	</bean>
+	
+	
+	<!-- 商户管理 -->	
+	<!-- <bean id="mchntService" class="com.jiuyv.hhc.console.customer.service.impl.MchntServiceImpl" parent="assistService">
+		<property name="mhtBaseInfoDao" ref="mhtBaseInfoDao" />
+	</bean>
+	<bean id="mchntAction" class="com.jiuyv.hhc.console.customer.action.MchntAction" scope="prototype">
+		<property name="service" ref="mchntService" />
+		<property name="sysParamService" ref="sysParamService" />
+		<property name="mediaImageService" ref="mediaService"/>
+	</bean> -->
+	
+	<bean id="mchntService" class="com.jiuyv.hhc.console.mchnt.service.impl.MchntServiceImpl" parent="assistService">
+		<property name="bizMerchantDao" ref="bizMerchantDao" />
+		<property name="bizMchntPropDao" ref="bizMchntPropDao" />
+		<property name="bizMchntAttachDao" ref="bizMchntAttachDao" />
+		<property name="bizLoanDataDao" ref="bizLoanDataDao" />
+	</bean>
+	
+	<bean id="mchntQryAction" class="com.jiuyv.hhc.console.mchnt.action.MchntQryAction" scope="prototype">
+		<property name="mchntService" ref="mchntService" />
+		<property name="webMemberService" ref="webMemberService" />
+		<property name="sysParamService" ref="sysParamService" />
+		<property name="mediaImageService" ref="mediaService"/>
+	</bean>
+	
+	<bean id="mchntAudAction" class="com.jiuyv.hhc.console.mchnt.action.MchntAudAction" scope="prototype">
+		<property name="mchntService" ref="mchntService" />
+		<property name="sysParamService" ref="sysParamService" />
+		<property name="mediaImageService" ref="mediaService"/>
+	</bean>
+	
+	<bean id="mchntMngrAction" class="com.jiuyv.hhc.console.mchnt.action.MchntMngrAction" scope="prototype">
+		<property name="mchntService" ref="mchntService" />
+	</bean>
+	
+	
+</beans>

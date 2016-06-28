@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+            
+<!-- 
+	Name:  BizMchntAttachMapper.xml
+	Table: FQ_BIZ_MCHNT_ATTACH ([New]商户信息附件表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.mchnt.dao.BizMchntAttachDao">
+	<sql id="__select" >
+	select
+		   t0.ATTACH_SEQ as attachSeq
+		  ,t0.MCHNT_CODE as mchntCode
+		  ,t0.ATTACH_TYPE as attachType
+		  ,t0.ATTACH_DESC as attachDesc
+		  ,t0.ATTACH_URL as attachUrl
+		  ,t0.ATTACH_TIME as attachTime
+	  from FQ_BIZ_MCHNT_ATTACH t0
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.mchnt.BizMchntAttachVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.mchnt.BizMchntAttachVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.ATTACH_SEQ = #{attachSeq}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.mchnt.BizMchntAttachVo">
+	    <!-- 
+		<selectKey keyProperty="attachSeq" order="BEFORE" resultType="java.lang.Long"> select SEQ_FQ_MCHNT_ATTACH.nextval from dual</selectKey>
+		 -->
+		insert into FQ_BIZ_MCHNT_ATTACH 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			ATTACH_TIME,
+			<if test="mchntCode != null" >MCHNT_CODE,</if>
+			<if test="attachType != null" >ATTACH_TYPE,</if>
+			<if test="attachDesc != null" >ATTACH_DESC,</if>
+			<if test="attachUrl != null" >ATTACH_URL,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<include refid="dialect.__time"/>,
+			<if test="mchntCode != null" >#{mchntCode},</if>
+			<if test="attachType != null" >#{attachType},</if>
+			<if test="attachDesc != null" >#{attachDesc},</if>
+			<if test="attachUrl != null" >#{attachUrl},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.mchnt.BizMchntAttachVo">
+		update FQ_BIZ_MCHNT_ATTACH 
+		<set>
+			<if test="attachSeq != null" >ATTACH_SEQ = #{attachSeq},</if>
+			<if test="mchntCode != null" >MCHNT_CODE = #{mchntCode},</if>
+			<if test="attachType != null" >ATTACH_TYPE = #{attachType},</if>
+			<if test="attachDesc != null" >ATTACH_DESC = #{attachDesc},</if>
+			<if test="attachUrl != null" >ATTACH_URL = #{attachUrl},</if>
+			<if test="attachTime != null" >ATTACH_TIME = #{attachTime},</if>
+		</set>
+		where ATTACH_SEQ = #{attachSeq} 
+	</update>
+	
+	<delete id="deleteBySeqList">
+		delete from FQ_BIZ_MCHNT_ATTACH where ATTACH_SEQ in 
+		<foreach collection="attachSeqList" open="(" close=")" separator="," item="attachSeq">#{attachSeq}</foreach>
+	</delete>
+	
+</mapper>

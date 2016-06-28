@@ -1,0 +1,47 @@
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 站内信处理 -->
+	<package name="msg.sitemsg.qry" extends="mngr-query-default">
+		<action name="recvMsgSetup" class="siteMsgAction">
+			<result name="success">page/message/msgbox_qry.jsp</result>
+		</action>
+		<action name="findRecvMsgPage"  class="siteMsgAction" method="findRecvMsgPage"  />
+		<action name="findRecvMsgExcel" class="siteMsgAction" method="findRecvMsgExcel" />
+		<!-- message edit and send manage -->
+		<action name="sendMsgSetup" class="siteMsgAction">
+			<result name="success">page/message/sendbox_mngr.jsp</result>
+		</action>
+		<action name="findSendMsgPage"  class="siteMsgAction" method="findSendMsgPage"  />
+		<action name="findSendMsgExcel" class="siteMsgAction" method="findSendMsgExcel" />
+		<!-- message detail information -->
+		<action name="findMsgDetail"    class="siteMsgAction" method="findMsgDetail"    />
+		<action name="findMsgRecvList"  class="siteMsgAction" method="findMsgRecvList"  />
+		<action name="userRecentMsg"    class="siteMsgAction" method="userRecentMsg"  />
+	</package>
+	<package name="msg.sitemsg" extends="mngr-default">
+		<action name="readMsg"          class="siteMsgAction" method="readMsg"          />
+		<action name="recycleMsg"       class="siteMsgAction" method="recycleMsg"       />
+		<action name="saveMsgDraft"     class="siteMsgAction" method="saveMsgDraft"     />
+		<action name="saveSendMsg"      class="siteMsgAction" method="saveSendMsg"      />
+		<action name="deleteMsgDraft"   class="siteMsgAction" method="deleteMsgDraft"   />
+	</package>
+	<!-- 模板管理 -->
+	<package name="msg.tpl.qry" extends="mngr-query-default">
+		<action name="tplMngrSetup" class="tplMngrAction">
+			<result name="success">page/message/tpl_mngr.jsp</result>
+		</action>
+		<action name="findTplPage"   class="tplMngrAction" method="findTplPage"   />
+		<action name="findTplExcel"  class="tplMngrAction" method="findTplExcel"  />
+		<action name="findTplDetail" class="tplMngrAction" method="findTplDetail" />
+		<action name="previewTpl"    class="tplMngrAction" method="previewTpl"    />
+		<action name="findTplParams" class="tplMngrAction" method="findTplParams" />
+		<action name="sendTestMail"  class="tplMngrAction" method="sendTestMail" />
+	</package>
+	<package name="msg.tpl" extends="mngr-query-default">
+	    <action name="setTpl"        class="tplMngrAction" method="setTpl"     />
+		<action name="insertTpl"     class="tplMngrAction" method="insertTpl"     />
+		<action name="updateTpl"     class="tplMngrAction" method="updateTpl"     />
+	</package>
+</struts>

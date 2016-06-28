@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  MhtHisTranMapper.xml
+	Table: FQ_MHT_HIS_TRAN (商户历史交易记录)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.loan.dao.MhtHisTranDao">
+	<sql id="__select" >
+	select
+		   t0.MCHNT_CODE as mchntCode
+		  ,t0.HIS_TRANS_MONTH as hisTransMonth
+		  ,t0.MONTH_TRANS_AT as monthTransAt
+		  ,t0.MONTH_TRANS_AT_YEAR as monthTransAtYear
+		  ,t0.MONTH_TRANS_NUM as monthTransNum
+		  ,t0.MONTH_CUS_NUM as monthCusNum
+		  ,t0.MONTH_REPEAT_CUS_NUM as monthRepeatCusNum
+		  ,t0.CREDIT_DEBIT_RATIO as creditDebitRatio
+		  ,t0.REMARK as remark
+		  ,t0.REC_TIME as recTime
+	  from FQ_MHT_HIS_TRAN t0
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.mchntCode != null" >and t0.MCHNT_CODE = #{params.mchntCode}</if>
+			<if test="params.hisTransMonth != null" >and t0.HIS_TRANS_MONTH = #{params.hisTransMonth}</if>
+			<if test="params.monthTransAt != null" >and t0.MONTH_TRANS_AT = #{params.monthTransAt}</if>
+			<if test="params.monthTransAtYear != null" >and t0.MONTH_TRANS_AT_YEAR = #{params.monthTransAtYear}</if>
+			<if test="params.monthTransNum != null" >and t0.MONTH_TRANS_NUM = #{params.monthTransNum}</if>
+			<if test="params.monthCusNum != null" >and t0.MONTH_CUS_NUM = #{params.monthCusNum}</if>
+			<if test="params.monthRepeatCusNum != null" >and t0.MONTH_REPEAT_CUS_NUM = #{params.monthRepeatCusNum}</if>
+			<if test="params.creditDebitRatio != null" >and t0.CREDIT_DEBIT_RATIO = #{params.creditDebitRatio}</if>
+			<if test="params.remark != null" >and t0.REMARK = #{params.remark}</if>
+			<if test="params.recTime != null" >and t0.REC_TIME = #{params.recTime}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.loan.MhtHisTranVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.loan.MhtHisTranVo">
+ 	 	<include refid="__select"/>
+ 	 	where MCHNT_CODE = #{mchntCode}
+		  and HIS_TRANS_MONTH = #{hisTransMonth}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.loan.MhtHisTranVo">
+		insert into FQ_MHT_HIS_TRAN 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		REC_TIME,
+			<if test="mchntCode != null" >MCHNT_CODE,</if>
+			<if test="hisTransMonth != null" >HIS_TRANS_MONTH,</if>
+			<if test="monthTransAt != null" >MONTH_TRANS_AT,</if>
+			<if test="monthTransAtYear != null" >MONTH_TRANS_AT_YEAR,</if>
+			<if test="monthTransNum != null" >MONTH_TRANS_NUM,</if>
+			<if test="monthCusNum != null" >MONTH_CUS_NUM,</if>
+			<if test="monthRepeatCusNum != null" >MONTH_REPEAT_CUS_NUM,</if>
+			<if test="creditDebitRatio != null" >CREDIT_DEBIT_RATIO,</if>
+			<if test="remark != null" >REMARK,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+		<include refid="dialect.__time"/> ,
+			<if test="mchntCode != null" >#{mchntCode},</if>
+			<if test="hisTransMonth != null" >#{hisTransMonth},</if>
+			<if test="monthTransAt != null" >#{monthTransAt},</if>
+			<if test="monthTransAtYear != null" >#{monthTransAtYear},</if>
+			<if test="monthTransNum != null" >#{monthTransNum},</if>
+			<if test="monthCusNum != null" >#{monthCusNum},</if>
+			<if test="monthRepeatCusNum != null" >#{monthRepeatCusNum},</if>
+			<if test="creditDebitRatio != null" >#{creditDebitRatio},</if>
+			<if test="remark != null" >#{remark},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.loan.MhtHisTranVo">
+		update FQ_MHT_HIS_TRAN 
+		<set>
+			<if test="mchntCode != null" >MCHNT_CODE = #{mchntCode},</if>
+			<if test="hisTransMonth != null" >HIS_TRANS_MONTH = #{hisTransMonth},</if>
+			<if test="monthTransAt != null" >MONTH_TRANS_AT = #{monthTransAt},</if>
+			<if test="monthTransAtYear != null" >MONTH_TRANS_AT_YEAR = #{monthTransAtYear},</if>
+			<if test="monthTransNum != null" >MONTH_TRANS_NUM = #{monthTransNum},</if>
+			<if test="monthCusNum != null" >MONTH_CUS_NUM = #{monthCusNum},</if>
+			<if test="monthRepeatCusNum != null" >MONTH_REPEAT_CUS_NUM = #{monthRepeatCusNum},</if>
+			<if test="creditDebitRatio != null" >CREDIT_DEBIT_RATIO = #{creditDebitRatio},</if>
+			<if test="remark != null" >REMARK = #{remark},</if>
+			<if test="recTime != null" >REC_TIME = #{recTime},</if>
+		</set>
+		where MCHNT_CODE = #{mchntCode}
+		  and HIS_TRANS_MONTH = #{hisTransMonth}
+	</update>
+	<delete id="deleteByMhtCode" parameterType="com.jiuyv.hhc.model.loan.MhtHisTranVo">
+	delete FROM FQ_MHT_HIS_TRAN WHERE MCHNT_CODE=#{mchntCode}
+	</delete>
+</mapper>

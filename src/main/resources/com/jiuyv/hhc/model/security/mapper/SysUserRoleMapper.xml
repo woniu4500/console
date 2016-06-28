@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  SysUserRoleMapper.xml
+	Table: FQ_SYS_USER_ROLE (用户角色关系表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.security.dao.SysUserRoleDao">
+	<sql id="__select" >
+	select
+		   t0.USER_ID as userId
+		  ,t0.ROLE_ID as roleId
+	  from FQ_SYS_USER_ROLE t0
+	</sql>
+
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.security.SysUserRoleVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.security.SysUserRoleVo">
+ 	 	<include refid="__select"/>
+ 	 	where USER_ID = #{userId}
+		  and ROLE_ID = #{roleId}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.security.SysUserRoleVo">
+		insert into FQ_SYS_USER_ROLE 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="userId != null" >USER_ID,</if>
+			<if test="roleId != null" >ROLE_ID,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="userId != null" >#{userId},</if>
+			<if test="roleId != null" >#{roleId},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.security.SysUserRoleVo">
+		update FQ_SYS_USER_ROLE 
+		<set>
+			<if test="userId != null" >USER_ID = #{userId},</if>
+			<if test="roleId != null" >ROLE_ID = #{roleId},</if>
+		</set>
+		where USER_ID = #{userId}
+		  and ROLE_ID = #{roleId}
+	</update>
+	
+	<!--  delete by user_id -->
+	<delete id="deleteByUser">
+		delete from FQ_SYS_USER_ROLE where USER_ID = #{userId}
+	</delete>
+</mapper>

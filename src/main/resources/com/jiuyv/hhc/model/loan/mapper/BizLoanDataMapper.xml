@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+                                                                      
+<!-- 
+	Name:  BizLoanDataMapper.xml
+	Table: FQ_BIZ_LOAN_DATA ([New]贷款记录信息表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.loan.dao.BizLoanDataDao">
+	<sql id="__select" >
+  select
+       t0.LOAN_ID as loanId
+      ,t0.VERSION as version
+      ,t0.MCHNT_CODE as mchntCode
+      ,t0.CUP_LOAN_ID as cupLoanId
+      ,t1.LIC as licNo
+      ,t1.ID_NUMBER as artifCertifId
+      ,t0.ARTIF_NM as artifNm
+      ,t0.CREDIT_ST as creditSt
+      ,t0.CANCEL_FLAG as cancelFlag
+      ,t0.MCHNT_ST as mchntSt
+      ,t0.LENDER_ID as lenderId
+      ,t0.REQ_LOAN_AT as reqLoanAt
+      ,t0.LOAN_AT as loanAt
+      ,t0.LOAN_CYCLE as loanCycle
+      ,t0.LOAN_RT as loanRt
+      ,t0.CARD_CREDIT_LIMIT as cardCreditLimit
+      ,t0.CARD_USE_LIMIT as cardUseLimit
+      ,t0.CARD_EXPIRE as cardExpire
+      ,t0.CARD_NO as cardNo
+      ,t0.LOAN_SUCC_TM as loanSuccTm
+      ,t0.LOAN_BALANCE as loanBalance
+      ,t0.LOAN_PROD as loanProd
+      ,t0.SVC_FEE_BENEFIT as svcFeeBenefit
+      ,t0.ALLOT_TP as allotTp
+      ,t0.EXCEED_AT as exceedAt
+      ,t0.EXCEED_NUM as exceedNum
+      ,t0.LOAN_EXPIRE as loanExpire
+      ,t0.REMARK as remark
+      ,t0.LOAN_REQ_TIME as loanReqTime
+      ,t0.LOAN_PROC_RESP as loanProcResp
+      ,t0.LOAN_PROC_ACC as loanProcAcc
+      ,t0.LOAN_PROC_TIME as loanProcTime
+      ,t0.LAST_UPT_ORG as lastUptOrg
+      ,t0.LAST_UPT_TIME as lastUptTime
+      ,t0.LAST_UPT_ACC as lastUptAcc
+      ,t0.REC_ACC as recAcc
+      ,t1.MOBILE as customerMobile
+      ,st.CODE_NAME as creditStDesc
+      ,cf.CODE_NAME as cancelFlagDesc
+
+      ,mi.CUSTOMER_CODE as customerCode
+      ,mi.MCHNT_CD as mchntCd
+      ,mi.MCHNT_CN_NAME as mchntCnName
+      
+      ,IFNULL( tu.USER_NAME, t0.REC_ACC ) as recAccDesc
+    from FQ_BIZ_LOAN_DATA t0
+    left join FQ_SYS_USER tu on t0.REC_ACC = tu.LOGIN_ID
+    left join FQ_BIZ_MERCHANT mi ON t0.MCHNT_CODE=mi.MCHNT_CODE
+    left join (select * from FQ_SYS_CODE where code_type='MCHNT_CREDIT_ST') st on t0.CREDIT_ST=st.CODE_NO 
+    left join (select * from FQ_SYS_CODE where code_type='LOAN_CANCEL_FLAG') cf on t0.CANCEL_FLAG=cf.CODE_NO
+    left join FQ_web_member_info t1 on t0.mchnt_code = t1.customer_code
+	</sql>
+	
+	<sql id="__selectsingletable" >
+		select
+		   t0.LOAN_ID as loanId
+		  ,t0.VERSION as version
+		  ,t0.MCHNT_CODE as mchntCode
+		  ,t0.CUP_LOAN_ID as cupLoanId
+		  ,t0.LIC_NO as licNo
+		  ,t0.ARTIF_CERTIF_ID as artifCertifId
+		  ,t0.ARTIF_NM as artifNm
+		  ,t0.CREDIT_ST as creditSt
+		  ,t0.CANCEL_FLAG as cancelFlag
+		  ,t0.MCHNT_ST as mchntSt
+		  ,t0.LENDER_ID as lenderId
+		  ,t0.REQ_LOAN_AT as reqLoanAt
+		  ,t0.LOAN_AT as loanAt
+		  ,t0.LOAN_CYCLE as loanCycle
+		  ,t0.LOAN_RT as loanRt
+		  ,t0.CARD_CREDIT_LIMIT as cardCreditLimit
+		  ,t0.CARD_USE_LIMIT as cardUseLimit
+		  ,t0.CARD_EXPIRE as cardExpire
+		  ,t0.CARD_NO as cardNo
+		  ,t0.LOAN_SUCC_TM as loanSuccTm
+		  ,t0.LOAN_BALANCE as loanBalance
+		  ,t0.LOAN_PROD as loanProd
+		  ,t0.SVC_FEE_BENEFIT as svcFeeBenefit
+		  ,t0.ALLOT_TP as allotTp
+		  ,t0.EXCEED_AT as exceedAt
+		  ,t0.EXCEED_NUM as exceedNum
+		  ,t0.LOAN_EXPIRE as loanExpire
+		  ,t0.REMARK as remark
+		  ,t0.LOAN_REQ_TIME as loanReqTime
+		  ,t0.LOAN_PROC_RESP as loanProcResp
+		  ,t0.LOAN_PROC_ACC as loanProcAcc
+		  ,t0.LOAN_PROC_TIME as loanProcTime
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.REC_ACC as recAcc
+		  ,t1.MOBILE as customerMobile
+	  from FQ_BIZ_LOAN_DATA t0, FQ_WEB_MEMBER_INFO  t1
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuerybyAgentCustomerCode" resultType="com.jiuyv.hhc.model.loan.BizLoanDataVo">
+  	 	<include refid="__select"/>
+  	 	join FQ_WEB_MEMBER_INFO twm on (twm.CUSTOMER_CODE=mi.CUSTOMER_CODE)
+  	 	where 
+  	 	  (twm.CUSTOMER_CODE=#{customerCode} or twm.FATHER_CUSTOMER_CODE=#{customerCode})
+ 	</select>
+	
+	<!-- select -->
+	<select id="findBizLoanDataCustomerCode" resultType="com.jiuyv.hhc.model.loan.BizLoanDataVo">
+  	 	<include refid="__selectsingletable"/>
+  	 	where 
+  	 	  t0.MCHNT_CODE = t1.CUSTOMER_CODE and t0.MCHNT_CODE=#{customerCode} 
+ 	</select>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.loan.BizLoanDataVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.loan.BizLoanDataVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.LOAN_ID = #{loanId}
+ 	</select>
+ 	
+ 	<select id="countByMchntCd" resultType="java.lang.Long">
+ 		select count(1)
+ 		  from FQ_BIZ_LOAN_DATA t
+ 		 where t.CREDIT_ST in ('04','05')
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.loan.BizLoanDataVo" useGeneratedKeys="true">
+	    <!-- 
+		<selectKey keyProperty="loanId" order="BEFORE" resultType="java.lang.String">select SEQ_FQ_LOAN_DATA.nextval from dual</selectKey>
+		 -->
+		insert into FQ_BIZ_LOAN_DATA 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,LOAN_REQ_TIME,LAST_UPT_TIME,REC_ACC, 
+			<if test="mchntCode != null" >MCHNT_CODE,</if>
+			<if test="cupLoanId != null" >CUP_LOAN_ID,</if>
+			<if test="licNo != null" >LIC_NO,</if>
+			<if test="artifCertifId != null" >ARTIF_CERTIF_ID,</if>
+			<if test="artifNm != null" >ARTIF_NM,</if>
+			<if test="creditSt != null" >CREDIT_ST,</if>
+			<if test="mchntSt != null" >MCHNT_ST,</if>
+			<if test="cancelFlag != null" >CANCEL_FLAG,</if>
+			<if test="lenderId != null" >LENDER_ID,</if>
+			<if test="reqLoanAt != null" >REQ_LOAN_AT,</if>
+			<if test="loanAt != null" >LOAN_AT,</if>
+			<if test="loanCycle != null" >LOAN_CYCLE,</if>
+			<if test="loanRt != null" >LOAN_RT,</if>
+			<if test="cardCreditLimit != null" >CARD_CREDIT_LIMIT,</if>
+			<if test="cardUseLimit != null" >CARD_USE_LIMIT,</if>
+			<if test="cardExpire != null" >CARD_EXPIRE,</if>
+			<if test="cardNo != null" >CARD_NO,</if>
+			<if test="loanSuccTm != null" >LOAN_SUCC_TM,</if>
+			<if test="loanBalance != null" >LOAN_BALANCE,</if>
+			<if test="loanProd != null" >LOAN_PROD,</if>
+			<if test="svcFeeBenefit != null" >SVC_FEE_BENEFIT,</if>
+			<if test="allotTp != null" >ALLOT_TP,</if>
+			<if test="exceedAt != null" >EXCEED_AT,</if>
+			<if test="exceedNum != null" >EXCEED_NUM,</if>
+			<if test="loanExpire != null" >LOAN_EXPIRE,</if>
+			<if test="remark != null" >REMARK,</if>
+			<if test="loanReqTime != null" >LOAN_REQ_TIME,</if>
+			<if test="loanProcResp != null" >LOAN_PROC_RESP,</if>
+			<if test="loanProcAcc != null" >LOAN_PROC_ACC,</if>
+			<if test="loanProcTime != null" >LOAN_PROC_TIME,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,<include refid="dialect.__time"/>,#{recAcc}, 
+			<if test="mchntCode != null" >#{mchntCode},</if>
+			<if test="cupLoanId != null" >#{cupLoanId},</if>
+			<if test="licNo != null" >#{licNo},</if>
+			<if test="artifCertifId != null" >#{artifCertifId},</if>
+			<if test="artifNm != null" >#{artifNm},</if>
+			<if test="creditSt != null" >#{creditSt},</if>
+			<if test="mchntSt != null" >#{mchntSt},</if>
+			<if test="cancelFlag != null" >#{cancelFlag},</if>
+			<if test="lenderId != null" >#{lenderId},</if>
+			<if test="reqLoanAt != null" >#{reqLoanAt},</if>
+			<if test="loanAt != null" >#{loanAt},</if>
+			<if test="loanCycle != null" >#{loanCycle},</if>
+			<if test="loanRt != null" >#{loanRt},</if>
+			<if test="cardCreditLimit != null" >#{cardCreditLimit},</if>
+			<if test="cardUseLimit != null" >#{cardUseLimit},</if>
+			<if test="cardExpire != null" >#{cardExpire},</if>
+			<if test="cardNo != null" >#{cardNo},</if>
+			<if test="loanSuccTm != null" >#{loanSuccTm},</if>
+			<if test="loanBalance != null" >#{loanBalance},</if>
+			<if test="loanProd != null" >#{loanProd},</if>
+			<if test="svcFeeBenefit != null" >#{svcFeeBenefit},</if>
+			<if test="allotTp != null" >#{allotTp},</if>
+			<if test="exceedAt != null" >#{exceedAt},</if>
+			<if test="exceedNum != null" >#{exceedNum},</if>
+			<if test="loanExpire != null" >#{loanExpire},</if>
+			<if test="remark != null" >#{remark},</if>
+			<if test="loanProcResp != null" >#{loanProcResp},</if>
+			<if test="loanProcAcc != null" >#{loanProcAcc},</if>
+			<if test="loanProcTime != null" >#{loanProcTime},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.loan.BizLoanDataVo">
+		update FQ_BIZ_LOAN_DATA 
+		<set>
+			VERSION = VERSION + 1, LAST_UPT_TIME =<include refid="dialect.__time"/> ,
+			<if test="mchntCode != null" >MCHNT_CODE = #{mchntCode},</if>
+			<if test="cupLoanId != null" >CUP_LOAN_ID = #{cupLoanId},</if>
+			<if test="licNo != null" >LIC_NO = #{licNo},</if>
+			<if test="artifCertifId != null" >ARTIF_CERTIF_ID = #{artifCertifId},</if>
+			<if test="artifNm != null" >ARTIF_NM = #{artifNm},</if>
+			<if test="creditSt != null" >CREDIT_ST = #{creditSt},</if>
+			<if test="mchntSt != null" >MCHNT_ST = #{mchntSt},</if>
+			<if test="cancelFlag != null" >CANCEL_FLAG = #{cancelFlag},</if>
+			<if test="lenderId != null" >LENDER_ID = #{lenderId},</if>
+			<if test="reqLoanAt != null" >REQ_LOAN_AT = #{reqLoanAt},</if>
+			<if test="loanAt != null" >LOAN_AT = #{loanAt},</if>
+			<if test="loanCycle != null" >LOAN_CYCLE = #{loanCycle},</if>
+			<if test="loanRt != null" >LOAN_RT = #{loanRt},</if>
+			<if test="cardCreditLimit != null" >CARD_CREDIT_LIMIT = #{cardCreditLimit},</if>
+			<if test="cardUseLimit != null" >CARD_USE_LIMIT = #{cardUseLimit},</if>
+			<if test="cardExpire != null" >CARD_EXPIRE = #{cardExpire},</if>
+			<if test="cardNo != null" >CARD_NO = #{cardNo},</if>
+			<if test="loanSuccTm != null" >LOAN_SUCC_TM = #{loanSuccTm},</if>
+			<if test="loanBalance != null" >LOAN_BALANCE = #{loanBalance},</if>
+			<if test="loanProd != null" >LOAN_PROD = #{loanProd},</if>
+			<if test="svcFeeBenefit != null" >SVC_FEE_BENEFIT = #{svcFeeBenefit},</if>
+			<if test="allotTp != null" >ALLOT_TP = #{allotTp},</if>
+			<if test="exceedAt != null" >EXCEED_AT = #{exceedAt},</if>
+			<if test="exceedNum != null" >EXCEED_NUM = #{exceedNum},</if>
+			<if test="loanExpire != null" >LOAN_EXPIRE = #{loanExpire},</if>
+			<if test="remark != null" >REMARK = #{remark},</if>
+			<if test="loanReqTime != null" >LOAN_REQ_TIME = #{loanReqTime},</if>
+			<if test="loanProcResp != null" >LOAN_PROC_RESP = #{loanProcResp},</if>
+			<if test="loanProcAcc != null" >LOAN_PROC_ACC = #{loanProcAcc},</if>
+			<if test="loanProcTime != null" >LOAN_PROC_TIME = #{loanProcTime},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+		</set>
+		where LOAN_ID = #{loanId} and VERSION = #{version}  
+	</update>
+	
+	<update id="updateLoanToPass" >
+		update FQ_BIZ_LOAN_DATA 
+		   set CREDIT_ST = '02'
+		      ,LOAN_PROC_ACC = #{loginId}
+		      ,LOAN_PROC_TIME = <include refid="dialect.__time"/>
+		      ,LAST_UPT_ACC = #{loginId}
+		      ,LAST_UPT_ORG = #{orgCode}
+		      ,LAST_UPT_TIME = <include refid="dialect.__time"/>
+		 where MCHNT_CODE = #{mchntCode}
+		   and CREDIT_ST = '01'
+	</update>
+
+	<update id="updateLoanToDeny" >
+		update FQ_BIZ_LOAN_DATA 
+		   set CREDIT_ST = '08'
+		      ,LOAN_PROC_RESP = #{procResp}
+		      ,LOAN_PROC_ACC = #{loginId}
+		      ,LOAN_PROC_TIME = <include refid="dialect.__time"/>
+		      ,LAST_UPT_ACC = #{loginId}
+		      ,LAST_UPT_ORG = #{orgCode}
+		      ,LAST_UPT_TIME = <include refid="dialect.__time"/>
+		 where MCHNT_CODE = #{mchntCode}
+		   and CREDIT_ST = '01'
+	</update>
+	
+</mapper>

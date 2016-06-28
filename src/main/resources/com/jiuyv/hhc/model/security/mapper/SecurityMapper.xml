@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.jiuyv.hhc.model.security.dao.ISecurityDao">
+	
+	<select id="findUserByLoginId" resultType="com.jiuyv.hhc.model.security.SecurityUserDetail">
+	select
+		   t0.USER_ID as userId
+		  ,t0.VERSION as version
+		  ,t0.LOGIN_ID as loginId
+		  ,t0.LOGIN_PASSWD as loginPasswd
+		  ,t0.USER_NAME as userName
+		  ,t0.ORG_CODE as orgCode
+		  ,t0.USER_PHONE as userPhone
+		  ,t0.USER_EMAIL as userEmail
+		  ,t0.USER_ADDR as userAddr
+		  ,t0.CRD_TYPE as crdType
+		  ,t0.CRD_NO as crdNo
+		  ,t0.STATUS as status
+		  ,t0.REG_TIME as regTime
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,o.ORG_NAME as orgName
+	  from FQ_SYS_USER t0	
+	  left join FQ_SYS_ORG o on t0.ORG_CODE=o.ORG_CODE
+	 where t0.LOGIN_ID=#{loginId}
+	</select>
+	
+	<select id="findOrgByCode" resultType="com.jiuyv.hhc.model.security.SysOrgVo">
+	select
+		   t0.ORG_CODE as orgCode
+		  ,t0.VERSION as version
+		  ,t0.FATHER_ORG_CODE as fatherOrgCode
+		  ,t0.ORG_NAME as orgName
+		  ,t0.ORG_TYPE as orgType
+		  ,t0.PERS_NAME as persName
+		  ,t0.PERS_PHONE as persPhone
+		  ,t0.EMAIL as email
+		  ,t0.ORG_ADDR as orgAddr
+		  ,t0.STATUS as status
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+	  from FQ_SYS_ORG t0
+	 where t0.ORG_CODE=#{orgCode}
+	</select>
+	
+	<select id="findResByLoginId" resultType="com.jiuyv.hhc.model.security.SecurityAuthority">
+	select
+		   t0.RES_ID as resId
+		  ,t0.FATHER_ID as fatherId
+		  ,t0.RES_ZH as resZh
+		  ,t0.RES_EN as resEn
+		  ,t0.SYS_CODE as sysCode
+		  ,t0.RES_URL as resUrl
+		  ,t0.SHOW_TYPE as showType
+		  ,t0.ORDER_NUM as orderNum
+		  ,t0.LOG_FLAG as logFlag
+		  ,t0.REMARKS as remarks
+	  from FQ_SYS_RESOURCE t0
+	   join (select distinct(t.RES_ID) as RES_ID
+         from FQ_SYS_RESOURCE  t 
+         join FQ_SYS_ROLE_RES  t1 on t.RES_ID=t1.RES_ID
+         join FQ_SYS_USER_ROLE  t2 on t1.ROLE_ID=t2.ROLE_ID
+         join FQ_SYS_USER  t3 on t2.USER_ID=t3.USER_ID
+        where t3.LOGIN_ID = #{loginId} ) c0 on t0.RES_ID = c0.RES_ID
+	</select>
+	
+	<select id="findFullRes" resultType="com.jiuyv.hhc.model.security.SysResourceVo">
+	select
+		   t0.RES_ID as resId
+		  ,t0.FATHER_ID as fatherId
+		  ,t0.RES_ZH as resZh
+		  ,t0.RES_EN as resEn
+		  ,t0.SYS_CODE as sysCode
+		  ,t0.RES_URL as resUrl
+		  ,t0.SHOW_TYPE as showType
+		  ,t0.ORDER_NUM as orderNum
+		  ,t0.LOG_FLAG as logFlag
+		  ,t0.REMARKS as remarks
+	  from FQ_SYS_RESOURCE t0
+	 order by t0.ORDER_NUM ASC
+	</select>
+	
+	<select id="findSysTime" resultType="java.lang.String">
+		select <include refid="dialect.__time"/> from dual
+	</select>
+	
+</mapper>

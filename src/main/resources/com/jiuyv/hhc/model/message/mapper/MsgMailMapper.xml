@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  MsgMailMapper.xml
+	Table: FQ_MSG_MAIL (邮件内容表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.message.dao.MsgMailDao">
+	<sql id="__select" >
+	select
+		   t0.MAIL_ID as mailId
+		  ,t0.VERSION as version
+		  ,t0.STATUS as status
+		  ,t0.PROC_INFO as procInfo
+		  ,t0.TO_ADDRS as toAddrs
+		  ,t0.CC_ADDRS as ccAddrs
+		  ,t0.SUBJECT as subject
+		  ,t0.CONTENT as content
+		  ,t0.SEND_TIME as sendTime
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+	  from FQ_MSG_MAIL t0
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.mailId != null" >and t0.MAIL_ID = #{params.mailId}</if>
+			<if test="params.version != null" >and t0.VERSION = #{params.version}</if>
+			<if test="params.status != null" >and t0.STATUS = #{params.status}</if>
+			<if test="params.procInfo != null" >and t0.PROC_INFO = #{params.procInfo}</if>
+			<if test="params.toAddrs != null" >and t0.TO_ADDRS = #{params.toAddrs}</if>
+			<if test="params.ccAddrs != null" >and t0.CC_ADDRS = #{params.ccAddrs}</if>
+			<if test="params.subject != null" >and t0.SUBJECT = #{params.subject}</if>
+			<if test="params.content != null" >and t0.CONTENT = #{params.content}</if>
+			<if test="params.sendTime != null" >and t0.SEND_TIME = #{params.sendTime}</if>
+			<if test="params.recCrtDttm != null" >and t0.REC_CRT_DTTM = #{params.recCrtDttm}</if>
+			<if test="params.recCrtUserId != null" >and t0.REC_CRT_USER_ID = #{params.recCrtUserId}</if>
+			<if test="params.lstUpdDttm != null" >and t0.LST_UPT_DTTM = #{params.lstUpdDttm}</if>
+			<if test="params.lstUpdUserId != null" >and t0.LST_UPT_USER_ID = #{params.lstUpdUserId}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.message.MsgMailVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.message.MsgMailVo">
+ 	 	<include refid="__select"/>
+ 	 	where MAIL_ID = #{mailId}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.message.MsgMailVo" >
+	    <!-- 
+		<selectKey keyProperty="mailId" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_MSG_MAIL.nextval from dual</selectKey>
+		 -->
+		insert into FQ_MSG_MAIL 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,REC_CRT_TIME,LAST_UPT_TIME,
+			<if test="status != null" >STATUS,</if>
+			<if test="procInfo != null" >PROC_INFO,</if>
+			<if test="toAddrs != null" >TO_ADDRS,</if>
+			<if test="ccAddrs != null" >CC_ADDRS,</if>
+			<if test="subject != null" >SUBJECT,</if>
+			<if test="content != null" >CONTENT,</if>
+			<if test="sendTime != null" >SEND_TIME,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,<include refid="dialect.__time"/>,
+			<if test="status != null" >#{status},</if>
+			<if test="procInfo != null" >#{procInfo},</if>
+			<if test="toAddrs != null" >#{toAddrs},</if>
+			<if test="ccAddrs != null" >#{ccAddrs},</if>
+			<if test="subject != null" >#{subject},</if>
+			<if test="content != null" >#{content},</if>
+			<if test="sendTime != null" >#{sendTime},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.message.MsgMailVo">
+		update FQ_MSG_MAIL 
+		<set>
+			VERSION = VERSION + 1,
+			LAST_UPT_TIME = <include refid="dialect.__time"/>,
+			<if test="status != null" >STATUS = #{status},</if>
+			<if test="procInfo != null" >PROC_INFO = #{procInfo},</if>
+			<if test="toAddrs != null" >TO_ADDRS = #{toAddrs},</if>
+			<if test="ccAddrs != null" >CC_ADDRS = #{ccAddrs},</if>
+			<if test="subject != null" >SUBJECT = #{subject},</if>
+			<if test="content != null" >CONTENT = #{content},</if>
+			<if test="sendTime != null" >SEND_TIME = #{sendTime},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+		</set>
+		where MAIL_ID = #{mailId} and VERSION = #{version}
+	</update>
+</mapper>

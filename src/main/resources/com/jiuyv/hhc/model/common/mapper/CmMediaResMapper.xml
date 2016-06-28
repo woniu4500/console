@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  CmMediaResMapper.xml
+	Table: FQ_CM_MEDIA_RES (媒体资源)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.common.dao.CmMediaResDao">
+	<sql id="__select" >
+	select
+		   t0.MED_SEQ as medSeq
+		  ,t0.VERSION as version
+		  ,t0.MED_PATH as medPath
+		  ,t0.MED_DIR as medDir
+		  ,t0.MED_TYPE as medType
+		  ,t0.MED_NAME as medName
+		  ,t0.MED_THUMB as medThumb
+		  ,t0.MED_CONTENT as medContent
+		  ,t0.MED_DESC as medDesc
+		  ,t0.MIME_TYPE as mimeType
+		  ,t0.CUSTOMER_CODE as customerCode
+		  ,t0.MED_INFO as medInfo
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+	  from FQ_CM_MEDIA_RES t0
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.medSeq != null" >and t0.MED_SEQ = #{params.medSeq}</if>
+			<if test="params.version != null" >and t0.VERSION = #{params.version}</if>
+			<if test="params.medPath != null" >and t0.MED_PATH = #{params.medPath}</if>
+			<if test="params.medDir != null" >and t0.MED_DIR = #{params.medDir}</if>
+			<if test="params.medType != null" >and t0.MED_TYPE = #{params.medType}</if>
+			<if test="params.medName != null" >and t0.MED_NAME = #{params.medName}</if>
+			<if test="params.medThumb != null" >and t0.MED_THUMB = #{params.medThumb}</if>
+			<if test="params.medContent != null" >and t0.MED_CONTENT = #{params.medContent}</if>
+			<if test="params.medDesc != null" >and t0.MED_DESC = #{params.medDesc}</if>
+			<if test="params.mimeType != null" >and t0.MIME_TYPE = #{params.mimeType}</if>
+			<if test="params.customerCode != null" >and t0.CUSTOMER_CODE = #{params.customerCode}</if>
+			<if test="params.medInfo != null" >and t0.MED_INFO = #{params.medInfo}</if>
+			<if test="params.recCrtTime != null" >and t0.REC_CRT_TIME = #{params.recCrtTime}</if>
+			<if test="params.recCrtAcc != null" >and t0.REC_CRT_ACC = #{params.recCrtAcc}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.common.CmMediaResVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findThumbByPath" resultType="com.jiuyv.hhc.model.common.CmMediaResVo">
+ 	 	select
+		   t0.MED_SEQ as medSeq
+		  ,t0.MED_PATH as medPath
+		  ,t0.MED_DIR as medDir
+		  ,t0.MED_NAME as medName
+		  ,t0.MIME_TYPE as mimeType
+		  ,t0.MED_THUMB as medThumb
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+	  from FQ_CM_MEDIA_RES t0
+	 where MED_PATH = #{medPath} 
+ 	</select>
+ 	
+ 	<select id="findContentByPath" resultType="com.jiuyv.hhc.model.common.CmMediaResVo">
+ 	 	select
+		   t0.MED_SEQ as medSeq
+		  ,t0.MED_PATH as medPath
+		  ,t0.MED_DIR as medDir
+		  ,t0.MED_NAME as medName
+		  ,t0.MIME_TYPE as mimeType
+		  ,t0.MED_CONTENT as medContent
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+	  from FQ_CM_MEDIA_RES t0
+	 where MED_PATH = #{medPath} 
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.common.CmMediaResVo">
+ 	 	<include refid="__select"/>
+ 	 	where MED_SEQ = #{medSeq}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.common.CmMediaResVo">
+	<!--    
+	<selectKey keyProperty="medSeq" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_CM_MEDIA_RES.nextval from dual</selectKey>
+	-->  
+		insert into FQ_CM_MEDIA_RES 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		REC_CRT_TIME,VERSION,
+			<if test="medPath != null" >MED_PATH,</if>
+			<if test="medDir != null" >MED_DIR,</if>
+			<if test="medType != null" >MED_TYPE,</if>
+			<if test="medName != null" >MED_NAME,</if>
+			<if test="medThumb != null" >MED_THUMB,</if>
+			<if test="medContent != null" >MED_CONTENT,</if>
+			<if test="medDesc != null" >MED_DESC,</if>
+			<if test="mimeType != null" >MIME_TYPE,</if>
+			<if test="customerCode != null" >CUSTOMER_CODE,</if>
+			<if test="medInfo != null" >MED_INFO,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+		<include refid="dialect.__time" />,0,
+			<if test="medPath != null" >#{medPath},</if>
+			<if test="medDir != null" >#{medDir},</if>
+			<if test="medType != null" >#{medType},</if>
+			<if test="medName != null" >#{medName},</if>
+			<if test="medThumb != null" >#{medThumb},</if>
+			<if test="medContent != null" >#{medContent},</if>
+			<if test="medDesc != null" >#{medDesc},</if>
+			<if test="mimeType != null" >#{mimeType},</if>
+			<if test="customerCode != null" >#{customerCode},</if>
+			<if test="medInfo != null" >#{medInfo},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.common.CmMediaResVo">
+		update FQ_CM_MEDIA_RES 
+		<set>
+			VERSION=VERSION+1,
+			<if test="medSeq != null" >MED_SEQ = #{medSeq},</if>
+			<if test="medPath != null" >MED_PATH = #{medPath},</if>
+			<if test="medDir != null" >MED_DIR = #{medDir},</if>
+			<if test="medType != null" >MED_TYPE = #{medType},</if>
+			<if test="medName != null" >MED_NAME = #{medName},</if>
+			<if test="medThumb != null" >MED_THUMB = #{medThumb},</if>
+			<if test="medContent != null" >MED_CONTENT = #{medContent},</if>
+			<if test="medDesc != null" >MED_DESC = #{medDesc},</if>
+			<if test="mimeType != null" >MIME_TYPE = #{mimeType},</if>
+			<if test="customerCode != null" >CUSTOMER_CODE = #{customerCode},</if>
+			<if test="medInfo != null" >MED_INFO = #{medInfo},</if>
+			<if test="recCrtTime != null" >REC_CRT_TIME = #{recCrtTime},</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC = #{recCrtAcc},</if>
+		</set>
+		where MED_SEQ = #{medSeq}
+	</update>
+</mapper>

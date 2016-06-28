@@ -1,0 +1,49 @@
+.tree-checkbox .ltr li.open, .tree-checkbox .rtl li.open { background-image:url("minus.gif"); background-position:2px 5px; background-repeat: no-repeat; }
+.tree-checkbox .ltr li.closed, .tree-checkbox .rtl li.closed, #jstree-dragged.tree-checkbox li li.open { background-image:url("plus.gif"); background-position:2px 5px; background-repeat: no-repeat; }
+.tree-checkbox li{width:auto !important;}
+.tree-checkbox li span{
+dispaly:inline;
+BORDER-BOTTOM: 0px; BORDER-LEFT: 0px;
+PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; WIDTH: 16px; PADDING-RIGHT: 0px; BACKGROUND-REPEAT: no-repeat;
+BACKGROUND-POSITION: center 50%; HEIGHT: 18px; 
+VERTICAL-ALIGN: top; BORDER-TOP: 0px; BORDER-RIGHT: 0px; PADDING-TOP: 0px;
+}
+
+.tree-checkbox .ltr li.open span, 
+.tree-checkbox .rtl li.open span,
+.tree-checkbox .ltr li.open span.folderopen, 
+.tree-checkbox .rtl li.open span.folderopen{ 
+background-image:url("folder-open.gif");
+}
+
+.tree-checkbox .ltr li.closed span, 
+.tree-checkbox .rtl li.closed span,
+.tree-checkbox .ltr li.closed span.folderclosed, 
+.tree-checkbox .rtl li.closed span.folderclosed{ 
+background-image:url("folder.gif");
+}
+
+
+
+
+
+.tree-checkbox .ltr li.leaf  span, 
+.tree-checkbox .rtl li.leaf  span{ 
+background-image:url("leaf.gif");
+}
+.tree-checkbox .ltr li.menu.leaf  span,
+.tree-checkbox .rtl li.menu.leaf  span{ 
+background-image:url("menu.gif") ;
+}
+.tree-checkbox .ltr li.button.leaf  span,
+.tree-checkbox .rtl li.button.leaf  span{ 
+background-image:url("leaf.gif") ;
+}
+
+.tree-checkbox li a{	
+ 	dispaly:inline;
+}
+.tree-checkbox li a, .tree-checkbox li a.unchecked { background-image:url("check_0.png"); }
+.tree-checkbox li a.undetermined { background-image:url("check_1.png"); }
+.tree-checkbox li a.checked { background-image:url("check_2.png"); }
+.tree-checkbox li a.clicked, .tree-checkbox li span.clicked { background-color:transparent; border-color:transparent; color:black; }

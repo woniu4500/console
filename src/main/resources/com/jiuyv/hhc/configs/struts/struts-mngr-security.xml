@@ -1,0 +1,156 @@
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- spring security失效页面的action -->
+	<package name="springsecurity.common" extends="mngr-query-default"> 
+		<action name="sessionExpired" class="sessionExpiredAction" method="sessionkickoff">
+			<result name="error">sessionExpired.jsp</result>
+		</action>
+		<action name="invalidSession" class="sessionExpiredAction" method="invalidSession">
+			<result name="success">login.jsp</result>
+			<result name="ajaxSuccess">/page/common/resData.jsp</result>
+		</action>
+		<action name="logfail" class="sessionExpiredAction" method="logfail">
+			<result name="error">login.jsp?login_error=1</result>
+			<result name="login">loginCaptcha.jsp?login_error=2</result>
+		</action>
+		<action name="loginCode" class="sessionExpiredAction">
+			<result name="success">loginCaptcha.jsp?login_error=2</result>
+		</action>
+		<!-- 验证码失败action -->
+		<action name="logCodeFail" class="sessionExpiredAction" method="logCodeFail">
+			<result name="error">loginCaptcha.jsp?login_error=2</result>
+		</action>	
+		<!-- app登录失败 action -->
+		<action name="applogfail" class="sessionExpiredAction" method="applogfail">
+			<result name="error">/page/common/resData.jsp</result>
+		</action>	
+	</package>
+	<!-- 登录 -->
+	<package name="busi.login" extends="mngr-query-default"> 
+		<action name="login" class="loginAction">
+			<result name="success">page/main-frame.jsp</result>
+		</action>
+		<action name="loginPage" class="loginAction" method="loginPage">
+			<result name="success">login.jsp</result>
+			<result name="ajaxSuccess">/page/common/resData.jsp</result>
+		</action>
+		<action name="loginOut" class="loginAction" method="loginOut">
+			<result name="success">login.jsp</result>
+		</action>
+		<action name="findSysInfoTime" class="loginAction" method="findSysInfoTime" />
+	</package>
+	<!-- 安全管理excel导出的配置 -->
+	<package name="busi.export.excel" extends="mngr-query-default" >
+    	<action name="findOrgExcel" class="orgAction" method="findOrgExcel" />
+    	<action name="findRoleExcel" class="roleAction" method="findRoleExcel" />
+    	<action name="findUserExcel" class="userAction" method="findUserExcel" />
+    	<action name="findUserRoleExcel" class="userroleAction" method="findUserRoleExcel" />
+    	<action name="findOprlogUserExcel" class="oprlogAction" method="findOprlogUserExcel" />
+    	<action name="findOprlogExcel" class="oprlogAction" method="findOprlogExcel" />
+    </package>
+	<!--系统参数查询 -->
+	<package name="busi.common" extends="mngr-query-default"> 
+		<action name="findSecCodeList" class="seccodeAction" method="findSecCodeList" />
+		<action name="findSecCodeListFuzzy" class="seccodeAction" method="findSecCodeListFuzzy" />
+		<action name="findSecCodeListTypeName" class="seccodeAction" method="findSecCodeListTypeName" />
+		<action name="findSecCodeListOrgDiff" class="seccodeAction" method="findSecCodeListOrgDiff" />
+	</package> 
+	 <!-- 安全管理 -->
+	<package name="buis.security.query" extends="mngr-query-default">
+		<!-- 机构信息管理 -->
+		<action name="queryOrgSetUp" class="orgAction">
+			<result name="success">page/security/org_mngr.jsp</result>
+		</action>
+		<action name="findOrg" class="orgAction" method="findOrg" />
+		<action name="findOrgCombo" class="orgAction" method="findOrgCombo" />
+		<action name="findFatherOrgCombo" class="orgAction" method="findFatherOrgCombo" />
+		<!-- 角色管理 -->
+		<action name="queryRoleSetUp" class="roleAction">
+			<result name="success">page/security/role_mngr.jsp</result>
+		</action>
+		<action name="findRole" class="roleAction" method="findRole" />
+		<action name="loadTreeWithChecked" class="roleAction" method="loadTreeWithChecked" />
+		<action name="loadTreeWithUnChecked" class="roleAction" method="loadTreeWithUnChecked" />
+		<!-- 用户管理 -->
+		<action name="queryUserSetUp" class="userAction">
+			<result name="success">page/security/user_mngr.jsp</result>
+		</action>
+		<action name="findUser" class="userAction" method="findUser" />
+		<action name="findUserInfoById" class="userAction" method="findUserInfoById"/>
+		<action name="loadUserTreeWithChecked" class="userAction" method="loadUserTreeWithChecked" />
+		<action name="loadUserTreeWithUnChecked" class="userAction" method="loadUserTreeWithUnChecked" />
+		<action name="findUserCombo" class="userAction" method="findUserCombo" />
+		<!-- 用户角色管理 -->
+		<action name="queryUserRole" class="userroleAction">
+			<result name="success">page/security/userole_mngr.jsp</result>
+		</action>
+		<action name="findUserRole" class="userroleAction" method="findUserRole" />
+		<!-- 用户密码管理 -->
+		<action name="queryUserPasswd" class="passwdAction">
+			<result name="success">page/security/passwd_upd.jsp</result>
+		</action>
+		<!-- 机构日志查询 -->
+		<action name="queryLogSetUp" class="userAction">
+			<result name="success">page/security/log_qry.jsp</result>
+		</action>
+		<action name="findOprlog" class="oprlogAction" method="findOprlog" />
+		<!-- 用户日志查询 -->
+		<action name="queryLogUserSetUp" class="userAction">
+			<result name="success">page/security/userlog_qry.jsp</result>
+		</action>
+		<action name="findOprlogUser" class="oprlogAction" method="findOprlogUser" />
+		<!-- 权限资源信息 -->
+		<action name="findResourceList" class="resourceAction" method="findResourceList"/>
+		
+		<!-- 用户注册 -->
+		<action name="signUp" class="signUpAction" method="signUp"/>
+		<action name="doSendRegVaild" class="signUpAction" method="doSendRegVaild"/>
+		<action name="doSendFindPwdVaild" class="signUpAction" method="doSendFindPwdVaild"/>
+		<action name="doSendPwdVaild" class="signUpAction" method="doSendPwdVaild"/>
+		<action name="verifyCode" class="signUpAction" method="verifyCode"/>
+		<action name="applogin" class="signUpAction" method="applogin"/>
+	        <action name="doRegister" class="signUpAction" method="doRegister"/>
+		<action name="doFindVaild" class="signUpAction" method="doFindVaild"/>
+			
+		<!-- LoginDayStatistic 导出报表html -->
+		<action name="loginDayStatisticReportHtml" class="loginDayStatisticReport" method="printHtml" />
+		<action name="loginDayStatisticReportExcel" class="loginDayStatisticReport" method="printExcel" />
+		<action name="loginDayStatisticReportWord" class="loginDayStatisticReport" method="printWord" />
+		<action name="loginDayStatisticReportPdf" class="loginDayStatisticReport" method="printPdf" />
+		<action name="loginDayStatisticReportDocx" class="loginDayStatisticReport" method="printDocx" />
+		<!-- LoginCompStatistic 导出报表html -->
+		<!-- 用户日志查询 -->
+		<action name="queryLogCompRptSetUp" class="userAction">
+			<result name="success">page/security/logincomp_rpt.jsp</result>
+		</action>
+		<action name="loginCompStatisticReportHtml" class="loginCompStatisticReport" method="printHtml" />
+		<action name="loginCompStatisticReportExcel" class="loginCompStatisticReport" method="printExcel" />
+		<action name="loginCompStatisticReportWord" class="loginCompStatisticReport" method="printWord" />
+		<action name="loginCompStatisticReportPdf" class="loginCompStatisticReport" method="printPdf" />
+		<action name="loginCompStatisticReportDocx" class="loginCompStatisticReport" method="printDocx" />
+	</package>
+	
+	<package name="buis.security" extends="mngr-default">
+		<!-- 机构管理 -->
+		<action name="doInsertOrg" class="orgAction" method="doInsertOrg" />
+		<action name="doUpdateOrg" class="orgAction" method="doUpdateOrg" />
+		<action name="doDeleteOrg" class="orgAction" method="doDeleteOrg" />
+		<!-- 角色管理 -->
+		<action name="doInsertRole" class="roleAction" method="doInsertRole" />
+		<action name="doUpdateRole" class="roleAction" method="doUpdateRole" />
+		<action name="doDeleteRole" class="roleAction" method="doDeleteRole" />
+		<!-- 用户管理 -->
+		<action name="doInsertUser" class="userAction" method="doInsertUser" />
+		<action name="doUpdateUser" class="userAction" method="doUpdateUser" />
+		<action name="doUpdateSelfInfo" class="userAction" method="doUpdateSelfInfo" />
+		<action name="doDeleteUser" class="userAction" method="doDeleteUser" />
+		<action name="doRecoverUser" class="userAction" method="doRecoverUser" />
+		<action name="doResetUserPasswd" class="userAction" method="doResetUserPasswd" />
+		
+		<!-- 用户密码管理 -->
+		<action name="changePasswd" class="passwdAction" method="doUpdateUserPasswd" />
+	</package>
+	
+</struts>

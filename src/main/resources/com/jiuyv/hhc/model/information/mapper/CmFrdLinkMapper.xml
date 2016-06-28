@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+                                
+<!-- 
+	Name:  CmFrdLinkMapper.xml
+	Table: FQ_CM_FRD_LINK (友情链接)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.information.dao.CmFrdLinkDao">
+	<sql id="__select" >
+	select
+		   t0.FRD_SEQ as frdSeq
+		  ,t0.VERSION as version
+		  ,t0.FRD_NAME as frdName
+		  ,t0.FRD_TYPE as frdType
+		  ,t0.FRD_STYLE as frdStyle
+		  ,t0.FRD_LOGO as frdLogo
+		  ,t0.FRD_LOGO_HOVER as frdLogoHover
+		  ,t0.FRD_SORT as frdSort
+		  ,t0.FRD_URL as frdUrl
+		  ,t0.IS_VISIBLE as isVisible
+		  ,t0.FRD_STATUS as frdStatus
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,vt.CODE_NAME as isVisibleDesc
+		  ,st.CODE_NAME as frdStatusDesc
+		  ,ft.CODE_NAME as frdTypeDesc
+	  from FQ_CM_FRD_LINK t0
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_VISIBLE') vt on t0.IS_VISIBLE=vt.CODE_NO
+	  left join (select * from FQ_SYS_CODE where code_type='INFO_ST') st on t0.FRD_STATUS=st.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='FRD_TYPE') ft on t0.FRD_TYPE=ft.CODE_NO
+	  
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.information.CmFrdLinkVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.information.CmFrdLinkVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.FRD_SEQ = #{frdSeq}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.information.CmFrdLinkVo">
+		<selectKey keyProperty="frdSeq" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_CM_FRD_LINK.nextval from dual</selectKey>
+		insert into FQ_CM_FRD_LINK 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,FRD_SEQ,REC_CRT_TIME,LAST_UPT_TIME,FRD_STATUS,
+			<if test="frdName != null" >FRD_NAME,</if>
+			<if test="frdType != null" >FRD_TYPE,</if>
+			<if test="frdStyle != null" >FRD_STYLE,</if>
+			<if test="frdLogo != null" >FRD_LOGO,</if>
+			<if test="frdLogoHover != null" >FRD_LOGO_HOVER,</if>
+			<if test="frdSort != null" >FRD_SORT,</if>
+			<if test="frdUrl != null" >FRD_URL,</if>
+			<if test="isVisible != null" >IS_VISIBLE,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,#{frdSeq},<include refid="dialect.__time"/>,<include refid="dialect.__time"/>,'00',
+			<if test="frdName != null" >#{frdName},</if>
+			<if test="frdType != null" >#{frdType},</if>
+			<if test="frdStyle != null" >#{frdStyle},</if>
+			<if test="frdLogo != null" >#{frdLogo},</if>
+			<if test="frdLogoHover != null" >#{frdLogoHover},</if>
+			<if test="frdSort != null" >#{frdSort},</if>
+			<if test="frdUrl != null" >#{frdUrl},</if>
+			<if test="isVisible != null" >#{isVisible},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.information.CmFrdLinkVo">
+		update FQ_CM_FRD_LINK 
+		<set>
+			VERSION=VERSION+1,LAST_UPT_TIME=<include refid="dialect.__time"/>,
+			<if test="frdName != null" >FRD_NAME = #{frdName},</if>
+			<if test="frdType != null" >FRD_TYPE = #{frdType},</if>
+			<if test="frdStyle != null" >FRD_STYLE = #{frdStyle},</if>
+			<if test="frdLogo != null" >FRD_LOGO = #{frdLogo},</if>
+			<if test="frdLogoHover != null" >FRD_LOGO_HOVER = #{frdLogoHover},</if>
+			<if test="frdSort != null" >FRD_SORT = #{frdSort},</if>
+			<if test="frdUrl != null" >FRD_URL = #{frdUrl},</if>
+			<if test="isVisible != null" >IS_VISIBLE = #{isVisible},</if>
+			<if test="frdStatus != null" >FRD_STATUS = #{frdStatus},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+		</set>
+		where FRD_SEQ = #{frdSeq} and VERSION = #{version}  
+	</update>
+	
+	<!-- insert -->
+	<insert id="insertVer" parameterType="com.jiuyv.hhc.model.information.CmFrdLinkVo">
+		insert into FQ_CM_FRD_LINK_VER 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="frdSeq != null" >FRD_SEQ,</if>
+			<if test="version != null" >VERSION,</if>
+			<if test="frdName != null" >FRD_NAME,</if>
+			<if test="frdType != null" >FRD_TYPE,</if>
+			<if test="frdStyle != null" >FRD_STYLE,</if>
+			<if test="frdLogo != null" >FRD_LOGO,</if>
+			<if test="frdLogoHover != null" >FRD_LOGO_HOVER,</if>
+			<if test="frdSort != null" >FRD_SORT,</if>
+			<if test="frdUrl != null" >FRD_URL,</if>
+			<if test="isVisible != null" >IS_VISIBLE,</if>
+			<if test="frdStatus != null" >FRD_STATUS,</if>
+			<if test="recCrtTime != null" >REC_CRT_TIME,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+			<if test="lastUptTime != null" >LAST_UPT_TIME,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="frdSeq != null" >#{frdSeq},</if>
+			<if test="version != null" >#{version},</if>
+			<if test="frdName != null" >#{frdName},</if>
+			<if test="frdType != null" >#{frdType},</if>
+			<if test="frdStyle != null" >#{frdStyle},</if>
+			<if test="frdLogo != null" >#{frdLogo},</if>
+			<if test="frdLogoHover != null" >#{frdLogoHover},</if>
+			<if test="frdSort != null" >#{frdSort},</if>
+			<if test="frdUrl != null" >#{frdUrl},</if>
+			<if test="isVisible != null" >#{isVisible},</if>
+			<if test="frdStatus != null" >#{frdStatus},</if>
+			<if test="recCrtTime != null" >#{recCrtTime},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+			<if test="lastUptTime != null" >#{lastUptTime},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+		</trim>
+	</insert>
+	
+	<delete id="deleteVer" parameterType="com.jiuyv.hhc.model.information.CmFrdLinkVo">
+		delete from FQ_CM_FRD_LINK_VER where FRD_SEQ = #{frdSeq}
+	</delete>
+	<!-- update -->
+	<update id="updateVerByKey" parameterType="com.jiuyv.hhc.model.information.CmFrdLinkVo">
+		update FQ_CM_FRD_LINK_VER 
+		<set>
+			<if test="frdSeq != null" >FRD_SEQ = #{frdSeq},</if>
+			<if test="version != null" >VERSION = #{version},</if>
+			<if test="frdName != null" >FRD_NAME = #{frdName},</if>
+			<if test="frdType != null" >FRD_TYPE = #{frdType},</if>
+			<if test="frdStyle != null" >FRD_STYLE = #{frdStyle},</if>
+			<if test="frdLogo != null" >FRD_LOGO = #{frdLogo},</if>
+			<if test="frdLogoHover != null" >FRD_LOGO_HOVER = #{frdLogoHover},</if>
+			<if test="frdSort != null" >FRD_SORT = #{frdSort},</if>
+			<if test="frdUrl != null" >FRD_URL = #{frdUrl},</if>
+			<if test="isVisible != null" >IS_VISIBLE = #{isVisible},</if>
+			<if test="frdStatus != null" >FRD_STATUS = #{frdStatus},</if>
+			<if test="recCrtTime != null" >REC_CRT_TIME = #{recCrtTime},</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC = #{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+			<if test="lastUptTime != null" >LAST_UPT_TIME = #{lastUptTime},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+		</set>
+		where FRD_SEQ = #{frdSeq}   
+	</update>
+	
+	<select id="countVerByKey" resultType="java.lang.Integer">
+		select count(1) from FQ_CM_FRD_LINK_VER where FRD_SEQ = #{frdSeq}
+	</select>
+</mapper>

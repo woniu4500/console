@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- 贷款管理 -->	
+	<bean id="bizLoanDataService" class="com.jiuyv.hhc.console.loan.service.impl.BizLoanDataServiceImpl" parent="assistService">
+		<property name="bizLoanDataDao" ref="bizLoanDataDao" />
+		<property name="bizMerchantDao" ref="bizMerchantDao" />
+		<property name="sysTimeDao" ref="ISysTimeDao" />
+		<property name="mediaImageService" ref="mediaService" />
+		<property name="mailService" ref="mailService" />
+	</bean>
+	<bean id="bizLoanDataAction" class="com.jiuyv.hhc.console.loan.action.BizLoanDataAction" scope="prototype">
+		<property name="bizLoanDataService" ref="bizLoanDataService" />
+		<property name="sysParamService" ref="sysParamService" />
+		<property name="webMemberService" ref="webMemberService" />
+	</bean>
+	
+	<!-- 贷前数据管理 -->	
+	<bean id="mhtHisTranService" class="com.jiuyv.hhc.console.loan.service.impl.MhtHisTranServiceImpl" parent="assistService">
+		<property name="mhtHisTranDao" ref="mhtHisTranDao" />
+	</bean>
+	<bean id="mhtHisTranAction" class="com.jiuyv.hhc.console.loan.action.MhtHisTranAction" scope="prototype">
+		<property name="service" ref="mhtHisTranService" />
+	</bean>
+	<!-- 贷款风险管理 -->	
+	<bean id="mhtRiskDataService" class="com.jiuyv.hhc.console.loan.service.impl.MhtRiskDataServiceImpl" parent="assistService">
+		<property name="mhtRiskDataDao" ref="mhtRiskDataDao" />
+	</bean>
+	<bean id="mhtRiskDataAction" class="com.jiuyv.hhc.console.loan.action.MhtRiskDataAction" scope="prototype">
+		<property name="service" ref="mhtRiskDataService" />
+	</bean>
+	<!-- 贷后数据管理 -->	
+	<bean id="mhtTransAfterLoanService" class="com.jiuyv.hhc.console.loan.service.impl.MhtTransAfterLoanServiceImpl" parent="assistService">
+		<property name="mhtTransAfterLoanDao" ref="mhtTransAfterLoanDao" />
+	</bean>
+	<bean id="mhtTransAfterLoanAction" class="com.jiuyv.hhc.console.loan.action.MhtTransAfterLoanAction" scope="prototype">
+		<property name="service" ref="mhtTransAfterLoanService" />
+	</bean>
+	
+	<!-- 交易日志查询 -->
+	<bean id="txnService" class="com.jiuyv.hhc.console.loan.service.impl.TxnServiceImpl" parent="assistService">
+		<property name="txnTransLogDao" ref="txnTransLogDao" />
+	</bean>
+	<bean id="transTxnLogAction" class="com.jiuyv.hhc.console.loan.action.TransTxnLogAction" scope="prototype">
+		<property name="txnService" ref="txnService" />
+	</bean>
+</beans>

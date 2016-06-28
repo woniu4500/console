@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+          
+<!-- 
+	Name:  BizAttachDefMapper.xml
+	Table: FQ_BIZ_ATTACH_DEF ([New]商户附件定义表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.mchnt.dao.BizAttachDefDao">
+	<sql id="__select" >
+	select
+		   t0.ATTACH_TYPE as attachType
+		  ,t0.ATTACH_NAME as attachName
+		  ,t0.ATTACH_GROUP as attachGroup
+		  ,t0.ATTACH_SORT as attachSort
+		  ,t0.NECESSARY as necessary
+	  from FQ_BIZ_ATTACH_DEF t0
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.mchnt.BizAttachDefVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.mchnt.BizAttachDefVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.ATTACH_TYPE = #{attachType}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.mchnt.BizAttachDefVo">
+		insert into FQ_BIZ_ATTACH_DEF 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="attachType != null" >ATTACH_TYPE,</if>
+			<if test="attachName != null" >ATTACH_NAME,</if>
+			<if test="attachGroup != null" >ATTACH_GROUP,</if>
+			<if test="attachSort != null" >ATTACH_SORT,</if>
+			<if test="necessary != null" >NECESSARY,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="attachType != null" >#{attachType},</if>
+			<if test="attachName != null" >#{attachName},</if>
+			<if test="attachGroup != null" >#{attachGroup},</if>
+			<if test="attachSort != null" >#{attachSort},</if>
+			<if test="necessary != null" >#{necessary},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.mchnt.BizAttachDefVo">
+		update FQ_BIZ_ATTACH_DEF 
+		<set>
+			<if test="attachType != null" >ATTACH_TYPE = #{attachType},</if>
+			<if test="attachName != null" >ATTACH_NAME = #{attachName},</if>
+			<if test="attachGroup != null" >ATTACH_GROUP = #{attachGroup},</if>
+			<if test="attachSort != null" >ATTACH_SORT = #{attachSort},</if>
+			<if test="necessary != null" >NECESSARY = #{necessary},</if>
+		</set>
+		where ATTACH_TYPE = #{attachType} 
+	</update>
+</mapper>

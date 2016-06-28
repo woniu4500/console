@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+                      
+<!-- 
+	Name:  TxnTransLogMapper.xml
+	Table: FQ_TXN_TRANS_LOG (接口通信记录表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.loan.dao.TxnTransLogDao">
+	<sql id="__select" >
+	select
+		   t0.LOG_SEQ as logSeq
+		  ,t0.TRANS_TYPE as transType
+		  ,t0.TRANS_DATE as transDate
+		  ,t0.TRANS_TIME as transTime
+		  ,t0.MCHNT_CODE as mchntCode
+		  ,t0.MCHNT_CD as mchntCd
+		  ,t0.LIC_NO as licNo
+		  ,t0.ARTIF_CERTIF_ID as artifCertifId
+		  ,t0.FILE_PATH as filePath
+		  ,t0.RESULT_CODE as resultCode
+		  ,t0.RESULT_DESC as resultDesc
+		  ,t0.OPR_ACCT as oprAcct
+		  ,tt.code_name as transTypeDesc
+		  ,tm.MCHNT_CN_NAME as mchntName
+	  from FQ_TXN_TRANS_LOG t0
+	  left join (select code_no,code_name from FQ_SYS_CODE where code_type='MCHNT_CUP_TRANS_TYPE') tt on tt.code_no=t0.TRANS_TYPE
+	  left join FQ_MHT_BASE_INFO tm on t0.MCHNT_CODE=tm.MCHNT_CODE
+	</sql>
+
+	<sql id="__selectAmt" >
+	select
+		   t0.LOG_SEQ as logSeq
+		  ,t0.TRANS_TYPE as transType
+		  ,t0.TRANS_DATE as transDate
+		  ,t0.TRANS_TIME as transTime
+		  ,t0.MCHNT_CODE as mchntCode
+		  ,tm.MCHNT_CN_NAME as mchntName
+		  ,t0.MCHNT_CD as mchntCd
+		  ,t0.LIC_NO as licNo
+		  ,t0.ARTIF_CERTIF_ID as artifCertifId
+		  ,t0.FILE_PATH as filePath
+		  ,t0.RESULT_CODE as resultCode
+		  ,t0.RESULT_DESC as resultDesc
+		  ,t0.OPR_ACCT as oprAcct
+		  ,tt.code_name as transTypeDesc
+		  ,(case when t0.TRANS_TYPE='getMchntInfo' then ${registAmt}
+		  		when t0.TRANS_TYPE='getMchntTransDataBeforeLoan' then ${certAmt} else 0 end ) as amount
+	  from FQ_TXN_TRANS_LOG t0
+	  left join (select code_no,code_name from FQ_SYS_CODE where code_type='MCHNT_CUP_TRANS_TYPE') tt on tt.code_no=t0.TRANS_TYPE
+	  left join FQ_MHT_BASE_INFO tm on t0.MCHNT_CODE=tm.MCHNT_CODE
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.loan.TxnTransLogVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+
+	<!-- select -->
+	<select id="filterQueryAmt" resultType="com.jiuyv.hhc.model.loan.TxnTransLogVo">
+ 	 	<include refid="__selectAmt"/>
+ 	 	where t0.RESULT_CODE='0000'
+ 	 	  and t0.TRANS_TYPE in ('getMchntInfo','getMchntTransDataBeforeLoan')
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.loan.TxnTransLogVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.LOG_SEQ = #{logSeq}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.loan.TxnTransLogVo">
+		insert into FQ_TXN_TRANS_LOG 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="transType != null" >TRANS_TYPE,</if>
+			<if test="transDate != null" >TRANS_DATE,</if>
+			<if test="transTime != null" >TRANS_TIME,</if>
+			<if test="mchntCode != null" >MCHNT_CODE,</if>
+			<if test="mchntCd != null" >MCHNT_CD,</if>
+			<if test="licNo != null" >LIC_NO,</if>
+			<if test="artifCertifId != null" >ARTIF_CERTIF_ID,</if>
+			<if test="filePath != null" >FILE_PATH,</if>
+			<if test="resultCode != null" >RESULT_CODE,</if>
+			<if test="resultDesc != null" >RESULT_DESC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="transType != null" >#{transType},</if>
+			<if test="transDate != null" >#{transDate},</if>
+			<if test="transTime != null" >#{transTime},</if>
+			<if test="mchntCode != null" >#{mchntCode},</if>
+			<if test="mchntCd != null" >#{mchntCd},</if>
+			<if test="licNo != null" >#{licNo},</if>
+			<if test="artifCertifId != null" >#{artifCertifId},</if>
+			<if test="filePath != null" >#{filePath},</if>
+			<if test="resultCode != null" >#{resultCode},</if>
+			<if test="resultDesc != null" >#{resultDesc},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.loan.TxnTransLogVo">
+		update FQ_TXN_TRANS_LOG 
+		<set>
+			<if test="logSeq != null" >LOG_SEQ = #{logSeq},</if>
+			<if test="transType != null" >TRANS_TYPE = #{transType},</if>
+			<if test="transDate != null" >TRANS_DATE = #{transDate},</if>
+			<if test="transTime != null" >TRANS_TIME = #{transTime},</if>
+			<if test="mchntCode != null" >MCHNT_CODE = #{mchntCode},</if>
+			<if test="mchntCd != null" >MCHNT_CD = #{mchntCd},</if>
+			<if test="licNo != null" >LIC_NO = #{licNo},</if>
+			<if test="artifCertifId != null" >ARTIF_CERTIF_ID = #{artifCertifId},</if>
+			<if test="filePath != null" >FILE_PATH = #{filePath},</if>
+			<if test="resultCode != null" >RESULT_CODE = #{resultCode},</if>
+			<if test="resultDesc != null" >RESULT_DESC = #{resultDesc},</if>
+		</set>
+		where LOG_SEQ = #{logSeq} 
+	</update>
+</mapper>

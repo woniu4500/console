@@ -1,0 +1,55 @@
+.onShow {
+	/*background: url(../images/onShow.gif) no-repeat;*/
+	display: inline-block !important;
+	min-width:90px;
+	margin-left: 10px;
+	line-height: 22px;
+	vertical-align: middle;
+}
+
+.onFocus {
+	/* background: #E9F0FF; */ /*url(../images/onFocus.gif) no-repeat*/
+	display: inline-block  !important;
+	min-width:90px;
+	margin-left: 10px;
+	line-height: 22px;
+	vertical-align: middle;
+}
+
+.onError {
+	/* background: #FFF2E9; */ /*url(../images/onError.gif) no-repeat*/
+	display: inline-block  !important;
+	min-width:90px;
+	margin-left: 10px;
+	line-height: 22px;
+	vertical-align: middle;
+	color: red;
+}
+
+.onCorrect {
+	/* background: #E9FFEB; */ /*url(../images/onCorrect.gif) no-repeat*/
+	display: inline-block  !important;
+	min-width:90px;
+	margin-left: 10px;
+	line-height: 22px;
+	vertical-align: middle;
+}
+
+.onLoad {
+	background: #E9FFEB /*url(../images/onLoad.gif)*/ no-repeat 3px 3px;
+	display: inline-block  !important;
+	min-width:90px;
+	margin-left: 10px;
+	line-height: 22px;
+	vertical-align: middle;
+}
+
+.validateErr {
+	border-left: 1px solid red;
+	border-top: 1px solid red;
+	border-right: 1px solid red;
+	background: repeat-x 50% bottom;
+	background-color: #fff;
+	background-image: url(invalid_line.gif);
+	BORDER-BOTTOM-COLOR: #c30;
+}

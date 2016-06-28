@@ -1,0 +1,322 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" " http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html>
+<head>
+<title><f:message key="application.title" /></title>
+<jsp:include page="/page/common/linksheet.jsp" />
+</head>
+<body>
+<!-- 查询条件 -->
+<div id="queryCondition">
+	<form id="queryForm" name="queryForm" action="#" method="post">
+	<input type="hidden" name="customerType" value="1" comparison="eq"/>
+		<ul class="qry-ul">
+		<li><label for="q_customerCode">会员代码:</label>
+		<input type="text" id="q_customerCode" maxlength="20" comparison="eq" name="customerCode"/></li>
+
+		<li><label for="q_mobile">手机号:</label><input type="text" id="q_mobile" comparison="eq" name="mobile" ></input></li>
+		
+		<li><label for="q_realName">姓名:</label><input type="text" id="q_realName" comparison="eq" name="realName" ></input></li>
+		
+		<li><label for="q_isActive">是否有效:</label><select id="q_isActive" ctype="PUB_VAILD" comparison="like" name="isActive" ></select></li>
+		
+		<li><input class='bt' id="queryBtn" value="查询" type="button"/></li>
+		
+		<li><input class='bt' value="重置" type="reset" /></li>
+</ul>
+	</form>
+</div>
+<!-- 列表 -->
+<div id="table"></div>
+<div id="viewOper">
+	<ul>
+		<li><a href="#mchntOper" id="mchnt_tab">商户信息</a></li>
+		<li><a href="#loanOper" id="loan_tab">贷款信息</a></li>
+	</ul>
+<!-- 商户信息 -->
+<div id="mchntOper">
+<div id="mchntGrid"></div>
+</div>
+<!-- 贷款信息 -->
+<div id="loanOper">
+<div id="loanGrid"></div>
+</div>
+</div>
+<!-- 用户新增表单 -->
+<div id="addForm" style="display: none;">
+<form id="addForm1">
+<input type="hidden" name="version"/>
+<ul class='frm-ul'>
+	<li><label for="mchntCode">会员代码:</label>
+	<input type="text" id="customerCode" name="customerCode" /><div id="customerCodeTip"></div>
+
+	<li><label for="mobile"><font color="red">*</font>手机号码:</label>
+	<input type="text" id="mobile" name="mobile" maxLength="11" /><div id="mobileTip"></div>
+	<label for="zip">邮编:</label>
+	<input type="text" id="zip" name="zip" maxLength="10"/><div id="zipTip"></div>
+	</li>
+	
+	<li><label for="realName"><font color="red">*</font>姓名:</label>
+	<input type="text" id="realName" name="realName" maxLength="10"/><div id="realNameTip"></div>
+	<label for="password"><font color="red">*</font>密码:</label>
+	<input type="password" id="password" name="password" maxLength="12"/><div id="passwordTip"></div></li>
+
+	<li><label for="phone">电话:</label>
+	<input class="long" type="text" id="phone" name="phone" maxLength="11"/><div id="phoneTip"></div></li>
+	
+	<li><label for="email"><font color="red">*</font>电子邮件:</label>
+	<input class="long" type="text" id="email" name="email" maxLength="50"/><div id="emailTip"></div></li>
+	
+	<li><label for="idNumber"><font color="red">*</font>证件号码:</label>
+	<input class="long" type="text" id="idNumber" name="idNumber" maxLength="18"/><div id="idNumberTip"></div></li>
+	
+	<li><label for="address">地址:</label>
+	<input class="long" class="long" type="text" id="address" name="address" maxLength="100"/><div id="addressTip"></div></li>
+	
+	
+</ul>
+</form>
+</div>
+<!-- 商户信息 -->
+<%-- <div id="mchntInfo" style="display: none;">
+<form id="mchntInfoForm">
+<ul class='frm-ul'>
+	<li><label for="mchntCode">内部商户号:</label>
+	<input name="mchntCode" readonly="readonly" /></li>
+
+	<li><label for="licNo">营业执照号码:</label>
+	<input name="licNo" readonly="readonly"/></li>
+
+	<li><label for="customerCode">会员代码:</label>
+	<input name="customerCode" readonly="readonly"></input></li>
+
+	<li><label for="mchntCd">商户代码:</label>
+	<input name="mchntCd" readonly="readonly" /></li>
+
+	<li><label for="acqInsIdCd">收单机构代码:</label>
+	<input name="acqInsIdCd" readonly="readonly"/></li>
+
+	<li><label for="reveRegCd">税务登记代码:</label>
+	<input name="reveRegCd" readonly="readonly"/></li>
+
+	<li><label for="mchntCnName">商户中文名称:</label>
+	<input name="mchntCnName" readonly="readonly"/></li>
+	
+	<li><label for="regAddr">注册地址:</label>
+	<input name=regAddr readonly="readonly"/></li>
+	
+	<li><label for="mchntCnName">法人代表姓名:</label>
+	<input name="artifNm" readonly="readonly"/></li>
+	
+	<li><label for="artifCertifId">法人代表证件号:</label>
+	<input name="artifCertifId" readonly="readonly"/></li>
+	
+	<li><label for="mchntTp">商户类型:</label>
+	<input name="mchntTp" readonly="readonly"/></li>
+	
+	<li><label for="phone">联系电话:</label>
+	<input name="phone" readonly="readonly"/></li>
+	
+	<li><label for="mchntCrtDt">商户入网时间:</label>
+	<input name="mchntCrtDt" readonly="readonly"/></li>
+	
+	<li><label for="posNum">装机数量:</label>
+	<input name="posNum" readonly="readonly"/></li>
+	
+	<li><label for="remark">备注:</label>
+	<input name="remark" readonly="readonly"/></li>
+	
+	<li><label for="mchntSt">商户状态:</label>
+	<input name="mchntSt" readonly="readonly"/></li>
+</ul>
+</form>
+</div> --%>
+<script type="text/javascript">
+<!--
+// url
+var url = {
+grid: 'findMember.action',
+excel:'findMemberExcel.action',
+add:'doInsertAgentMember.action',
+upd:'doUpdateAgentMember.action'
+};
+// fields definition
+$(function() {
+	$('#viewOper').tabs();
+	$('#viewOper').dialog({ title:'综合信息',autoOpen : false, bgiframe : true, modal : false, resizable : false, draggable : true, width : 850, height : 570 });
+	$('#viewOper').fullScreen();
+	$('#addForm').dialog({ autoOpen : false, bgiframe : true, modal : false, resizable : false, draggable : true, width : 850, height : 570 });
+	$('#addForm').fullScreen();
+	
+	$.formValidator.initConfig({ onerror : function(msg,obj) { 	alert(msg); $(obj).focus();}});
+	$("#mobile").formValidator({ empty : false, onshow : "请输入内容", oncorrect : "√" }).inputValidator({ min : 11, max:11, onerror : "手机号码11位" }).regexValidator({ regexp : "^[0-9]+$", onerror : "手机号码仅能输入数字" });
+	$("#zip").formValidator({ empty : false, onshow : "请输入内容", oncorrect : "√" }).regexValidator({ regexp : "^[0-9]+$", onerror : "邮编仅能输入数字" });
+	$("#password").formValidator({ empty : false, onshow : "请输入内容", oncorrect : "√" }).inputValidator({ min: 1, max: 12, onerror : "密码最多12个字符" }).regexValidator({ regexp : "^[A-Za-z0-9]+$", onerror : "密码仅能输入数字或字母" });
+	$("#realName").formValidator({ empty : false, onshow : "请输入内容", oncorrect : "√" }).inputValidator({ min : 1, max : 10, onerror : "姓名最多10位" });
+	$("#idNumber").formValidator({ empty : false, onshow : "请输入内容", oncorrect : "√" }).inputValidator({ min : 18, max : 18, onerror : "证件号长度18位" });
+	$("#email") .formValidator({ empty : true, oncorrect : "√" }) .inputValidator({ min : 1, max : 50, onerror : "EMAIL最多50个字符" }) .regexValidator( { regexp : "^([\\w-.]+)@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.)|(([\\w-]+.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$", onerror : "邮箱格式不正确" });
+	//operate
+	// add new org
+	var add = function() {
+		$("div[id$=Tip]").empty();
+		$('#addForm1 :input').removeAttr('disabled');
+		$('#addForm1>select').removeAttr('disabled');
+		$('#addForm1')[0].reset();
+		$('#customerCode').val("<由系统自动生成>").attr('style','font-style:italic').attr('disabled','disabled');
+		$('#addForm').dialog("option","title","新增代理用户");
+		$('#addForm').dialog("option","buttons",{
+		'确定' : function() {
+			if($.formValidator.pageIsValid('1')) {
+				$.ajaxForm({formId : 'addForm1', url : url.add,
+				dealData: function(data) { data.customerType = '1'; },
+				success : function(data) {
+					if (data.success) { $('#addForm').dialog('close'); alert('操作成功'); 
+						if ( data.root && data.root[0] ) $('#table').flexAddData(data.root[0]);
+					} else { alert('操作失败 原因是'+ data.syserr); }
+				}});
+			} else { return false; }}
+		,'关闭' : function() { $(this).dialog('close'); } });
+		$('#addForm').dialog('open');
+	};
+	// edit org info 
+	var upd = function(record,id) {
+		$("div[id$=Tip]").empty();
+		$('#addForm1 input[name="customerCode"]').attr('disabled','true');
+		if (!record) {alert("请选择一条记录"); return;}
+		$('#addForm1')[0].reset();
+		$('#addForm1 :input').each(function(i,n) { if (n.name in record) {n.value = record[n.name]; } });
+		$('#addForm').dialog("option","title","编辑代理用户");
+		$('#addForm').dialog("option","buttons",{
+		'更新' : function() { 
+			if ($.formValidator.pageIsValid('1')) {
+				$.ajaxForm({formId: 'addForm1', url: url.upd,
+				success: function(data) {
+					if (data.success) {$('#addForm').dialog('close');
+						$('#table').flexModifyData(data.root[0]); alert('操作成功'); 
+					} else {alert('操作失败 原因是'+ data.syserr); }
+				}});
+			} else { return false; }
+		}, '关闭' : function() {$(this).dialog('close'); }});
+		$('#addForm').dialog('open');
+	};
+	/*=================锁定===============*/
+	var lock = function(rec,id){
+		if (!rec) { alert("请选择一条记录"); return; }
+		if(rec.isActive == '1'){alert("该账户已经被锁定");return;}
+		if(!confirm("本次操作将导致该账户无法贷款,确定操作吗?")){return;}
+		var obj = new Object();
+		obj.version = rec.version;
+		obj.customerCode = rec.customerCode;
+		obj.status = '1';
+		$.ajax({type:'post',url:'doDeleteAgentMember.action',data : {jsonObject : $.toJSON(obj)},
+			success : function(data){
+				var res = $.parseJSON(data);
+				if (res.success) {alert('操作成功');$('#table').flexModifyData(res.root[0]);
+				} else {alert('操作失败 原因是' + res.syserr);}
+			}});
+	};
+	/*=================解锁 ===============*/
+	var unlock = function(rec,id){
+		if (!rec) { alert("请选择一条记录"); return; }
+		if(rec.isActive == '0'){alert("该账户已经被解锁");return;}
+		if(!confirm("本次操作将恢复该账户贷款功能,确定操作吗?")){return;}
+		var obj = new Object();
+		obj.version = rec.version;
+		obj.customerCode = rec.customerCode;
+		obj.status = '0';
+		$.ajax({type:'post',url:'doRecoverAgentMember.action',data : {jsonObject : $.toJSON(obj)},
+			success : function(data){
+				var res = $.parseJSON(data);
+				if (res.success) {alert('操作成功');$('#table').flexModifyData(res.root[0]);
+				} else {alert('操作失败 原因是' + res.syserr);}
+			}});
+	};
+	
+	var resetpw=function(rec,id){
+		var isable=confirm("该操作将重置该用户密码为1111, 是否进行? ");
+		if(isable){ 
+			var obj = new Object(); obj.customerCode = rec.customerCode; obj.version=rec.version;
+			$.ajax({url:'doResetAgentMemberPasswd.action', data : {jsonObject : $.toJSON(obj)},
+				success:function(data){ var res=$.parseJSON(data); if(res.success == true){ alert("密码重置成功"); } else alert(res.syserr); }
+			});
+		}
+	}
+	var view=function(rec,id){
+	if (!rec) { alert("请选择一条记录"); return; }
+	$('#viewOper').dialog("option", "buttons", {
+		'关闭' : function() {
+			$(this).dialog('close');
+		}
+	});
+	var qobj=new Object();
+	qobj.customerCode=rec.customerCode;
+	$.ajax({ url:'findMchntbyAgentCustomerCode.action',type:'POST',async:false,data:{jsonObject:$.toJSON(qobj)}, success:function(data){var res=$.parseJSON(data);if(res.success) $('#mchntGrid').refreshWithData(res); }});	
+	$.ajax({ url:'findLoanbyAgentCustomerCode.action',type:'POST',async:false,data:{jsonObject:$.toJSON(qobj)}, success:function(data){var res=$.parseJSON(data);if(res.success) $('#loanGrid').refreshWithData(res); }});
+	$('#viewOper').dialog('open');
+	}
+	// datagrid
+	$('#table').flexigrid({
+		url : url.grid, sort : "customerCode", checkbox: false, usepager: true,dbClickRecord:view,
+		buttons : [	
+		{ name: "新增",show:'ROLE_MEM_AGE_MEMBER_ADD',bclass: 'grid_view',id: 'cel',onpress: add, aclass:'ui-button-primary'}
+		,{ name: "修改",show:'ROLE_MEM_AGE_MEMBER_UPD',bclass: 'grid_view',id: 'cel',onpress: upd, aclass:'ui-button-primary'}
+		,{ name: "综合查询",bclass: 'grid_view',id: 'cel',onpress: view, aclass:'ui-button-primary'}
+		,{ name: "锁定会员",show:'ROLE_AGE_MEMBER_DELETE',bclass: 'grid_lock',id: 'cel',onpress: lock, aclass:'ui-button-danger'}
+		,{ name: "解锁会员",show:'ROLE_AGE_MEMBER_RECOVER',bclass: 'grid_unlock',id: 'cel',onpress: unlock, aclass:'ui-button-primary'}
+		,{ name: "重置密码",show:'ROLE_AGE_MEMBER_RESET',bclass: 'grid_edit',id: 'cel',onpress: resetpw, aclass:'ui-button-danger'}
+		,{name: "导出Excel", bclass: 'grid_excel', onpress:function() {$('#table').flexFile(url.excel); }}
+		],
+		colModel : [
+		       	 { display : '会员代码', dataIndex : 'customerCode', width : 120, align : 'center', sortable:true }
+		       	,{ display : '手机号码', dataIndex : 'mobile', width : 200, align : 'center', sortable:true }
+		       	,{ display : '姓名', dataIndex : 'realName', width : 80, align : 'center', sortable:true }
+		       	,{ display : '地址', dataIndex : 'address', width : 180, align : 'center', sortable:true }
+		       	,{ display : '最后登录时间', dataIndex : 'lastLoginTime', width : 150, align : 'center', sortable:true, render: fmtTime }
+		       	,{ display : '最后登录IP', dataIndex : 'lastLoginIp', width : 150, align : 'center', sortable:true }
+		    	,{ display : '证件号码', dataIndex : 'idNumber', width : 150, align : 'center', sortable:true }
+		    	,{ display : '是否有效', dataIndex : 'isActiveDesc', width : 80, align : 'center', sortable:true  }
+		       	]
+	});
+	
+	$('#mchntGrid').flexigrid({
+		url : 'findMchntbyAgentCustomerCode.action', sort : "mchntCode", usepager : true,
+		colModel : [
+		            { display: '内部商户号', dataIndex: 'mchntCode', width:100, align: 'center',sortable:true }
+		            ,{ display: '营业执照号码', dataIndex: 'licNo', width:100, align: 'center',sortable:true }
+			        ,{ display: '商户代码', dataIndex: 'mchntCd', width:100, align: 'center',sortable:true }
+			        ,{ display: '税务登记代码', dataIndex: 'reveRegCd', width:120, align: 'center',sortable:true }
+			        ,{ display: '商户中文名称', dataIndex: 'mchntCnName', width:120, align: 'center',sortable:true }			        
+			        ,{ display: '注册地址', dataIndex: 'regAddr', width:120, align: 'center',sortable:true }
+			        ,{ display: '法人代表姓名', dataIndex: 'artifNm', width:120, align: 'center',sortable:true }
+			        ,{ display: '法人代表证件号', dataIndex: 'artifCertifId', width:120, align: 'center',sortable:true }
+			        ,{ display: '商户状态', dataIndex: 'mchntStDesc', width:120, align: 'center',sortable:true }
+		]
+	});
+	$('#loanGrid').flexigrid({
+		url : 'findLoanbyAgentCustomerCode.action', sort : "loanId", usepager : true,
+		colModel : [
+		            { display: '贷款编号', dataIndex: 'loanId', width:100, align: 'center',sortable:true }
+		            ,{ display: '贷款金额', dataIndex: 'loanAt', width:100, align: 'center',sortable:true,render:fmtMoney }
+			        ,{ display: '贷款周期', dataIndex: 'loanCycle', width:100, align: 'center',sortable:true }
+			        ,{ display: '贷款利率', dataIndex: 'loanrt', width:120, align: 'center',sortable:true,render:fmtRate }
+			        ,{ display: '放款成功时间', dataIndex: 'loanSuccTm', width:120, align: 'center',sortable:true, render: fmtTime }			        
+			        ,{ display: '贷款余额', dataIndex: 'loanBalance', width:120, align: 'center',sortable:true,render:fmtMoney }
+			        ,{ display: '贷款状态', dataIndex: 'loanStDesc', width:120, align: 'center',sortable:true }
+		]
+	});
+	//
+	$.jyform.sysCodeBoxes();
+	// buttons
+	$('#queryBtn').click(function(){$.queryTable({formId : 'queryForm', tableId : 'table'});});
+	$('.qry-ul input[type="button"]').addClass('ui-button-primary');
+	$('.bt').addClass('ui-btn-sm').button();
+	$('#queryForm .qry-ul input[type="button"]').click();
+	
+	
+});
+//-->
+</script>
+</body>
+</html>

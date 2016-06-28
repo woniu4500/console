@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  SysCodeMapper.xml
+	Table: FQ_SYS_CODE (系统代码表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.common.dao.ISysCodeDao">
+	<cache flushInterval="60000" readOnly="true"></cache>
+	<sql id="__select" >
+	select
+		   t0.CODE_TYPE as codeType
+		  ,t0.CODE_NO as codeNo
+		  ,t0.CODE_TYPE_NAME as codeTypeName
+		  ,t0.CODE_LANG as codeLang
+		  ,t0.CODE_FLAG as codeFlag
+		  ,t0.CODE_NAME as codeName
+		  ,t0.CODE_SORT as codeSort
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,t0.RESERVED1 as reserved1
+		  ,t0.RESERVED2 as reserved2
+	  from FQ_SYS_CODE t0
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.codeType != null" >and t0.CODE_TYPE = #{params.codeType}</if>
+			<if test="params.codeNo != null" >and t0.CODE_NO = #{params.codeNo}</if>
+			<if test="params.codeTypeName != null" >and t0.CODE_TYPE_NAME = #{params.codeTypeName}</if>
+			<if test="params.codeLang != null" >and t0.CODE_LANG = #{params.codeLang}</if>
+			<if test="params.codeFlag != null" >and t0.CODE_FLAG = #{params.codeFlag}</if>
+			<if test="params.codeName != null" >and t0.CODE_NAME = #{params.codeName}</if>
+			<if test="params.codeSort != null" >and t0.CODE_SORT = #{params.codeSort}</if>
+			<if test="params.lastUptTime != null" >and t0.LAST_UPT_TIME = #{params.lastUptTime}</if>
+			<if test="params.lastUptAcc != null" >and t0.LAST_UPT_ACC = #{params.lastUptAcc}</if>
+			<if test="params.lastUptOrg != null" >and t0.LAST_UPT_ORG = #{params.lastUptOrg}</if>
+			<if test="params.reserved1 != null" >and t0.RESERVED1 = #{params.reserved1}</if>
+			<if test="params.reserved2 != null" >and t0.RESERVED2 = #{params.reserved2}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.common.SysCodeVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.common.SysCodeVo">
+ 	 	<include refid="__select"/>
+ 	 	where CODE_TYPE = #{codeType}
+		  and CODE_NO = #{codeNo}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.common.SysCodeVo">
+		insert into FQ_SYS_CODE 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="codeType != null" >CODE_TYPE,</if>
+			<if test="codeNo != null" >CODE_NO,</if>
+			<if test="codeTypeName != null" >CODE_TYPE_NAME,</if>
+			<if test="codeLang != null" >CODE_LANG,</if>
+			<if test="codeFlag != null" >CODE_FLAG,</if>
+			<if test="codeName != null" >CODE_NAME,</if>
+			<if test="codeSort != null" >CODE_SORT,</if>
+			<if test="lastUptTime != null" >LAST_UPT_TIME,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+			<if test="reserved1 != null" >RESERVED1,</if>
+			<if test="reserved2 != null" >RESERVED2,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="codeType != null" >#{codeType},</if>
+			<if test="codeNo != null" >#{codeNo},</if>
+			<if test="codeTypeName != null" >#{codeTypeName},</if>
+			<if test="codeLang != null" >#{codeLang},</if>
+			<if test="codeFlag != null" >#{codeFlag},</if>
+			<if test="codeName != null" >#{codeName},</if>
+			<if test="codeSort != null" >#{codeSort},</if>
+			<if test="lastUptTime != null" >#{lastUptTime},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+			<if test="reserved1 != null" >#{reserved1},</if>
+			<if test="reserved2 != null" >#{reserved2},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.common.SysCodeVo">
+		update FQ_SYS_CODE 
+		<set>
+			<if test="codeType != null" >CODE_TYPE = #{codeType},</if>
+			<if test="codeNo != null" >CODE_NO = #{codeNo},</if>
+			<if test="codeTypeName != null" >CODE_TYPE_NAME = #{codeTypeName},</if>
+			<if test="codeLang != null" >CODE_LANG = #{codeLang},</if>
+			<if test="codeFlag != null" >CODE_FLAG = #{codeFlag},</if>
+			<if test="codeName != null" >CODE_NAME = #{codeName},</if>
+			<if test="codeSort != null" >CODE_SORT = #{codeSort},</if>
+			<if test="lastUptTime != null" >LAST_UPT_TIME = #{lastUptTime},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+			<if test="reserved1 != null" >RESERVED1 = #{reserved1},</if>
+			<if test="reserved2 != null" >RESERVED2 = #{reserved2},</if>
+		</set>
+		where CODE_TYPE = #{codeType}
+		  and CODE_NO = #{codeNo}
+	</update>
+</mapper>

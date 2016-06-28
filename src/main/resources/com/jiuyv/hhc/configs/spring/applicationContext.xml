@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	<!-- Annotation Config -->
+	<context:annotation-config />
+	<!-- Properties File -->
+	<!-- <context:property-placeholder location="${SME_ENVFILE}" /> -->
+	<!-- <context:property-placeholder location="${YDT_ENVFILE}" /> -->
+	<context:property-placeholder location="classpath:server.properties" /> 
+	<!-- -->
+	<aop:aspectj-autoproxy />
+	<!-- DataSource Config -->
+	<import resource="dataSource.xml" />
+	<!-- Service and Dao Config -->
+	<import resource="applicationContext-public.xml" />
+	<!-- Security Module -->
+	<import resource="applicationContext-security.xml" />
+	<!-- Message Module -->
+	<import resource="applicationContext-message.xml" />
+	<!-- System common Module -->
+	<import resource="applicationContext-syscomm.xml" />
+	<!-- Customer Module -->
+	<import resource="applicationContext-customer.xml" />
+	<!-- Loan Module -->
+	<import resource="applicationContext-loan.xml" />
+
+	<!-- Information Module -->
+	<import resource="applicationContext-information.xml" />
+	
+</beans>

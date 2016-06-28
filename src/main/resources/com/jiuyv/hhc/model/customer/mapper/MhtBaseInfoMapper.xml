@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  MhtBaseInfoMapper.xml
+	Table: FQ_MHT_BASE_INFO (商户基本信息表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.customer.dao.MhtBaseInfoDao">
+	<sql id="__select" >
+	select
+		   t0.MCHNT_CODE as mchntCode
+		  ,t0.VERSION as version
+		  ,t0.LIC_NO as licNo
+		  ,t0.CUSTOMER_CODE as customerCode
+		  ,t0.MCHNT_CD as mchntCd
+		  ,t0.ACQ_INS_ID_CD as acqInsIdCd
+		  ,t0.REVE_REG_CD as reveRegCd
+		  ,t0.MCHNT_CN_NAME as mchntCnName
+		  ,t0.REG_ADDR as regAddr
+		  ,t0.ARTIF_NM as artifNm
+		  ,t0.ARTIF_CERTIF_ID as artifCertifId
+		  ,t0.ARTIF_CERTIF_TYPE as artifCertifType
+		  ,t0.MCHNT_TP as mchntTp
+		  ,t0.MCHNT_GRP as mchntGrp
+		  ,t0.PHONE as phone
+		  ,t0.MCHNT_CRT_DT as mchntCrtDt
+		  ,t0.POS_NUM as posNum
+		  ,t0.REMARK as remark
+		  ,t0.MCHNT_ST as mchntSt
+		  ,st.CODE_NAME as mchntStDesc
+		  ,t0.REC_ACC as recAcc
+		  ,t0.REC_TIME as recTime
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  
+		  ,t0.RESP_INFO as respInfo
+		  ,t0.AUDIT_TIME as auditTime
+		  ,t0.BEFORE_TIME as beforeTime
+		  
+		  ,grp.CODE_NAME as mchntGrpDesc
+		  ,tp.CODE_NAME  as mchntTpDesc
+		  
+	  from FQ_MHT_BASE_INFO t0
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_ST') st on t0.MCHNT_ST=st.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_GRP') grp on t0.MCHNT_GRP=grp.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_TP') tp on t0.MCHNT_TP=tp.CODE_NO 
+	</sql>
+
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.customer.MhtBaseInfoVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<!-- select -->
+	<select id="filterQuerybyAgentCustomerCode" resultType="com.jiuyv.hhc.model.customer.MhtBaseInfoVo">
+ 	 	<include refid="__select"/>
+ 	 	where CUSTOMER_CODE in(
+		select CUSTOMER_CODE from FQ_WEB_MEMBER_INFO where CUSTOMER_CODE=#{customerCode} union 
+		(select CUSTOMER_CODE from FQ_WEB_MEMBER_INFO where FATHER_CUSTOMER_CODE=#{customerCode}))
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.customer.MhtBaseInfoVo">
+ 	 	<include refid="__select"/>
+ 	 	where MCHNT_CODE = #{mchntCode}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.customer.MhtBaseInfoVo">
+	    <!-- 
+		<selectKey keyProperty="mchntCode" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_MHT_BASE_INFO.nextval from dual</selectKey>
+		 -->
+		insert into FQ_MHT_BASE_INFO 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,LAST_UPT_TIME,REC_TIME,
+			<if test="licNo != null" >LIC_NO,</if>
+			<if test="customerCode != null" >CUSTOMER_CODE,</if>
+			<if test="mchntCd != null" >MCHNT_CD,</if>
+			<if test="acqInsIdCd != null" >ACQ_INS_ID_CD,</if>
+			<if test="reveRegCd != null" >REVE_REG_CD,</if>
+			<if test="mchntCnName != null" >MCHNT_CN_NAME,</if>
+			<if test="regAddr != null" >REG_ADDR,</if>
+			<if test="artifNm != null" >ARTIF_NM,</if>
+			<if test="artifCertifId != null" >ARTIF_CERTIF_ID,</if>
+			<if test="artifCertifType != null" >ARTIF_CERTIF_TYPE,</if>
+			<if test="mchntTp != null" >MCHNT_TP,</if>
+			<if test="mchntGrp != null" >MCHNT_GRP,</if>
+			<if test="phone != null" >PHONE,</if>
+			<if test="mchntCrtDt != null" >MCHNT_CRT_DT,</if>
+			<if test="posNum != null" >POS_NUM,</if>
+			<if test="remark != null" >REMARK,</if>
+			<if test="mchntSt != null" >MCHNT_ST,</if>
+			<if test="respInfo != null" >RESP_INFO,</if>
+			<if test="auditTime != null" >AUDIT_TIME,</if>
+			<if test="beforeTime != null" >BEFORE_TIME,</if>
+			<if test="recAcc != null" >REC_ACC,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,<include refid="dialect.__time"/>,
+			<if test="licNo != null" >#{licNo},</if>
+			<if test="customerCode != null" >#{customerCode},</if>
+			<if test="mchntCd != null" >#{mchntCd},</if>
+			<if test="acqInsIdCd != null" >#{acqInsIdCd},</if>
+			<if test="reveRegCd != null" >#{reveRegCd},</if>
+			<if test="mchntCnName != null" >#{mchntCnName},</if>
+			<if test="regAddr != null" >#{regAddr},</if>
+			<if test="artifNm != null" >#{artifNm},</if>
+			<if test="artifCertifId != null" >#{artifCertifId},</if>
+			<if test="artifCertifType != null" >#{artifCertifType},</if>
+			<if test="mchntTp != null" >#{mchntTp},</if>
+			<if test="mchntGrp != null" >#{mchntGrp},</if>
+			<if test="phone != null" >#{phone},</if>
+			<if test="mchntCrtDt != null" >#{mchntCrtDt},</if>
+			<if test="posNum != null" >#{posNum},</if>
+			<if test="remark != null" >#{remark},</if>
+			<if test="mchntSt != null" >#{mchntSt},</if>
+			<if test="respInfo != null" >#{respInfo},</if>
+			<if test="auditTime != null" >#{auditTime},</if>
+			<if test="beforeTime != null" >#{beforeTime},</if>
+			<if test="recAcc != null" >#{recAcc},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.customer.MhtBaseInfoVo">
+		update FQ_MHT_BASE_INFO 
+		<set>
+		LAST_UPT_TIME = <include refid="dialect.__time"/>,VERSION=VERSION+1,
+			<if test="mchntCode != null" >MCHNT_CODE = #{mchntCode},</if>
+			<if test="licNo != null" >LIC_NO = #{licNo},</if>
+			<if test="customerCode != null" >CUSTOMER_CODE = #{customerCode},</if>
+			<if test="mchntCd != null" >MCHNT_CD = #{mchntCd},</if>
+			<if test="acqInsIdCd != null" >ACQ_INS_ID_CD = #{acqInsIdCd},</if>
+			<if test="reveRegCd != null" >REVE_REG_CD = #{reveRegCd},</if>
+			<if test="mchntCnName != null" >MCHNT_CN_NAME = #{mchntCnName},</if>
+			<if test="regAddr != null" >REG_ADDR = #{regAddr},</if>
+			<if test="artifNm != null" >ARTIF_NM = #{artifNm},</if>
+			<if test="artifCertifId != null" >ARTIF_CERTIF_ID = #{artifCertifId},</if>
+			<if test="artifCertifType != null" >ARTIF_CERTIF_TYPE = #{artifCertifType},</if>
+			<if test="mchntTp != null" >MCHNT_TP = #{mchntTp},</if>
+			<if test="mchntGrp != null" >MCHNT_GRP = #{mchntGrp},</if>
+			<if test="phone != null" >PHONE = #{phone},</if>
+			<if test="mchntCrtDt != null" >MCHNT_CRT_DT = #{mchntCrtDt},</if>
+			<if test="posNum != null" >POS_NUM = #{posNum},</if>
+			<if test="remark != null" >REMARK = #{remark},</if>
+			<if test="mchntSt != null" >MCHNT_ST = #{mchntSt},</if>
+			<if test="respInfo != null" >RESP_INFO = #{respInfo},</if>
+			<if test="auditTime != null" >AUDIT_TIME = #{auditTime},</if>
+			<if test="beforeTime != null" >BEFORE_TIME = #{beforeTime},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+		</set>
+		where MCHNT_CODE = #{mchntCode} and VERSION=#{version}
+	</update>
+</mapper>

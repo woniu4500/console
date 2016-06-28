@@ -1,0 +1,25 @@
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 站内信处理 -->
+	<package name="sys.param.qry" extends="mngr-query-default">
+		<action name="sysParamSetup" class="sysParamAction">
+			<result name="success">page/syscomm/param_mngr.jsp</result>
+		</action>
+		<action name="findSysParamList"  class="sysParamAction" method="findSysParamList"  />
+		<action name="findSysParamExcel" class="sysParamAction" method="findSysParamExcel" />
+		<action name="selectQrcodeText" class="sysParamAction" method="selectQrcodeText"/>
+		<action name="loadTheme" class="sysParamAction" method="loadTheme"/>
+		<action name="queryThemeSetUp" class="sysParamAction" method="loadTheme">
+			<result name="success">page/syscomm/theme_mngr.jsp</result>
+		</action>
+	</package>
+	<package name="sys.param" extends="mngr-default">
+		<action name="updateSysParam" class="sysParamAction" method="updateSysParam"/>
+		<action name="updateTheme" class="sysParamAction" method="updateTheme"/>
+		<action name="uploadImg" class="sysParamAction" method="uploadImg"/>
+		<action name="uploadFile" class="sysParamAction" method="uploadFile"/>
+		<action name="genZipFile" class="sysParamAction" method="genZipFile"/>
+	</package>
+</struts>

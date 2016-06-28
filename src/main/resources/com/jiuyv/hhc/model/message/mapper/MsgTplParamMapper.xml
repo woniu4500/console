@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  MsgTplParamMapper.xml
+	Table: FQ_MSG_TPL_PARAM (信息模板参数表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.message.dao.MsgTplParamDao">
+	<sql id="__select" >
+	select
+		   t0.PARAM_CODE as paramCode
+		  ,t0.PARAM_NAME as paramName
+		  ,t0.PARAM_TYPE as paramType
+		  ,t0.PARAM_DEMO as paramDemo
+		  ,t0.PARAM_COMMENT as paramComment
+		  ,t0.STATUS as status
+	  from FQ_MSG_TPL_PARAM t0
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.paramCode != null" >and t0.PARAM_CODE = #{params.paramCode}</if>
+			<if test="params.paramName != null" >and t0.PARAM_NAME = #{params.paramName}</if>
+			<if test="params.paramType != null" >and t0.PARAM_TYPE = #{params.paramType}</if>
+			<if test="params.paramDemo != null" >and t0.PARAM_DEMO = #{params.paramDemo}</if>
+			<if test="params.paramComment != null" >and t0.PARAM_COMMENT = #{params.paramComment}</if>
+			<if test="params.status != null" >and t0.STATUS = #{params.status}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.message.MsgTplParamVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.message.MsgTplParamVo">
+ 	 	<include refid="__select"/>
+ 	 	where PARAM_CODE = #{paramCode}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.message.MsgTplParamVo">
+		insert into FQ_MSG_TPL_PARAM 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="paramCode != null" >PARAM_CODE,</if>
+			<if test="paramName != null" >PARAM_NAME,</if>
+			<if test="paramType != null" >PARAM_TYPE,</if>
+			<if test="paramDemo != null" >PARAM_DEMO,</if>
+			<if test="paramComment != null" >PARAM_COMMENT,</if>
+			<if test="status != null" >STATUS,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="paramCode != null" >#{paramCode},</if>
+			<if test="paramName != null" >#{paramName},</if>
+			<if test="paramType != null" >#{paramType},</if>
+			<if test="paramDemo != null" >#{paramDemo},</if>
+			<if test="paramComment != null" >#{paramComment},</if>
+			<if test="status != null" >#{status},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.message.MsgTplParamVo">
+		update FQ_MSG_TPL_PARAM 
+		<set>
+			<if test="paramName != null" >PARAM_NAME = #{paramName},</if>
+			<if test="paramType != null" >PARAM_TYPE = #{paramType},</if>
+			<if test="paramDemo != null" >PARAM_DEMO = #{paramDemo},</if>
+			<if test="paramComment != null" >PARAM_COMMENT = #{paramComment},</if>
+			<if test="status != null" >STATUS = #{status},</if>
+		</set>
+		where PARAM_CODE = #{paramCode}
+	</update>
+</mapper>

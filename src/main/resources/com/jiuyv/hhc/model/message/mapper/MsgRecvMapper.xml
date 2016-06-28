@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  MsgRecvMapper.xml
+	Table: FQ_MSG_RECV (系统消息接收方)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.message.dao.MsgRecvDao">
+	<sql id="__select" >
+	select
+		   t0.MSG_ID as msgId
+		  ,t0.RECV_ID as recvId
+		  ,t0.SEND_ID as sendId
+		  ,t0.READ_FLAG as readFlag
+		  ,mrf.CODE_NAME as readFlagDesc
+		  ,u.USER_NAME as recvName
+		  ,u.LOGIN_ID as recvAcct
+	  from FQ_MSG_RECV t0
+	  left join FQ_SYS_USER u on t0.RECV_ID = u.USER_ID
+	  left join (select * from FQ_SYS_CODE where code_type='MSG_READ_FLAG') mrf on t0.READ_FLAG = mrf.CODE_NO
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.msgId != null" >and t0.MSG_ID = #{params.msgId}</if>
+			<if test="params.recvId != null" >and t0.RECV_ID = #{params.recvId}</if>
+			<if test="params.sendId != null" >and t0.SEND_ID = #{params.sendId}</if>
+			<if test="params.readFlag != null" >and t0.READ_FLAG = #{params.readFlag}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.message.MsgRecvVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.message.MsgRecvVo">
+ 	 	<include refid="__select"/>
+ 	 	where MSG_ID = #{msgId}
+		  and RECV_ID = #{recvId}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.message.MsgRecvVo">
+		insert into FQ_MSG_RECV 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="msgId != null" >MSG_ID,</if>
+			<if test="recvId != null" >RECV_ID,</if>
+			<if test="sendId != null" >SEND_ID,</if>
+			<if test="readFlag != null" >READ_FLAG,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="msgId != null" >#{msgId},</if>
+			<if test="recvId != null" >#{recvId},</if>
+			<if test="sendId != null" >#{sendId},</if>
+			<if test="readFlag != null" >#{readFlag},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.message.MsgRecvVo">
+		update FQ_MSG_RECV 
+		<set>
+			<if test="msgId != null" >MSG_ID = #{msgId},</if>
+			<if test="recvId != null" >RECV_ID = #{recvId},</if>
+			<if test="sendId != null" >SEND_ID = #{sendId},</if>
+			<if test="readFlag != null" >READ_FLAG = #{readFlag},</if>
+		</set>
+		where MSG_ID = #{msgId}
+		  and RECV_ID = #{recvId}
+	</update>
+	
+	<delete id="deleteByMsgId">
+		delete from FQ_MSG_RECV where MSG_ID = #{msgId}
+	</delete>
+	
+</mapper>

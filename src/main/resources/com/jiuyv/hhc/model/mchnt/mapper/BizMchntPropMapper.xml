@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+                        
+<!-- 
+	Name:  BizMchntPropMapper.xml
+	Table: FQ_BIZ_MCHNT_PROP ([New]商户信息附加表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.mchnt.dao.BizMchntPropDao">
+	<sql id="__select" >
+	select
+		   t0.MCHNT_CODE as mchntCode
+		  ,t0.MCHNT_EN_TYPE as mchntEnType
+		  ,t0.MCHNT_DISP_NAME as mchntDispName
+		  ,t0.MCHNT_CONTACT as mchntContact
+		  ,t0.MCHNT_CONTACT_MOBILE as mchntContactMobile
+		  ,t0.MCHNT_ARTIF_MOBILE as mchntArtifMobile
+		  ,t0.TELEPHONE as telephone
+		  ,t0.MCHNT_START_DATE as mchntStartDate
+		  ,t0.REG_CAPITAL as regCapital
+		  ,t0.ORG_CODE as orgCode
+		  ,t0.OTH_BANK_NAME as othBankName
+		  ,t0.OTH_CARD_NO as othCardNo
+	  from FQ_BIZ_MCHNT_PROP t0
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.mchnt.BizMchntPropVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.mchnt.BizMchntPropVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.MCHNT_CODE = #{mchntCode}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.mchnt.BizMchntPropVo">
+		insert into FQ_BIZ_MCHNT_PROP 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="mchntCode != null" >MCHNT_CODE,</if>
+			<if test="mchntEnType != null" >MCHNT_EN_TYPE,</if>
+			<if test="mchntDispName != null" >MCHNT_DISP_NAME,</if>
+			<if test="mchntContact != null" >MCHNT_CONTACT,</if>
+			<if test="mchntContactMobile != null" >MCHNT_CONTACT_MOBILE,</if>
+			<if test="mchntArtifMobile != null" >MCHNT_ARTIF_MOBILE,</if>
+			<if test="telephone != null" >TELEPHONE,</if>
+			<if test="mchntStartDate != null" >MCHNT_START_DATE,</if>
+			<if test="regCapital != null" >REG_CAPITAL,</if>
+			<if test="orgCode != null" >ORG_CODE,</if>
+			<if test="othBankName != null" >OTH_BANK_NAME,</if>
+			<if test="othCardNo != null" >OTH_CARD_NO,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="mchntCode != null" >#{mchntCode},</if>
+			<if test="mchntEnType != null" >#{mchntEnType},</if>
+			<if test="mchntDispName != null" >#{mchntDispName},</if>
+			<if test="mchntContact != null" >#{mchntContact},</if>
+			<if test="mchntContactMobile != null" >#{mchntContactMobile},</if>
+			<if test="mchntArtifMobile != null" >#{mchntArtifMobile},</if>
+			<if test="telephone != null" >#{telephone},</if>
+			<if test="mchntStartDate != null" >#{mchntStartDate},</if>
+			<if test="regCapital != null" >#{regCapital},</if>
+			<if test="orgCode != null" >#{orgCode},</if>
+			<if test="othBankName != null" >#{othBankName},</if>
+			<if test="othCardNo != null" >#{othCardNo},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.mchnt.BizMchntPropVo">
+		update FQ_BIZ_MCHNT_PROP 
+		<set>
+			<if test="mchntCode != null" >MCHNT_CODE = #{mchntCode},</if>
+			<if test="mchntEnType != null" >MCHNT_EN_TYPE = #{mchntEnType},</if>
+			<if test="mchntDispName != null" >MCHNT_DISP_NAME = #{mchntDispName},</if>
+			<if test="mchntContact != null" >MCHNT_CONTACT = #{mchntContact},</if>
+			<if test="mchntContactMobile != null" >MCHNT_CONTACT_MOBILE = #{mchntContactMobile},</if>
+			<if test="mchntArtifMobile != null" >MCHNT_ARTIF_MOBILE = #{mchntArtifMobile},</if>
+			<if test="telephone != null" >TELEPHONE = #{telephone},</if>
+			<if test="mchntStartDate != null" >MCHNT_START_DATE = #{mchntStartDate},</if>
+			<if test="regCapital != null" >REG_CAPITAL = #{regCapital},</if>
+			<if test="orgCode != null" >ORG_CODE = #{orgCode},</if>
+			<if test="othBankName != null" >OTH_BANK_NAME = #{othBankName},</if>
+			<if test="othCardNo != null" >OTH_CARD_NO = #{othCardNo},</if>
+		</set>
+		where MCHNT_CODE = #{mchntCode} 
+	</update>
+</mapper>

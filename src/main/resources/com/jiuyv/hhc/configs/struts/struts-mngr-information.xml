@@ -1,0 +1,80 @@
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 栏目管理 -->	
+	<package name="cmArtCat.qry" extends="mngr-query-default">
+		<action name="cmArtCatSetup" class="cmArtCatAction">
+			<result name="success">page/information/cm_art_cat_mngr.jsp</result>
+		</action>
+		<action name="doCheckCmArtCatSetup" class="cmArtCatAction" method="doCheckPage" >
+			<result name="success">page/information/cm_art_cat_check.jsp</result>
+		</action>
+		<action name="findCmArtCat"  class="cmArtCatAction" method="findCmArtCat"  />
+		<action name="findCmArtCatCombo" class="cmArtCatAction" method="findCmArtCatCombo" />
+	</package>
+	<package name="cmArtCat" extends="mngr-default">
+		<action name="doInsertCmArtCat" class="cmArtCatAction" method="doInsertCmArtCat" />
+		<action name="doUpdateCmArtCat" class="cmArtCatAction" method="doUpdateCmArtCat" />
+		<action name="doDeleteCmArtCat" class="cmArtCatAction" method="doDeleteCmArtCat" />
+		<action name="doCommitCmArtCat" class="cmArtCatAction" method="doCommitCmArtCat" />
+		<action name="doRejectCmArtCat" class="cmArtCatAction" method="doRejectCmArtCat" />
+		<action name="doReleaseCmArtCat" class="cmArtCatAction" method="doReleaseCmArtCat" />
+	</package>
+	<!-- 网站内容管理 -->	
+	<package name="cmArticle.qry" extends="mngr-query-default">
+		<action name="cmArticleSetup" class="cmArticleAction">
+			<result name="success">page/information/cm_art_mngr.jsp</result>
+		</action>
+		<action name="doCheckArticleSetup" class="cmArticleAction" method="doCheckPage" >
+			<result name="success">page/information/cm_art_check.jsp</result>
+		</action>
+		<action name="findCmArticle"  class="cmArticleAction" method="findCmArticle"  />
+		<action name="findCmArticleDetail"  class="cmArticleAction" method="findCmArticleDetail"  />
+	</package>
+	<package name="cmArticle" extends="mngr-default">
+		<action name="doInsertCmArticle" class="cmArticleAction" method="doInsertCmArticle" />
+		<action name="doUpdateCmArticle" class="cmArticleAction" method="doUpdateCmArticle" />
+		<action name="doDeleteCmArticle" class="cmArticleAction" method="doDeleteCmArticle" />
+		<action name="doCommitCmArticle" class="cmArticleAction" method="doCommitCmArticle" />
+		<action name="doRejectCmArticle" class="cmArticleAction" method="doRejectCmArticle" />
+		<action name="doReleaseCmArticle" class="cmArticleAction" method="doReleaseCmArticle" />
+	</package>
+	
+	<!-- 导航管理 -->	
+	<package name="cmNavi.qry" extends="mngr-query-default">
+		<action name="cmNaviSetup" class="cmNaviAction">
+			<result name="success">page/information/cm_navi_mngr.jsp</result>
+		</action>
+		<action name="doCheckCmNaviSetup" class="cmNaviAction">
+			<result name="success">page/information/cm_navi_check.jsp</result>
+		</action>
+		<action name="findCmNavi"  class="cmNaviAction" method="findCmNavi"  />
+	</package>
+	<package name="cmNavi" extends="mngr-default">
+		<action name="doInsertCmNavi" class="cmNaviAction" method="doInsertCmNavi" />
+		<action name="doUpdateCmNavi" class="cmNaviAction" method="doUpdateCmNavi" />
+		<action name="doDeleteCmNavi" class="cmNaviAction" method="doDeleteCmNavi" />
+		<action name="doCommitCmNavi" class="cmNaviAction" method="doCommitCmNavi" />
+		<action name="doRejectCmNavi" class="cmNaviAction" method="doRejectCmNavi" />
+		<action name="doReleaseCmNavi" class="cmNaviAction" method="doReleaseCmNavi" />
+	</package>
+	<!-- 友情链接管理 -->	
+	<package name="cmFrdLink.qry" extends="mngr-query-default">
+		<action name="cmFrdLinkSetup" class="cmFrdLinkAction">
+			<result name="success">page/information/cm_frd_link_mngr.jsp</result>
+		</action>
+		<action name="doCheckCmFrdLinkSetup" class="cmFrdLinkAction">
+			<result name="success">page/information/cm_frd_link_check.jsp</result>
+		</action>
+		<action name="findCmFrdLink"  class="cmFrdLinkAction" method="findCmFrdLink"  />
+	</package>
+	<package name="cmFrdLink" extends="mngr-default">
+		<action name="doInsertCmFrdLink" class="cmFrdLinkAction" method="doInsertCmFrdLink" />
+		<action name="doUpdateCmFrdLink" class="cmFrdLinkAction" method="doUpdateCmFrdLink" />
+		<action name="doDeleteCmFrdLink" class="cmFrdLinkAction" method="doDeleteCmFrdLink" />
+		<action name="doCommitCmFrdLink" class="cmFrdLinkAction" method="doCommitCmFrdLink" />
+		<action name="doRejectCmFrdLink" class="cmFrdLinkAction" method="doRejectCmFrdLink" />
+		<action name="doReleaseCmFrdLink" class="cmFrdLinkAction" method="doReleaseCmFrdLink" />
+	</package>
+</struts>

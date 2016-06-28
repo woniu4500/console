@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  SysParamMapper.xml
+	Table: FQ_SYS_PARAM (系统参数表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.common.dao.SysParamDao">
+	<cache flushInterval="10000" readOnly="true"></cache>
+	<sql id="__select" >
+	select
+		   t0.PARAM_CODE as paramCode
+		  ,t0.VERSION as version
+		  ,t0.PARAM_VALUE as paramValue
+		  ,t0.PARAM_CHECK as paramCheck
+		  ,t0.PARAM_RULE as paramRule
+		  ,t0.PARAM_MODIFY_FLAG as paramModifyFlag
+		  ,t0.PARAM_DESC as paramDesc
+		  ,t0.PARAM_REMARK as paramRemark
+		  ,t0.LAST_UPDATE_ORG as lastUpdateOrg
+		  ,t0.LAST_UPDATE_ACC as lastUpdateAcc
+		  ,t0.LAST_UPDATE_TIME as lastUpdateTime
+		  ,t0.RESERVED1 as reserved1
+		  ,t0.RESERVED2 as reserved2
+	  from FQ_SYS_PARAM t0
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.common.SysParamVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.common.SysParamVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.PARAM_CODE = #{paramCode}
+ 	</select>
+
+ 	 <select id="findByPrefix" resultType="com.jiuyv.hhc.model.common.SysParamVo" >
+ 		<include refid="__select"/>
+ 	 	where t0.PARAM_CODE like #{prefix}||'%'
+ 	</select>
+ 	
+ 	
+ 	
+ 	<select id="loadTheme" resultType="com.jiuyv.hhc.model.common.SysParamVo" useCache="false">
+ 		<include refid="__select"/>
+ 		where t0.PARAM_CODE like #{paramCode}
+ 	</select>
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.common.SysParamVo">
+		insert into FQ_SYS_PARAM 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION, LAST_UPDATE_TIME,
+			<if test="paramCode != null" >PARAM_CODE,</if>
+			<if test="paramValue != null" >PARAM_VALUE,</if>
+			<if test="paramCheck != null" >PARAM_CHECK,</if>
+			<if test="paramRule != null" >PARAM_RULE,</if>
+			<if test="paramModifyFlag != null" >PARAM_MODIFY_FLAG,</if>
+			<if test="paramDesc != null" >PARAM_DESC,</if>
+			<if test="paramRemark != null" >PARAM_REMARK,</if>
+			<if test="lastUpdateOrg != null" >LAST_UPDATE_ORG,</if>
+			<if test="lastUpdateAcc != null" >LAST_UPDATE_ACC,</if>
+			<if test="reserved1 != null" >RESERVED1,</if>
+			<if test="reserved2 != null" >RESERVED2,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,
+			<if test="paramCode != null" >#{paramCode},</if>
+			<if test="paramValue != null" >#{paramValue},</if>
+			<if test="paramCheck != null" >#{paramCheck},</if>
+			<if test="paramRule != null" >#{paramRule},</if>
+			<if test="paramModifyFlag != null" >#{paramModifyFlag},</if>
+			<if test="paramDesc != null" >#{paramDesc},</if>
+			<if test="paramRemark != null" >#{paramRemark},</if>
+			<if test="lastUpdateOrg != null" >#{lastUpdateOrg},</if>
+			<if test="lastUpdateAcc != null" >#{lastUpdateAcc},</if>
+			<if test="reserved1 != null" >#{reserved1},</if>
+			<if test="reserved2 != null" >#{reserved2},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.common.SysParamVo">
+		update FQ_SYS_PARAM 
+		<set>
+		 	VERSION = VERSION + 1,
+		 	LAST_UPDATE_TIME = <include refid="dialect.__time"/>,
+			<if test="paramValue != null" >PARAM_VALUE = #{paramValue},</if>
+			<if test="paramCheck != null" >PARAM_CHECK = #{paramCheck},</if>
+			<if test="paramRule != null" >PARAM_RULE = #{paramRule},</if>
+			<if test="paramModifyFlag != null" >PARAM_MODIFY_FLAG = #{paramModifyFlag},</if>
+			<if test="paramDesc != null" >PARAM_DESC = #{paramDesc},</if>
+			<if test="paramRemark != null" >PARAM_REMARK = #{paramRemark},</if>
+			<if test="lastUpdateOrg != null" >LAST_UPDATE_ORG = #{lastUpdateOrg},</if>
+			<if test="lastUpdateAcc != null" >LAST_UPDATE_ACC = #{lastUpdateAcc},</if>
+			<if test="reserved1 != null" >RESERVED1 = #{reserved1},</if>
+			<if test="reserved2 != null" >RESERVED2 = #{reserved2},</if>
+		</set>
+		where PARAM_CODE = #{paramCode} and VERSION = #{version}
+	</update>
+</mapper>

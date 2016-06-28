@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 
+	Name:  SysUserMapper.xml
+	Table: FQ_SYS_USER (控制台用户表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.security.dao.SysUserDao">
+	<sql id="__select" >
+	select
+		   t0.USER_ID as userId
+		  ,t0.VERSION as version
+		  ,t0.LOGIN_ID as loginId
+		  ,t0.LOGIN_PASSWD as loginPasswd
+		  ,t0.USER_NAME as userName
+		  ,t0.ORG_CODE as orgCode
+		  ,t0.USER_PHONE as userPhone
+		  ,t0.USER_EMAIL as userEmail
+		  ,t0.USER_ADDR as userAddr
+		  ,t0.CRD_TYPE as crdType
+		  ,t0.CRD_NO as crdNo
+		  ,t0.STATUS as status
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,t0.REG_TIME as regTime
+		  ,o.ORG_NAME as orgName
+		  ,st.CODE_NAME as statusDesc
+		  ,st1.CODE_NAME as crdTypeDesc
+	  from FQ_SYS_USER t0
+	  left join FQ_SYS_ORG o on t0.ORG_CODE=o.ORG_CODE
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_STATUE') st on t0.status=st.CODE_NO 
+	  left join (select * from FQ_SYS_CODE
+		where code_type='PUB_CERT_TYPE') st1 on
+		t0.CRD_TYPE=st1.CODE_NO
+	</sql>
+
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.security.SysUserVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.security.SysUserVo">
+ 	 	<include refid="__select"/>
+ 	 	where USER_ID = #{userId}
+ 	</select>
+ 	
+ 	<select id="findByOrgCode" resultType="com.jiuyv.hhc.model.security.SysUserVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.ORG_CODE = #{orgCode}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.security.SysUserVo" >
+		<selectKey keyProperty="userId" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_SYS_USER.nextval from dual</selectKey>
+		insert into FQ_SYS_USER 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION, LAST_UPT_TIME,
+			<if test="loginId != null" >LOGIN_ID,</if>
+			<if test="loginPasswd != null" >LOGIN_PASSWD,</if>
+			<if test="userName != null" >USER_NAME,</if>
+			<if test="orgCode != null" >ORG_CODE,</if>
+			<if test="userPhone != null" >USER_PHONE,</if>
+			<if test="userEmail != null" >USER_EMAIL,</if>
+			<if test="userAddr != null" >USER_ADDR,</if>
+			<if test="crdType != null" >CRD_TYPE,</if>
+			<if test="crdNo != null" >CRD_NO,</if>
+			<if test="status != null" >STATUS,</if>
+			<if test="regTime != null" >REG_TIME,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>		
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0, <include refid="dialect.__time"/>,
+			<if test="loginId != null" >#{loginId},</if>
+			<if test="loginPasswd != null" >#{loginPasswd},</if>
+			<if test="userName != null" >#{userName},</if>
+			<if test="orgCode != null" >#{orgCode},</if>
+			<if test="userPhone != null" >#{userPhone},</if>
+			<if test="userEmail != null" >#{userEmail},</if>
+			<if test="userAddr != null" >#{userAddr},</if>
+			<if test="crdType != null" >#{crdType},</if>
+			<if test="crdNo != null" >#{crdNo},</if>
+			<if test="status != null" >#{status},</if>
+			<if test="regTime != null" >#{regTime},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>	
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.security.SysUserVo">
+		update FQ_SYS_USER 
+		<set>
+			VERSION = VERSION + 1 , LAST_UPT_TIME = <include refid="dialect.__time"/>,
+			<if test="loginId != null" >LOGIN_ID = #{loginId},</if>
+			<if test="loginPasswd != null" >LOGIN_PASSWD = #{loginPasswd},</if>
+			<if test="userName != null" >USER_NAME = #{userName},</if>
+			<if test="orgCode != null" >ORG_CODE = #{orgCode},</if>
+			<if test="userPhone != null" >USER_PHONE = #{userPhone},</if>
+			<if test="userEmail != null" >USER_EMAIL = #{userEmail},</if>
+			<if test="userAddr != null" >USER_ADDR = #{userAddr},</if>
+			<if test="crdType != null" >CRD_TYPE = #{crdType},</if>
+			<if test="crdNo != null" >CRD_NO = #{crdNo},</if>
+			<if test="status != null" >STATUS = #{status},</if>
+			<if test="regTime != null" >REG_TIME = #{regTime},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>	  
+		</set>
+		where USER_ID = #{userId} and VERSION = #{version}
+	</update>
+	
+</mapper>

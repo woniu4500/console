@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:sec="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<bean id="mediaService"
+		class="com.jiuyv.hhc.console.common.service.impl.MediaSupportServiceImpl">
+		<property name="cmMediaResDao" ref="cmMediaResDao" />
+	</bean>
+	<!-- 资源过滤处理 -->
+	<bean id="mediaFilter" class="com.jiuyv.hhc.console.common.filter.MediaFilter">
+		<property name="mediaService" ref="mediaService" />
+		<property name="responseConfig">
+			<map>
+				<entry key="Cache-Control" value="max-age=604800, public" />
+			</map>
+		</property>
+		<property name="mimeType">
+			<map>
+				<entry key="bmp" value="image/bmp" />
+				<entry key="gif" value="image/gif" />
+				<entry key="jpeg" value="image/jpeg" />
+				<entry key="jpg" value="image/jpeg" />
+				<entry key="jpe" value="image/jpeg" />
+				<entry key="png" value="image/png" />
+			</map>
+		</property>
+	</bean>
+
+	<!-- 资源缓存对象 -->
+	<bean id="resourceCache" class="com.jiuyv.hhc.console.security.util.ResCacheFactory">
+		<property name="securityService" ref="securityService" />
+	</bean>
+
+	<!-- web public config -->
+	<bean id="exceptInpt"
+		class="com.jiuyv.hhc.console.basic.interceptor.AbstractConvertInterceptor"
+		scope="prototype">
+		<property name="sourceAttrName" value="exception" />
+		<property name="converter">
+			<bean
+				class="com.jiuyv.hhc.console.basic.interceptor.DefaultExceptionConverter" />
+		</property>
+	</bean>
+	<bean id="clientInpt"
+		class="com.jiuyv.hhc.console.security.interceptor.ClientProxyInterceptor"
+		scope="prototype">
+		<property name="urlMap" ref="clientUrlMap" />
+	</bean>
+	<bean id="logInpt"
+		class="com.jiuyv.hhc.console.security.interceptor.DBLogInterceptor"
+		scope="prototype">
+		<property name="securityService" ref="securityService" />
+		<property name="resourceCache" ref="resourceCache" />
+	</bean>
+	<bean id="exceptionHandler"
+		class="com.jiuyv.hhc.console.security.action.ExceptionHandleAction"
+		scope="prototype" />
+	<!-- spring security失效页面的action -->
+	<bean id="sessionExpiredAction" class="com.jiuyv.hhc.console.security.action.ErrorAction"
+		scope="prototype">
+		<property name="securityService" ref="securityService" />
+	</bean>
+	<!-- 用户登录 -->
+	<bean id="loginAction" class="com.jiuyv.hhc.console.security.action.LoginAction"
+		scope="prototype">
+		<property name="resource" ref="resourceCache" />
+		<property name="securityService" ref="securityService" />
+	</bean>
+
+	<!-- Spring Security 相关配置 -->
+	<bean id="userDetailsService"
+		class="com.jiuyv.hhc.console.security.service.UserDetailsServiceImpl"
+		parent="assistService">
+		<property name="securityDao" ref="ISecurityDao" />
+	</bean>
+	<bean id="securityMetadataSource"
+		class="com.jiuyv.hhc.console.security.filter.FilterInvocationDefinitionSourceFactoryBean">
+		<property name="strictUrl" value="false" />
+		<property name="securityService" ref="securityService" />
+	</bean>
+
+	<!-- 配置业务url过滤从数据库读取 org.springframework.security.web.access.intercept.FilterSecurityInterceptor -->
+	<bean id="filterSecurityInterceptor"
+		class="com.jiuyv.hhc.console.security.filter.AppClientFilterSecurityInterceptor"
+		autowire="byType">
+		<property name="securityMetadataSource" ref="securityMetadataSource" />
+		<property name="authenticationManager" ref="authenticationManager" />
+	</bean>
+
+	<bean id="loginFilter" class="com.jiuyv.hhc.console.security.filter.LoginFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="authenticationFailureHandler" ref="authFailureHandler" />
+		<property name="authenticationSuccessHandler" ref="successHandler" />
+		<property name="filterProcessesUrl" value="/j_spring_security_check" />
+	</bean>
+
+	<bean id="successHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+		<property name="alwaysUseDefaultTargetUrl" value="true" />
+		<property name="defaultTargetUrl" value="/login.action" />
+	</bean>
+
+	<!-- 登录失败处理类 -->
+	<bean id="authFailureHandler"
+		class="com.jiuyv.hhc.console.security.handler.AuthFailureHandler">
+		<property name="urlMap">
+			<map>
+				<entry key="NORMAL_LOGIN_URL" value="/login.jsp?login_error=1" />
+				<entry key="CAPTCHA_LOGIN_URL" value="/loginCode.action" />
+				<entry key="APP_LOGIN_URL" value="/applogfail.action" />
+			</map>
+		</property>
+		<property name="securityService" ref="securityService" />
+	</bean>
+
+	<bean id="mngrLogoutSuccessHandler"
+		class="com.jiuyv.hhc.console.security.handler.MngrLogoutSuccessHandler" />
+
+	<!-- 取http配置中的authenticationManager -->
+	<sec:authentication-manager alias="authenticationManager">
+		<!-- 采用自定义的用户验证service -->
+		<sec:authentication-provider
+			user-service-ref="userDetailsService">
+			<!-- 明文密码 -->
+			<sec:password-encoder hash="plaintext" />
+			<!-- md5加密密码 <sec:password-encoder hash="md5" /> -->
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+	<!-- 通用的业务无关的url过滤无需放数据库，直接放在这里 -->
+	<sec:http pattern="/login.jsp*" security="none" />
+	<sec:http pattern="/page/common/clientLogout.jsp*" security="none" />
+	<sec:http pattern="/page/common/cmdError.jsp*" security="none" />
+	<sec:http pattern="/clientProxy*" security="none" />
+	<sec:http pattern="/heart.html*" security="none" />
+	<sec:http pattern="/img/**" security="none" />
+	<sec:http pattern="/css/**" security="none" />
+	<sec:http pattern="/js/**" security="none" />
+	<sec:http pattern="/findSecCodeList.action*" security="none" />
+	<!-- 作为外部接口调用地址 -->
+	<sec:http pattern="/external/**" security="none" />
+
+	<sec:http auto-config="true" access-denied-page="/sessionExpired.action">
+		<sec:custom-filter before="FORM_LOGIN_FILTER" ref="loginFilter" />
+		<!-- <sec:custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" 
+			/> -->
+		<!-- 配置登录页面等url -->
+		<sec:form-login login-page="/loginPage.action"
+			login-processing-url="/j_spring_security_check"
+			authentication-failure-handler-ref="authFailureHandler"
+			default-target-url="/login.action" />
+		<!-- 防止一个用户重复登录好几次-第二次登录会让第一次登录失效 -->
+		<sec:session-management
+			session-fixation-protection="newSession"
+			session-authentication-error-url="/invalidSession.action"
+			invalid-session-url="/invalidSession.action">
+			<sec:concurrency-control max-sessions="15"
+				expired-url="/sessionExpired.action" error-if-maximum-exceeded="true" />
+		</sec:session-management>
+		<!-- 登出配置 -->
+		<sec:logout invalidate-session="true" success-handler-ref="mngrLogoutSuccessHandler"
+			logout-url="/j_spring_security_logout" />
+		<!-- remember-me配置 -->
+		<!-- <remember-me key="ddffereve3545443daf1eer"/> -->
+	</sec:http>
+
+	<!-- 国际化 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>/WEB-INF/classes/lang/securityMessages_zh_CN</value>
+				<value>/WEB-INF/classes/lang/globalMessages</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- module_security -->
+
+	<bean id="webSecCodeService"
+		class="com.jiuyv.hhc.console.security.service.impl.WebSecCodeServiceImpl"
+		parent="assistService">
+		<property name="webSecCodeDao" ref="webSecCodeDao" />
+		<property name="sysParamDao" ref="sysParamDao" />
+		<property name="webMemberInfoDao" ref="webMemberInfoDao" />
+	</bean>
+
+	<bean id="authorityService"
+		class="com.jiuyv.hhc.console.security.service.impl.AuthorityServiceImpl"
+		parent="assistService">
+		<property name="webMemberInfoDao" ref="webMemberInfoDao" />
+		<property name="webSecCodeDao" ref="webSecCodeDao" />
+		<property name="webAgentRcmdDao" ref="webAgentRcmdDao" />
+		<property name="bizMerchantDao" ref="bizMerchantDao" />
+		<property name="bizMchntPropDao" ref="bizMchntPropDao" />
+	</bean>
+
+
+	<bean id="orgService"
+		class="com.jiuyv.hhc.console.security.service.impl.OrgServiceImpl"
+		parent="assistService">
+		<property name="sysOrgDao" ref="sysOrgDao" />
+	</bean>
+	<bean id="roleService"
+		class="com.jiuyv.hhc.console.security.service.impl.RoleServiceImpl"
+		parent="assistService">
+		<property name="sysRoleDao" ref="sysRoleDao" />
+		<property name="sysRoleResDao" ref="sysRoleResDao" />
+	</bean>
+	<bean id="userService"
+		class="com.jiuyv.hhc.console.security.service.impl.UserServiceImpl"
+		parent="assistService">
+		<property name="sysUserDao" ref="sysUserDao" />
+		<property name="sysUserRoleDao" ref="sysUserRoleDao" />
+	</bean>
+	<bean id="securityService"
+		class="com.jiuyv.hhc.console.security.service.impl.SecurityServiceImpl"
+		parent="assistService">
+		<property name="securityDao" ref="ISecurityDao" />
+		<property name="oprlogDao" ref="sysOprlogDao" />
+	</bean>
+	<!-- 机构日志 -->
+	<bean id="oprlogService"
+		class="com.jiuyv.hhc.console.security.service.impl.OprlogServiceImpl"
+		parent="assistService">
+		<property name="sysOprlogDao" ref="sysOprlogDao" />
+	</bean>
+	<bean id="resourceService"
+		class="com.jiuyv.hhc.console.security.service.impl.ResourceServiceImpl"
+		parent="assistService">
+		<property name="resourceDao" ref="sysResourceDao" />
+	</bean>
+
+	<!-- module_security -->
+	
+	<!-- 注册信息 -->
+	<bean id="signUpAction" class="com.jiuyv.hhc.console.security.action.SignUpAction" scope="prototype">
+	    <property name="sysParamService" ref="sysParamService" />
+	    <property name="webSecCodeService" ref="webSecCodeService" />	   
+	    <property name="authorityService" ref="authorityService" />	 
+	</bean>
+	
+	<!-- 机构信息 -->
+	<bean id="orgAction" class="com.jiuyv.hhc.console.security.action.OrgAction"
+		scope="prototype">
+		<property name="service" ref="orgService" />
+	</bean>
+	<!-- 角色信息 -->
+	<bean id="roleAction" class="com.jiuyv.hhc.console.security.action.RoleAction"
+		scope="prototype">
+		<property name="service" ref="roleService" />
+		<property name="resoucrecache" ref="resourceCache" />
+	</bean>
+	<!-- 用户角色 -->
+	<bean id="userroleAction" class="com.jiuyv.hhc.console.security.action.UserRoleAction"
+		scope="prototype">
+		<property name="service" ref="userService" />
+	</bean>
+	<!-- 用户信息 -->
+	<bean id="userAction" class="com.jiuyv.hhc.console.security.action.UserAction"
+		scope="prototype">
+		<property name="service" ref="userService" />
+		<property name="roleService" ref="roleService" />
+	</bean>
+	<!-- 用户密码修改 -->
+	<bean id="passwdAction" class="com.jiuyv.hhc.console.security.action.UserPasswdAction"
+		scope="prototype">
+		<property name="service" ref="userService" />
+	</bean>
+	<!-- 机构日志 -->
+	<bean id="oprlogAction" class="com.jiuyv.hhc.console.security.action.OprlogAction"
+		scope="prototype">
+		<property name="service" ref="oprlogService" />
+	</bean>
+	<bean id="resourceAction" class="com.jiuyv.hhc.console.security.action.ResourceAction"
+		scope="prototype">
+		<property name="service" ref="resourceService" />
+	</bean>
+	<!-- 系统操作日志报表 -->
+	<bean id="securityStatisticService"
+		class="com.jiuyv.hhc.console.security.service.impl.SecurityStatisticServiceImpl">
+		<property name="securityStatisticDao" ref="securityStatisticDao" />
+	</bean>
+
+	<bean id="loginDayStatisticReport"
+		class="com.jiuyv.hhc.console.security.action.LoginDayStatisticReport"
+		scope="prototype" />
+	<bean id="loginCompStatisticReport"
+		class="com.jiuyv.hhc.console.security.action.LoginCompStatisticReport"
+		scope="prototype">
+		<property name="securityStatisticService" ref="securityStatisticService" />
+	</bean>
+
+	<!-- Module common -->
+	<bean id="secService"
+		class="com.jiuyv.hhc.console.common.service.impl.SecServiceImpl"
+		parent="assistService"></bean>
+	<bean id="seccodeAction" class="com.jiuyv.hhc.console.common.action.SecCodeAction"
+		scope="prototype">
+		<property name="service" ref="secService" />
+	</bean>
+
+	<!-- Code Filter -->
+	<bean id="codeFilter" class="com.jiuyv.hhc.console.security.filter.CodeFilter" />
+	<!-- url 映射 -->
+	<bean id="clientUrlMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<!-- 用户登录 -->
+				<entry key="1001" value="/j_spring_security_check" />
+				<!-- 用户注销 -->
+				<entry key="1002" value="/j_spring_security_logout" />
+				<!-- 修改密码 -->
+				<entry key="1003" value="/changePasswd.action" />
+				<!-- 公司信息查询 -->
+				<entry key="3001" value="/findCompanyPage.action" />
+				<!-- 公司ID查询 -->
+				<entry key="3002" value="/findCompanyByName.action" />
+				<!-- 公司尽职列表查询 -->
+				<entry key="3003" value="/findCompanyDetails.action" />
+				<!-- 公司尽职项明细查询 -->
+				<entry key="3004" value="/findCompanyField.action" />
+				<!-- 添加公司 -->
+				<entry key="3011" value="/insertCompany.action" />
+				<!-- 公司尽职项备注信息保存 -->
+				<entry key="3012" value="/saveCompanyField.action" />
+				<!-- 公司尽职项图片上传 -->
+				<entry key="3013" value="/insertCompanyFieldAttach.action" />
+				<!-- 公司尽职项图片删除 -->
+				<entry key="3014" value="/deleteCompanyFieldAttach.action" />
+				<!-- 公司尽职项图片信息保存 -->
+				<entry key="3015" value="/updateCompanyFieldAttach.action" />
+				<!-- 公司信息删除 -->
+				<entry key="3016" value="/deleteCompanyInfo.action" />
+				<!-- 公司信息提交 -->
+				<entry key="3017" value="/submitCompanyInfo.action" />
+				<!-- 公司尽职项表单添加 -->
+				<entry key="3018" value="/insertCompanyFieldForm.action" />
+				<!-- 公司尽职项表单修改 -->
+				<entry key="3019" value="/updateCompanyFieldForm.action" />
+				<!-- 公司尽职项表单删除 -->
+				<entry key="3020" value="/deleteCompanyFieldForm.action" />
+				<!-- 公司尽职项表单信息查询 -->
+				<entry key="3021" value="/findCompanyFieldForm.action" />
+				<!-- 公司尽职项表单域定义查询 -->
+				<entry key="3022" value="/findCompanyPropFieldRel.action" />
+				<!-- 公司尽职项表单域选项定义查询 -->
+				<entry key="3023" value="/findCompanyFieldOptDict.action" />
+			</map>
+		</constructor-arg>
+	</bean>
+	<bean id="clientProxyFilter" class="com.jiuyv.hhc.console.security.action.ClientProxyFilter"
+		scope="prototype">
+		<property name="urlMap" ref="clientUrlMap" />
+	</bean>
+	<bean id="qrcodeImage" class="com.jiuyv.common.web.qrcode.QRCodeFilter">
+		<!-- <property name="codeContent" ref=""/> -->
+	</bean>
+</beans>

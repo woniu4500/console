@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.jiuyv.hhc.model.security.dao.SecurityStatisticDao">
+	
+	<select id="loginDayStatistic" resultType="com.jiuyv.hhc.model.security.rpt.LoginStatisticBean">
+		select 
+			 concat(substr(stlm_date,1,4),'年',substr(stlm_date,5,2),'月',substr(stlm_date,7,2),'日')  as date
+			,count(1) as count
+		  from FQ_SYS_OPRLOG 
+		 where res_id='ROLE_CONNECT' and opr_success='00'
+		 group by stlm_date
+	</select>
+	
+	<select id="findLoginStatistic" resultType="com.jiuyv.hhc.model.security.rpt.RptFieldBean">
+		select 
+			case when opr_success='00' then '登录成功' else '登录失败' end as fldName
+			,count(1) as fldValue
+		 from FQ_SYS_OPRLOG 
+		where res_id='ROLE_CONNECT'
+		<if test="bgnDate!=null"><![CDATA[  and stlm_date >= #{bgnDate}]]> </if>
+		<if test="endDate!=null"><![CDATA[  and stlm_date <= #{endDate}]]> </if>
+		<if test="operUser!=null"> and opr_login_id = #{operUser} </if>
+		group by opr_success
+	</select>
+
+	<select id="findOperateStatistic" resultType="com.jiuyv.hhc.model.security.rpt.RptFieldBean">
+		select 
+			res_zh as fldName
+			,count(1) as fldValue
+		 from FQ_SYS_OPRLOG 
+		where res_id!='ROLE_CONNECT' 
+		  and opr_success='00'
+		<if test="bgnDate!=null"><![CDATA[ and stlm_date >= #{bgnDate} ]]></if>
+		<if test="endDate!=null"><![CDATA[ and stlm_date <= #{endDate}]]></if>
+		<if test="operUser!=null"> and opr_login_id = #{operUser} </if>
+		group by res_zh,res_id;
+	</select>
+	
+	<select id="findOperUserName" resultType="java.lang.String">
+		select concat(user_name,'(',login_id,')') from FQ_SYS_USER where login_id=#{operUser}
+	</select>
+	
+</mapper>

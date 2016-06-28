@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+                                  
+<!-- 
+	Name:  CmNaviMapper.xml
+	Table: FQ_CM_NAVI (网站导航)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.information.dao.CmNaviDao">
+	<sql id="__select" >
+	select
+		   t0.NAVI_SEQ as naviSeq
+		  ,t0.VERSION as version
+		  ,t0.NAVI_STATUS as naviStatus
+		  ,t0.IS_BLANK_TARGET as isBlankTarget
+		  ,t0.IS_VISIBLE as isVisible
+		  ,t0.IS_HRET as isHret
+		  ,t0.NAVI_NAME as naviName
+		  ,t0.NAVI_TITLE as naviTitle
+		  ,t0.NAVI_CONTENT as naviContent
+		  ,t0.NAVI_LOGO as naviLogo
+		  ,t0.NAVI_BANNER as naviBanner
+		  ,t0.NAVI_STYLE as naviStyle
+		  ,t0.NAVI_POSITION as naviPosition
+		  ,t0.NAVI_ORDER_LIST as naviOrderList
+		  ,t0.NAVI_URL as naviUrl
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,vt.CODE_NAME as isVisibleDesc
+		  ,ht.CODE_NAME as isHretDesc
+		  ,nt.CODE_NAME as naviStatusDesc
+		  ,bt.CODE_NAME as isBlankTargetDesc
+		  ,pt.CODE_NAME as naviPositionDesc
+	  from FQ_CM_NAVI t0
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_VISIBLE') vt on t0.IS_VISIBLE=vt.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_YON') ht on t0.IS_HRET=ht.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='INFO_ST') nt on t0.NAVI_STATUS=nt.CODE_NO
+	  left join (select * from FQ_SYS_CODE where code_type='PUB_YON') bt on t0.IS_BLANK_TARGET=bt.CODE_NO
+	  left join (select * from FQ_SYS_CODE where code_type='NAVI_POSITION') pt on t0.NAVI_POSITION=pt.CODE_NO
+	  
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.information.CmNaviVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.information.CmNaviVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.NAVI_SEQ = #{naviSeq}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.information.CmNaviVo">
+	    <!-- 
+		<selectKey keyProperty="naviSeq" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_CM_NAVI.nextval from dual</selectKey>
+		 -->
+		insert into FQ_CM_NAVI 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,REC_CRT_TIME,LAST_UPT_TIME,NAVI_STATUS,
+			<if test="isBlankTarget != null" >IS_BLANK_TARGET,</if>
+			<if test="isVisible != null" >IS_VISIBLE,</if>
+			<if test="isHret != null" >IS_HRET,</if>
+			<if test="naviName != null" >NAVI_NAME,</if>
+			<if test="naviTitle != null" >NAVI_TITLE,</if>
+			<if test="naviContent != null" >NAVI_CONTENT,</if>
+			<if test="naviLogo != null" >NAVI_LOGO,</if>
+			<if test="naviBanner != null" >NAVI_BANNER,</if>
+			<if test="naviStyle != null" >NAVI_STYLE,</if>
+			<if test="naviPosition != null" >NAVI_POSITION,</if>
+			<if test="naviOrderList != null" >NAVI_ORDER_LIST,</if>
+			<if test="naviUrl != null" >NAVI_URL,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,<include refid="dialect.__time"/>,'00',
+			<if test="isBlankTarget != null" >#{isBlankTarget},</if>
+			<if test="isVisible != null" >#{isVisible},</if>
+			<if test="isHret != null" >#{isHret},</if>
+			<if test="naviName != null" >#{naviName},</if>
+		    <if test="naviTitle != null" >#{naviTitle},</if>
+		    <if test="naviContent != null" >#{naviContent},</if>
+		    <if test="naviLogo != null" >#{naviLogo},</if>
+		    <if test="naviBanner != null" >#{naviBanner},</if>
+			<if test="naviStyle != null" >#{naviStyle},</if>
+			<if test="naviPosition != null" >#{naviPosition},</if>
+			<if test="naviOrderList != null" >#{naviOrderList},</if>
+			<if test="naviUrl != null" >#{naviUrl},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.information.CmNaviVo">
+		update FQ_CM_NAVI 
+		<set>
+			VERSION=VERSION+1,LAST_UPT_TIME=<include refid="dialect.__time"/>,
+			<if test="naviStatus != null" >NAVI_STATUS = #{naviStatus},</if>
+			<if test="isBlankTarget != null" >IS_BLANK_TARGET = #{isBlankTarget},</if>
+			<if test="isVisible != null" >IS_VISIBLE = #{isVisible},</if>
+			<if test="isHret != null" >IS_HRET = #{isHret},</if>
+			<if test="naviName != null" >NAVI_NAME = #{naviName},</if>
+		    <if test="naviTitle != null" >NAVI_TITLE = #{naviTitle},</if>
+		    <if test="naviContent != null" >NAVI_CONTENT = #{naviContent},</if>
+		    <if test="naviLogo != null" >NAVI_LOGO = #{naviLogo},</if>
+		    <if test="naviBanner != null" >NAVI_BANNER = #{naviBanner},</if>
+			<if test="naviStyle != null" >NAVI_STYLE = #{naviStyle},</if>
+			<if test="naviPosition != null" >NAVI_POSITION = #{naviPosition},</if>
+			<if test="naviOrderList != null" >NAVI_ORDER_LIST = #{naviOrderList},</if>
+			<if test="naviUrl != null" >NAVI_URL = #{naviUrl},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+		</set>
+		where NAVI_SEQ = #{naviSeq} and VERSION = #{version}  
+	</update>
+	
+	<!-- insert -->
+	<insert id="insertVer" parameterType="com.jiuyv.hhc.model.information.CmNaviVo">
+		insert into FQ_CM_NAVI_VER 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="naviSeq != null" >NAVI_SEQ,</if>
+			<if test="version != null" >VERSION,</if>
+			<if test="naviStatus != null" >NAVI_STATUS,</if>
+			<if test="isBlankTarget != null" >IS_BLANK_TARGET,</if>
+			<if test="isVisible != null" >IS_VISIBLE,</if>
+			<if test="isHret != null" >IS_HRET,</if>
+			<if test="naviName != null" >NAVI_NAME,</if>
+			<if test="naviTitle != null" >NAVI_TITLE,</if>
+			<if test="naviContent != null" >NAVI_CONTENT,</if>
+			<if test="naviLogo != null" >NAVI_LOGO,</if>
+			<if test="naviBanner != null" >NAVI_BANNER,</if>
+			<if test="naviStyle != null" >NAVI_STYLE,</if>
+			<if test="naviPosition != null" >NAVI_POSITION,</if>
+			<if test="naviOrderList != null" >NAVI_ORDER_LIST,</if>
+			<if test="naviUrl != null" >NAVI_URL,</if>
+			<if test="recCrtTime != null" >REC_CRT_TIME,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+			<if test="lastUptTime != null" >LAST_UPT_TIME,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="naviSeq != null" >#{naviSeq},</if>
+			<if test="version != null" >#{version},</if>
+			<if test="naviStatus != null" >#{naviStatus},</if>
+			<if test="isBlankTarget != null" >#{isBlankTarget},</if>
+			<if test="isVisible != null" >#{isVisible},</if>
+			<if test="isHret != null" >#{isHret},</if>
+			<if test="naviName != null" >#{naviName},</if>
+			<if test="naviTitle != null" >#{naviTitle},</if>
+			<if test="naviContent != null" >#{naviContent},</if>
+		    <if test="naviLogo != null" >#{naviLogo},</if>
+		    <if test="naviBanner != null" >#{naviBanner},</if>
+			<if test="naviStyle != null" >#{naviStyle},</if>
+			<if test="naviPosition != null" >#{naviPosition},</if>
+			<if test="naviOrderList != null" >#{naviOrderList},</if>
+			<if test="naviUrl != null" >#{naviUrl},</if>
+			<if test="recCrtTime != null" >#{recCrtTime},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+			<if test="lastUptTime != null" >#{lastUptTime},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateVerByKey" parameterType="com.jiuyv.hhc.model.information.CmNaviVo">
+		update FQ_CM_NAVI_VER 
+		<set>
+			<if test="naviSeq != null" >NAVI_SEQ = #{naviSeq},</if>
+			<if test="version != null" >VERSION = #{version},</if>
+			<if test="naviStatus != null" >NAVI_STATUS = #{naviStatus},</if>
+			<if test="isBlankTarget != null" >IS_BLANK_TARGET = #{isBlankTarget},</if>
+			<if test="isVisible != null" >IS_VISIBLE = #{isVisible},</if>
+			<if test="isHret != null" >IS_HRET = #{isHret},</if>
+			<if test="naviName != null" >NAVI_NAME = #{naviName},</if>
+			<if test="naviTitle != null" >NAVI_TITLE = #{naviTitle},</if>
+			<if test="naviContent != null" >NAVI_CONTENT = #{naviContent},</if>
+		    <if test="naviLogo != null" >NAVI_LOGO = #{naviLogo},</if>
+		    <if test="naviBanner != null" >NAVI_BANNER = #{naviBanner},</if>
+			<if test="naviStyle != null" >NAVI_STYLE = #{naviStyle},</if>
+			<if test="naviPosition != null" >NAVI_POSITION = #{naviPosition},</if>
+			<if test="naviOrderList != null" >NAVI_ORDER_LIST = #{naviOrderList},</if>
+			<if test="naviUrl != null" >NAVI_URL = #{naviUrl},</if>
+			<if test="recCrtTime != null" >REC_CRT_TIME = #{recCrtTime},</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC = #{recCrtAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+			<if test="lastUptTime != null" >LAST_UPT_TIME = #{lastUptTime},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+		</set>
+		where NAVI_SEQ = #{naviSeq} 
+	</update>
+	
+	<select id="countVerByKey" resultType="java.lang.Integer">
+		select count(1) from FQ_CM_NAVI_VER where NAVI_SEQ = #{naviSeq}
+	</select>
+	
+</mapper>

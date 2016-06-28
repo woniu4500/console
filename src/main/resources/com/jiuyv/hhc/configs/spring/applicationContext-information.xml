@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- 栏目 -->	
+	<bean id="cmArtCatService" class="com.jiuyv.hhc.console.information.service.impl.CmArtCatServiceImpl" parent="assistService">
+		<property name="cmArtCatDao" ref="cmArtCatDao" />
+	</bean>
+	<bean id="cmArtCatAction" class="com.jiuyv.hhc.console.information.action.CmArtCatAction" scope="prototype">
+		<property name="service" ref="cmArtCatService" />
+	</bean>
+	<!-- Article -->	
+	<bean id="cmArticleService" class="com.jiuyv.hhc.console.information.service.impl.CmArticleServiceImpl" parent="assistService">
+		<property name="cmArticleDao" ref="cmArticleDao" />
+		<property name="iSysTimeDao" ref="ISysTimeDao" />
+	</bean>
+	<bean id="cmArticleAction" class="com.jiuyv.hhc.console.information.action.CmArticleAction" scope="prototype">
+		<property name="service" ref="cmArticleService" />
+	</bean>
+	<!-- Navigation -->	
+	<bean id="cmNaviService" class="com.jiuyv.hhc.console.information.service.impl.CmNaviServiceImpl" parent="assistService">
+		<property name="cmNaviDao" ref="cmNaviDao" />
+	</bean>
+	<bean id="cmNaviAction" class="com.jiuyv.hhc.console.information.action.CmNaviAction" scope="prototype">
+		<property name="service" ref="cmNaviService" />
+	</bean>
+	<!-- Friendlink -->	
+	<bean id="cmFrdLinkService" class="com.jiuyv.hhc.console.information.service.impl.CmFrdLinkServiceImpl" parent="assistService">
+		<property name="cmFrdLinkDao" ref="cmFrdLinkDao" />
+	</bean>
+	<bean id="cmFrdLinkAction" class="com.jiuyv.hhc.console.information.action.CmFrdLinkAction" scope="prototype">
+		<property name="service" ref="cmFrdLinkService" />
+	</bean>
+</beans>

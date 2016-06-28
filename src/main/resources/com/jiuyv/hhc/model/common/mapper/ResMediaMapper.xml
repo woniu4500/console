@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+                        
+<!-- 
+	Name:  ResMediaMapper.xml
+	Table: TBL_RES_MEDIA (媒体附件表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.common.dao.ResMediaDao">
+	<sql id="__select" >
+	select
+		   t0.MED_ID as medId
+		  ,t0.MED_PATH as medPath
+		  ,t0.MED_DIR as medDir
+		  ,t0.MED_NAME as medName
+		  ,t0.MIME_TYPE as mimeType
+		  ,t0.THUMBNAILS as thumbnails
+		  ,t0.MED_CONTENT as medContent
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+	  from TBL_RES_MEDIA t0
+	</sql>
+
+	<sql id="__simple_where" >
+    <trim prefix="where" prefixOverrides="and|or" >
+			<if test="params.medId != null" >and t0.MED_ID = #{params.medId}</if>
+			<if test="params.medPath != null" >and t0.MED_PATH = #{params.medPath}</if>
+			<if test="params.medDir != null" >and t0.MED_DIR = #{params.medDir}</if>
+			<if test="params.medName != null" >and t0.MED_NAME = #{params.medName}</if>
+			<if test="params.mimeType != null" >and t0.MIME_TYPE = #{params.mimeType}</if>
+			<if test="params.thumbnails != null" >and t0.THUMBNAILS = #{params.thumbnails}</if>
+			<if test="params.medContent != null" >and t0.MED_CONTENT = #{params.medContent}</if>
+			<if test="params.recCrtTime != null" >and t0.REC_CRT_TIME = #{params.recCrtTime}</if>
+			<if test="params.recCrtAcc != null" >and t0.REC_CRT_ACC = #{params.recCrtAcc}</if>
+			<if test="params.lastUptTime != null" >and t0.LAST_UPT_TIME = #{params.lastUptTime}</if>
+			<if test="params.lastUptAcc != null" >and t0.LAST_UPT_ACC = #{params.lastUptAcc}</if>
+			<if test="params.lastUptOrg != null" >and t0.LAST_UPT_ORG = #{params.lastUptOrg}</if>
+		</trim>
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.common.ResMediaVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<select id="findThumbByPath" resultType="com.jiuyv.hhc.model.common.ResMediaVo">
+ 	 	select
+		   t0.MED_ID as medId
+		  ,t0.MED_PATH as medPath
+		  ,t0.MED_DIR as medDir
+		  ,t0.MED_NAME as medName
+		  ,t0.MIME_TYPE as mimeType
+		  ,t0.THUMBNAILS as thumbnails
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+	  from TBL_RES_MEDIA t0
+	 where MED_PATH = #{medPath} 
+ 	</select>
+ 	
+ 	<select id="findContentByPath" resultType="com.jiuyv.hhc.model.common.ResMediaVo">
+ 	 	select
+		   t0.MED_ID as medId
+		  ,t0.MED_PATH as medPath
+		  ,t0.MED_DIR as medDir
+		  ,t0.MED_NAME as medName
+		  ,t0.MIME_TYPE as mimeType
+		  ,t0.MED_CONTENT as medContent
+		  ,t0.REC_CRT_TIME as recCrtTime
+		  ,t0.REC_CRT_ACC as recCrtAcc
+	  from TBL_RES_MEDIA t0
+	 where MED_PATH = #{medPath} 
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.common.ResMediaVo">
+ 	 	<include refid="__select"/>
+ 	 	where MED_ID = #{medId}
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.common.ResMediaVo" useGeneratedKeys="true" keyProperty="medId">
+		insert into TBL_RES_MEDIA 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			REC_CRT_TIME,LAST_UPT_TIME,
+			<if test="medPath != null" >MED_PATH,</if>
+			<if test="medDir != null" >MED_DIR,</if>
+			<if test="medName != null" >MED_NAME,</if>
+			<if test="mimeType != null" >MIME_TYPE,</if>
+			<if test="thumbnails != null" >THUMBNAILS,</if>
+			<if test="medContent != null" >MED_CONTENT,</if>
+			<if test="recCrtAcc != null" >REC_CRT_ACC,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<include refid="dialect.__time" />,<include refid="dialect.__time" />,
+			<if test="medPath != null" >#{medPath},</if>
+			<if test="medDir != null" >#{medDir},</if>
+			<if test="medName != null" >#{medName},</if>
+			<if test="mimeType != null" >#{mimeType},</if>
+			<if test="thumbnails != null" >#{thumbnails},</if>
+			<if test="medContent != null" >#{medContent},</if>
+			<if test="recCrtAcc != null" >#{recCrtAcc},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.common.ResMediaVo">
+		update TBL_RES_MEDIA 
+		<set>
+			LAST_UPT_TIME = <include refid="dialect.__time" />,
+			<if test="medPath != null" >MED_PATH = #{medPath},</if>
+			<if test="medDir != null" >MED_DIR = #{medDir},</if>
+			<if test="medName != null" >MED_NAME = #{medName},</if>
+			<if test="mimeType != null" >MIME_TYPE = #{mimeType},</if>
+			<if test="thumbnails != null" >THUMBNAILS = #{thumbnails},</if>
+			<if test="medContent != null" >MED_CONTENT = #{medContent},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+		</set>
+		where MED_ID = #{medId} 
+	</update>
+</mapper>

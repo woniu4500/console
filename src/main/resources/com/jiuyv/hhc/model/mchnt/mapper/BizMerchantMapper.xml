@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+                                                              
+<!-- 
+	Name:  BizMerchantMapper.xml
+	Table: FQ_BIZ_MERCHANT ([New]商户信息表)
+	Auth:  AutoCode4J
+	Ver:   1.0
+-->
+<mapper namespace="com.jiuyv.hhc.model.mchnt.dao.BizMerchantDao">
+
+	<sql id="__selectBrief">
+		select
+		   t0.MCHNT_CODE as mchntCode
+		  ,t0.VERSION as version
+		  ,t0.LIC_NO as licNo
+		  ,t0.CUSTOMER_CODE as customerCode
+		  ,t0.MCHNT_CD as mchntCd
+		  ,t0.ACQ_INS_ID_CD as acqInsIdCd
+		  ,t0.REVE_REG_CD as reveRegCd
+		  ,t0.MCHNT_CN_NAME as mchntCnName
+		  ,t0.REG_ADDR as regAddr
+		  ,t0.ARTIF_NM as artifNm
+		  ,t0.ARTIF_CERTIF_ID as artifCertifId
+		  ,t0.ARTIF_CERTIF_TYPE as artifCertifType
+		  ,t0.MCHNT_TP as mchntTp
+		  ,t0.MCHNT_GRP as mchntGrp
+		  ,t0.PHONE as phone
+		  ,t0.MCHNT_CRT_DT as mchntCrtDt
+		  ,t0.POS_NUM as posNum
+		  ,t0.REMARK as remark
+		  ,t0.MCHNT_ST as mchntSt
+		  ,t0.DISP_MCHNT_ST as dispMchntSt
+		  ,t0.REC_ACC as recAcc
+		  ,t0.REC_TIME as recTime
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,t0.LAST_CUP_OPR as lastCupOpr
+		  ,t0.LAST_CUP_TIME as lastCupTime
+		  ,t0.LAST_CUP_RESP as lastCupResp
+		  ,t0.AUDIT_TIME as auditTime
+		  ,t0.BEFORE_TIME as beforeTime
+		  
+		  ,tc.REAL_NAME as 	customerCodeDesc	  
+		  ,tc.MOBILE as customerMobile
+		  		  
+		  ,st.CODE_NAME as mchntStDesc
+		  ,grp.CODE_NAME as mchntGrpDesc
+		  ,stp.CODE_NAME  as mchntTpDesc
+		  ,dst.CODE_NAME as dispMchntStDesc
+		  
+		  ,IFNULL( tu.USER_NAME, t0.REC_ACC ) as recAccDesc
+	  from FQ_BIZ_MERCHANT t0 
+	  left join FQ_WEB_MEMBER_INFO tc on t0.CUSTOMER_CODE=tc.CUSTOMER_CODE
+	  left join FQ_SYS_USER tu on t0.REC_ACC = tu.LOGIN_ID
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_ST_ALL') st on t0.MCHNT_ST=st.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_DST') dst on t0.DISP_MCHNT_ST=dst.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_GRP') grp on t0.MCHNT_GRP=grp.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_TP') stp on t0.MCHNT_TP=stp.CODE_NO
+	</sql>
+
+	<sql id="__select" >
+	select
+		   t0.MCHNT_CODE as mchntCode
+		  ,t0.VERSION as version
+		  ,t0.LIC_NO as licNo
+		  ,t0.CUSTOMER_CODE as customerCode
+		  ,t0.MCHNT_CD as mchntCd
+		  ,t0.ACQ_INS_ID_CD as acqInsIdCd
+		  ,t0.REVE_REG_CD as reveRegCd
+		  ,t0.MCHNT_CN_NAME as mchntCnName
+		  ,t0.REG_ADDR as regAddr
+		  ,t0.ARTIF_NM as artifNm
+		  ,t0.ARTIF_CERTIF_ID as artifCertifId
+		  ,t0.ARTIF_CERTIF_TYPE as artifCertifType
+		  ,t0.MCHNT_TP as mchntTp
+		  ,t0.MCHNT_GRP as mchntGrp
+		  ,t0.PHONE as phone
+		  ,t0.MCHNT_CRT_DT as mchntCrtDt
+		  ,t0.POS_NUM as posNum
+		  ,t0.REMARK as remark
+		  ,t0.MCHNT_ST as mchntSt
+		  ,t0.DISP_MCHNT_ST as dispMchntSt
+		  ,t0.REC_ACC as recAcc
+		  ,t0.REC_TIME as recTime
+		  ,t0.LAST_UPT_TIME as lastUptTime
+		  ,t0.LAST_UPT_ACC as lastUptAcc
+		  ,t0.LAST_UPT_ORG as lastUptOrg
+		  ,t0.LAST_CUP_OPR as lastCupOpr
+		  ,t0.LAST_CUP_TIME as lastCupTime
+		  ,t0.LAST_CUP_RESP as lastCupResp
+		  ,t0.AUDIT_TIME as auditTime
+		  ,t0.BEFORE_TIME as beforeTime
+		  ,t0.CUP_MCHNT_INFO as cupMchntInfo
+		  
+		  ,tp.MCHNT_EN_TYPE as mchntEnType
+		  ,tp.MCHNT_DISP_NAME as mchntDispName
+		  ,tp.MCHNT_CONTACT as mchntContact
+		  ,tp.MCHNT_CONTACT_MOBILE as mchntContactMobile
+		  ,tp.MCHNT_ARTIF_MOBILE as mchntArtifMobile
+		  ,tp.TELEPHONE as telephone
+		  ,tp.MCHNT_START_DATE as mchntStartDate
+		  ,tp.REG_CAPITAL as regCapital
+		  ,tp.ORG_CODE as orgCode
+		  ,tp.OTH_BANK_NAME as othBankName
+		  ,tp.OTH_CARD_NO as othCardNo
+		  
+		  ,tc.REAL_NAME as 	customerCodeDesc
+		  ,tc.MOBILE as customerMobile
+		  
+		  ,st.CODE_NAME as mchntStDesc
+		  ,grp.CODE_NAME as mchntGrpDesc
+		  ,stp.CODE_NAME  as mchntTpDesc
+		  ,dst.CODE_NAME as dispMchntStDesc
+		  ,etp.CODE_NAME as mchntEnTypeDesc
+		  ,ctp.CODE_NAME as lastCupOprDesc
+		  
+		  ,IFNULL( tu.USER_NAME, t0.REC_ACC ) as recAccDesc
+	  from FQ_BIZ_MERCHANT t0 
+	  left join FQ_SYS_USER tu on t0.REC_ACC = tu.LOGIN_ID
+	  left join FQ_WEB_MEMBER_INFO tc on t0.CUSTOMER_CODE=tc.CUSTOMER_CODE
+	  left join FQ_BIZ_MCHNT_PROP tp on t0.MCHNT_CODE=tp.MCHNT_CODE
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_ST_ALL') st on t0.MCHNT_ST=st.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_DST') dst on t0.DISP_MCHNT_ST=dst.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_GRP') grp on t0.MCHNT_GRP=grp.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_TP') stp on t0.MCHNT_TP=stp.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_ETP') etp on tp.MCHNT_EN_TYPE=etp.CODE_NO 
+	  left join (select * from FQ_SYS_CODE where code_type='MCHNT_CUP_TRANS_TYPE') ctp on t0.LAST_CUP_OPR=ctp.CODE_NO 
+	</sql>
+	
+	<!-- select -->
+	<select id="filterQuery" resultType="com.jiuyv.hhc.model.mchnt.BizMerchantVo">
+ 	 	<include refid="__select"/>
+ 	 	where 1=1
+ 	</select>
+
+	<!-- select -->
+	<select id="filterBriefQuery" resultType="com.jiuyv.hhc.model.mchnt.BizMerchantVo">
+ 	 	<include refid="__selectBrief"/>
+ 	 	where 1=1
+ 	</select>
+ 	
+ 	<!-- select -->
+	<select id="filterQueryWithAgentCode" resultType="com.jiuyv.hhc.model.mchnt.BizMerchantVo">
+ 	 	<include refid="__select"/>
+ 	 	join FQ_WEB_MEMBER_INFO tm on t0.CUSTOMER_CODE = tm.CUSTOMER_CODE
+ 	 	where (tm.CUSTOMER_CODE=#{customerCode} or tm.FATHER_CUSTOMER_CODE=#{customerCode})
+ 	</select>
+ 	
+ 	<select id="findByKey" resultType="com.jiuyv.hhc.model.mchnt.BizMerchantVo">
+ 	 	<include refid="__select"/>
+ 	 	where t0.MCHNT_CODE = #{mchntCode}
+ 	</select>
+ 	
+ 	<select id="countAuditMchnt" resultType="java.lang.Long">
+ 		select count(1) from FQ_BIZ_MERCHANT t 
+ 		 where t.MCHNT_CODE!=#{mchntCode} 
+ 		   and t.MCHNT_CD=#{mchntCd}
+ 		   and t.MCHNT_ST in ('04','05','07')
+ 	</select>
+ 	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.jiuyv.hhc.model.mchnt.BizMerchantVo">
+	    <!-- 
+		<selectKey keyProperty="mchntCode" order="BEFORE" resultType="java.lang.Long">select SEQ_FQ_MERCHANT.nextval from dual</selectKey>
+		 -->
+		insert into FQ_BIZ_MERCHANT 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			VERSION,LAST_UPT_TIME,REC_TIME,
+			<if test="licNo != null" >LIC_NO,</if>
+			<if test="customerCode != null" >CUSTOMER_CODE,</if>
+			<if test="mchntCd != null" >MCHNT_CD,</if>
+			<if test="acqInsIdCd != null" >ACQ_INS_ID_CD,</if>
+			<if test="reveRegCd != null" >REVE_REG_CD,</if>
+			<if test="mchntCnName != null" >MCHNT_CN_NAME,</if>
+			<if test="regAddr != null" >REG_ADDR,</if>
+			<if test="artifNm != null" >ARTIF_NM,</if>
+			<if test="artifCertifId != null" >ARTIF_CERTIF_ID,</if>
+			<if test="artifCertifType != null" >ARTIF_CERTIF_TYPE,</if>
+			<if test="mchntTp != null" >MCHNT_TP,</if>
+			<if test="mchntGrp != null" >MCHNT_GRP,</if>
+			<if test="phone != null" >PHONE,</if>
+			<if test="mchntCrtDt != null" >MCHNT_CRT_DT,</if>
+			<if test="posNum != null" >POS_NUM,</if>
+			<if test="remark != null" >REMARK,</if>
+			<if test="mchntSt != null" >MCHNT_ST,</if>
+			<if test="dispMchntSt != null" >DISP_MCHNT_ST,</if>
+			<if test="recAcc != null" >REC_ACC,</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC,</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG,</if>
+			<if test="lastCupOpr != null" >LAST_CUP_OPR,</if>
+			<if test="lastCupTime != null" >LAST_CUP_TIME,</if>
+			<if test="lastCupResp != null" >LAST_CUP_RESP,</if>
+			<if test="auditTime != null" >AUDIT_TIME,</if>
+			<if test="beforeTime != null" >BEFORE_TIME,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			0,<include refid="dialect.__time"/>,<include refid="dialect.__time"/>,
+			<if test="licNo != null" >#{licNo},</if>
+			<if test="customerCode != null" >#{customerCode},</if>
+			<if test="mchntCd != null" >#{mchntCd},</if>
+			<if test="acqInsIdCd != null" >#{acqInsIdCd},</if>
+			<if test="reveRegCd != null" >#{reveRegCd},</if>
+			<if test="mchntCnName != null" >#{mchntCnName},</if>
+			<if test="regAddr != null" >#{regAddr},</if>
+			<if test="artifNm != null" >#{artifNm},</if>
+			<if test="artifCertifId != null" >#{artifCertifId},</if>
+			<if test="artifCertifType != null" >#{artifCertifType},</if>
+			<if test="mchntTp != null" >#{mchntTp},</if>
+			<if test="mchntGrp != null" >#{mchntGrp},</if>
+			<if test="phone != null" >#{phone},</if>
+			<if test="mchntCrtDt != null" >#{mchntCrtDt},</if>
+			<if test="posNum != null" >#{posNum},</if>
+			<if test="remark != null" >#{remark},</if>
+			<if test="mchntSt != null" >#{mchntSt},</if>
+			<if test="dispMchntSt != null" >#{dispMchntSt},</if>
+			<if test="recAcc != null" >#{recAcc},</if>
+			<if test="lastUptAcc != null" >#{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >#{lastUptOrg},</if>
+			<if test="lastCupOpr != null" >#{lastCupOpr},</if>
+			<if test="lastCupTime != null" >#{lastCupTime},</if>
+			<if test="lastCupResp != null" >#{lastCupResp},</if>
+			<if test="auditTime != null" >#{auditTime},</if>
+			<if test="beforeTime != null" >#{beforeTime},</if>
+		</trim>
+	</insert>
+	
+	<!-- update -->
+	<update id="updateByKey" parameterType="com.jiuyv.hhc.model.mchnt.BizMerchantVo">
+		update FQ_BIZ_MERCHANT 
+		<set>
+			VERSION = VERSION + 1,LAST_UPT_TIME = <include refid="dialect.__time"/>,
+			<if test="licNo != null" >LIC_NO = #{licNo},</if>
+			<if test="customerCode != null" >CUSTOMER_CODE = #{customerCode},</if>
+			<if test="mchntCd != null" >MCHNT_CD = #{mchntCd},</if>
+			<if test="acqInsIdCd != null" >ACQ_INS_ID_CD = #{acqInsIdCd},</if>
+			<if test="reveRegCd != null" >REVE_REG_CD = #{reveRegCd},</if>
+			<if test="mchntCnName != null" >MCHNT_CN_NAME = #{mchntCnName},</if>
+			<if test="regAddr != null" >REG_ADDR = #{regAddr},</if>
+			<if test="artifNm != null" >ARTIF_NM = #{artifNm},</if>
+			<if test="artifCertifId != null" >ARTIF_CERTIF_ID = #{artifCertifId},</if>
+			<if test="artifCertifType != null" >ARTIF_CERTIF_TYPE = #{artifCertifType},</if>
+			<if test="mchntTp != null" >MCHNT_TP = #{mchntTp},</if>
+			<if test="mchntGrp != null" >MCHNT_GRP = #{mchntGrp},</if>
+			<if test="phone != null" >PHONE = #{phone},</if>
+			<if test="mchntCrtDt != null" >MCHNT_CRT_DT = #{mchntCrtDt},</if>
+			<if test="posNum != null" >POS_NUM = #{posNum},</if>
+			<if test="remark != null" >REMARK = #{remark},</if>
+			<if test="mchntSt != null" >MCHNT_ST = #{mchntSt},</if>
+			<if test="dispMchntSt != null" >DISP_MCHNT_ST = #{dispMchntSt},</if>
+			<if test="lastUptAcc != null" >LAST_UPT_ACC = #{lastUptAcc},</if>
+			<if test="lastUptOrg != null" >LAST_UPT_ORG = #{lastUptOrg},</if>
+			<if test="lastCupOpr != null" >LAST_CUP_OPR = #{lastCupOpr},</if>
+			<if test="lastCupResp != null" >LAST_CUP_RESP = #{lastCupResp},</if>
+			<if test="auditTime != null" >AUDIT_TIME = #{auditTime},</if>
+			<if test="beforeTime != null" >BEFORE_TIME = #{beforeTime},</if>
+		</set>
+		where MCHNT_CODE = #{mchntCode} and VERSION = #{version}  
+	</update>
+	
+	
+ 	
+ 	<select id="findByMchntCd" resultType="com.jiuyv.hhc.model.mchnt.BizMerchantVo">
+ 	 	<include refid="__select"/>
+ 	 	where MCHNT_CD = #{mchntCd} and DISP_MCHNT_ST NOT IN('10')
+ 	</select>
+ 	
+ 	<select id="countAutedByMchntCd" resultType="java.lang.Long">
+ 	 	select COUNT(*) FROM FQ_BIZ_MERCHANT
+ 	 	where MCHNT_CD = #{mchntCd} and MCHNT_ST = '07'
+ 	</select>
+ 	
+ 	<select id="countNormalByMchntCdandCustmerCode" resultType="java.lang.Long">
+ 	 	select COUNT(*) FROM FQ_BIZ_MERCHANT
+ 	 	where MCHNT_CD = #{mchntCd} and MCHNT_ST NOT IN('09') and CUSTOMER_CODE=#{customerCode} and DISP_MCHNT_ST NOT IN('10')
+ 	</select>
+ 	
+ 	<select id="findMchntWithCustomerCode" resultType="com.jiuyv.hhc.model.mchnt.BizMerchantVo">
+ 	 	<include refid="__select"/>
+ 	 	where MCHNT_CODE = #{mchntCode} and MCHNT_ST NOT IN('09') and CUSTOMER_CODE=#{customerCode} and DISP_MCHNT_ST NOT IN('10')
+ 	</select>
+ 	
+ 	<select id="findMchntWithCustomerCodeIncludeDel" resultType="com.jiuyv.hhc.model.mchnt.BizMerchantVo">
+ 	 	<include refid="__select"/>
+ 	 	where MCHNT_CODE = #{mchntCode} and MCHNT_ST NOT IN('09') and CUSTOMER_CODE=#{customerCode}
+ 	</select>
+ 	
+ 	<select id="findMchntWithCustomerCodeIncludeUnVaild" resultType="com.jiuyv.hhc.model.mchnt.BizMerchantVo">
+ 	 	<include refid="__select"/>
+ 	 	where MCHNT_CODE = #{mchntCode} and CUSTOMER_CODE=#{customerCode} and DISP_MCHNT_ST NOT IN('10')
+ 	</select>
+	
+</mapper>

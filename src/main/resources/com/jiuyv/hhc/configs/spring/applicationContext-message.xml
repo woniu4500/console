@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- 站内信 -->	
+	<bean id="siteMsgService" class="com.jiuyv.hhc.console.message.service.impl.SiteMsgServiceImpl" parent="assistService">
+		<property name="msgMessageDao" ref="msgMessageDao" />
+		<property name="msgRecvDao" ref="msgRecvDao" />
+		<property name="sysTimeDao" ref="ISysTimeDao" />
+	</bean>
+	<bean id="siteMsgAction" class="com.jiuyv.hhc.console.message.action.SiteMsgAction" scope="prototype">
+		<property name="siteMsgService" ref="siteMsgService" />
+	</bean>
+	<!-- 邮件 -->
+	<bean id="mailService" class="com.jiuyv.hhc.console.message.service.impl.MailServiceImpl" parent="assistService">
+		<property name="msgMailDao" ref="msgMailDao" />
+	</bean>
+	<!-- 模板 -->
+	<bean id="tplMngrService" class="com.jiuyv.hhc.console.message.service.impl.TplMngrServiceImpl" parent="assistService">
+		<property name="msgTplDao" ref="msgTplDao" />	
+	</bean>
+	<bean id="tplMngrAction" class="com.jiuyv.hhc.console.message.action.TplMngrAction" scope="prototype">
+		<property name="tplMngrService" ref="tplMngrService" />
+		<property name="mailService" ref="mailService" />
+		<property name="sysParamService" ref="sysParamService" />
+	</bean>
+
+</beans>
